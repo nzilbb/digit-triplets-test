@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Context reloadable="true">
+  <Realm className="org.apache.catalina.realm.LockOutRealm">
+    <Realm className="org.apache.catalina.realm.JDBCRealm"
+           connectionName=""
+           connectionPassword=""
+           connectionURL=""
+           digest="MD5"
+           driverName="com.mysql.cj.jdbc.Driver"
+           roleNameCol="role"
+           userCredCol="password"
+           userNameCol="user"
+           userRoleTable="role"
+           userTable="user">
+      <CredentialHandler algorithm="MD5" className="org.apache.catalina.realm.MessageDigestCredentialHandler" encoding="UTF-8" iterations="1" saltLength="0"/>
+    </Realm>
+  </Realm>  
+</Context>

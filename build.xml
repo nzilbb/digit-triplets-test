@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project name="digit-triplets-test" default="all" basedir=".">
+  <description>Digit Triplets Hearing Test web-app</description>
+  <!-- set global properties for this build -->
+  <xmlproperty file="config.xml" />
+  <property name="server-src" location="./server/WEB-INF/classes/"/>
+  <property name="dist" location="./bin"/>
+  <property name="server-lib" location="./server/WEB-INF/lib"/>
+  <property name="server-build" location="build_${ant.project.name}"/>
+  <property name="server-srcfiles" value="nzilbb/dtt/*.java" /> 
+  <property name="server-testsrcfiles" value="nzilbb/dtt/**/Test*.java" />
+  
+  <target name="all" depends="server-compile,war">
+  </target>
+  
+  <target name="init">
+    <tstamp/>
+    <mkdir dir="${server-build}"/>
+  </target>
+  
+  <target name="server-compile" depends="init"
+          description="Compile the server source " >
+    <!-- Compile the java code from ${src} into ${server-build} -->
+    <javac srcdir="${server-src}" destdir="${server-build}"
+	   includes="${server-srcfiles}"
+	   excludes="${server-testsrcfiles}"
+	   classpath="${server-lib}/javax.json.jar"
+	   listfiles="yes"
+	   target="${config.classversion}"
+	   source="${config.classversion}"
+	   debug="on"
+	   includeantruntime="false"
+           >
+      <compilerarg value="-Xlint"/>
+    </javac>
+  </target>
+  
+  <target name="war" depends="server-compile"
+          description="Generate the web application archive" >
+    <!-- Create the distribution directory -->
+    <mkdir dir="${dist}"/>    
+    <war destfile="${dist}/${ant.project.name}.war" 
+         webxml="./server/WEB-INF/web.xml"
+         comment="version ${DSTAMP}.${TSTAMP}"
+         >      
+      <fileset dir="server" includes="*.html *.png" />
+      <zipfileset 
+	  dir="${server-build}" 
+	  includes="**/*.class"
+	  prefix="WEB-INF/classes" />
+    </war>
+    <delete dir="${server-build}"/>
+  </target>  
+</project>

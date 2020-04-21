@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.4" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  <security-role><role-name>admin</role-name></security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>LaBB-CAT - Admin</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint><role-name>admin</role-name></auth-constraint>
+  </security-constraint>  
+</web-app>
