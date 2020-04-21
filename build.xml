@@ -24,7 +24,7 @@
     <javac srcdir="${server-src}" destdir="${server-build}"
 	   includes="${server-srcfiles}"
 	   excludes="${server-testsrcfiles}"
-	   classpath="${server-lib}/javax.json.jar"
+	   classpath="${config.tomcat}/lib/servlet-api.jar;"
 	   listfiles="yes"
 	   target="${config.classversion}"
 	   source="${config.classversion}"
@@ -42,8 +42,16 @@
     <war destfile="${dist}/${ant.project.name}.war" 
          webxml="./server/WEB-INF/web.xml"
          comment="version ${DSTAMP}.${TSTAMP}"
-         >      
-      <fileset dir="server" includes="*.html *.png" />
+         >
+      <!-- for installation and upgrades -->
+      <fileset dir="server" includes="WEB-INF/context-template.xml" />
+      <fileset dir="server" includes="WEB-INF/sql/*.sql" />
+
+      <!-- UX resources -->
+      <fileset dir="server" includes="*.html *.png css/*.css" />
+
+      <!-- servlets etc. -->
+      <fileset dir="server" includes="WEB-INF/lib/*.jar" />
       <zipfileset 
 	  dir="${server-build}" 
 	  includes="**/*.class"

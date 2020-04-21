@@ -1,0 +1,13 @@
+body {
+    margin: 15vh;
+}
+h1 {
+    margin-top: 10vh;
+    text-align: center;
+}
+table {
+    margin: auto;
+}
+.error {
+    color: red;
+}

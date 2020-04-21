@@ -7,5 +7,11 @@
       <url-pattern>/admin/*</url-pattern>
     </web-resource-collection>
     <auth-constraint><role-name>admin</role-name></auth-constraint>
-  </security-constraint>  
+  </security-constraint>
+  
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>Digit Triplets Test</realm-name>
+  </login-config>
+  
 </web-app>
