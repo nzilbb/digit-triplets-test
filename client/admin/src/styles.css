@@ -1,1 +1,30 @@
-/* You can add global styles to this file, and also import other style files */
+/* Layout */
+app-root, #main { display: flex; flex-direction: column; }
+article, nav, aside { order: 0; }
+nav, aside, header, footer { min-height: 50px; }
+article { flex: 3 1 60%; min-height: 100px; }
+nav { flex: 1 6 20%; min-height: 100px; }
+aside { flex: 1 6 20%; min-height: 100px; }
+header, footer { min-height: 50px; }
+/* Layout on wider screens - 3 columns */
+@media all and (min-width: 640px) {
+    #main { flex-direction: row; }
+    article { order: 2; }
+    nav { order: 1; }
+    aside { order: 3; }
+    header, footer { min-height: 100px; }
+}
+
+/* Look/feel */
+article {
+    margin: 4px;
+    padding: 5px;
+}
+
+header {
+    text-align: center;
+}
+footer {
+    text-align: center;
+    font-size: 10pt;
+}
