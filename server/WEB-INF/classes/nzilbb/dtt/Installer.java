@@ -58,6 +58,7 @@ import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
+import org.apache.catalina.realm.MessageDigestCredentialHandler;
 
 /**
  * Servlet that manages installation and upgrade.
@@ -285,6 +286,7 @@ public class Installer extends HttpServlet {
             writer.println("OK.");
             
             log("Database/user created.");
+            connection.close();
 
             // set attributes so that SQL scripts can run
             dbConnectString =
@@ -300,6 +302,29 @@ public class Installer extends HttpServlet {
             writer.print("Installing database schema...");
             upgrade();
             writer.println("OK");
+            
+            String adminUser = "admin";
+            String adminPassword = "admin";
+            log("Set '"+adminUser+"' user password...");
+            writer.print("Set '"+adminUser+"' user password to '"+adminPassword+"'...");
+            MessageDigestCredentialHandler credentials = new MessageDigestCredentialHandler();
+            credentials.setAlgorithm("SHA-256");
+            credentials.setEncoding("UTF-8");
+            credentials.setIterations(1000);
+            credentials.setSaltLength(8);
+            String credential = credentials.mutate("admin");
+            connection = newConnection();
+            try {
+               sql = connection.prepareStatement(
+                  "UPDATE user SET password = ? WHERE user = ?");
+               sql.setString(1, credential);
+               sql.setString(2, adminUser);
+               sql.executeUpdate();
+               sql.close();
+               writer.println("OK");
+            } finally {
+               connection.close();
+            }
 
             log("Creating context.xml from context-template.xml...");
             writer.print("Creating context.xml from context-template.xml...");
@@ -323,6 +348,8 @@ public class Installer extends HttpServlet {
             
             writer.println();
             writer.println("Installation complete, please click <a href=\"admin/\">here</a>");
+            writer.println("and log in with username: <em>"+adminUser+"</em>"
+                           +" password: <em>"+adminPassword+"</em>");
          } catch(Exception x) {
             // reset state
             version = null;

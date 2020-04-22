@@ -12,7 +12,12 @@
            userNameCol="user"
            userRoleTable="role"
            userTable="user">
-      <CredentialHandler algorithm="MD5" className="org.apache.catalina.realm.MessageDigestCredentialHandler" encoding="UTF-8" iterations="1" saltLength="0"/>
+      <CredentialHandler
+          className="org.apache.catalina.realm.MessageDigestCredentialHandler"
+          algorithm="SHA-256"
+          encoding="UTF-8"
+          iterations="1000"
+          saltLength="8"/>
     </Realm>
   </Realm>  
 </Context>
