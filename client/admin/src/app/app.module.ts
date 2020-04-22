@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { APP_BASE_HREF, Location } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -26,7 +27,15 @@ import { TextsComponent } from './texts/texts.component';
           { path: 'texts', component: TextsComponent },
       ])
   ],
-  providers: [],
+  providers: [{
+      provide: APP_BASE_HREF,
+      useFactory: getBaseLocation
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+export function getBaseLocation() {
+    let paths: string[] = location.pathname.split('/').splice(1, 1);
+    let basePath: string = (paths && paths[0]) || ''; // Default: my-account
+    return '/' + basePath;
+}

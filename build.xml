@@ -9,6 +9,7 @@
   <property name="server-build" location="build_${ant.project.name}"/>
   <property name="server-srcfiles" value="nzilbb/dtt/*.java" /> 
   <property name="server-testsrcfiles" value="nzilbb/dtt/**/Test*.java" />
+  <property name="admin-client-dir" location="./client/admin"/>
   
   <target name="all" depends="server-compile,war">
   </target>
@@ -35,8 +36,18 @@
     </javac>
   </target>
   
-  <target name="war" depends="server-compile"
-          description="Generate the web application archive" >
+  <target name="admin-client-build" depends="init"
+          description="Build the admin client app">
+    <exec executable="npm"
+          dir="${admin-client-dir}"
+          failonerror="true">
+      <arg value="run-script"/>
+      <arg value="build"/>
+    </exec>
+  </target>
+  
+  <target name="war" depends="server-compile,admin-client-build"
+          description="Generate the web application archive">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>    
     <war destfile="${dist}/${ant.project.name}.war" 
@@ -49,6 +60,9 @@
 
       <!-- UX resources -->
       <fileset dir="server" includes="*.html *.png css/*.css" />
+
+      <!-- Admin app -->
+      <fileset dir="server" includes="admin/**/*" />
 
       <!-- servlets etc. -->
       <fileset dir="server" includes="WEB-INF/lib/*.jar" />
