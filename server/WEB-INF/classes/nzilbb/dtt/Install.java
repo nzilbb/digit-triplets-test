@@ -67,7 +67,7 @@ import org.apache.catalina.realm.MessageDigestCredentialHandler;
 @WebServlet(
    urlPatterns = "/install",
    loadOnStartup = 0)
-public class Installer extends HttpServlet {
+public class Install extends HttpServlet {
    
    // Attributes:
 
@@ -82,7 +82,7 @@ public class Installer extends HttpServlet {
    /**
     * Default constructor.
     */
-   public Installer() {
+   public Install() {
    } // end of constructor
 
    /** 
@@ -140,12 +140,12 @@ public class Installer extends HttpServlet {
          writer.println("<!DOCTYPE html>");
          writer.println("<html>");
          writer.println(" <head>");
-         writer.println("  <title>Digit Triplets Test Installer</title>");
+         writer.println("  <title>Digit Triplets Test Install</title>");
          writer.println("  <link rel=\"shortcut icon\" href=\"logo.png\" />");
          writer.println("  <link rel=\"stylesheet\" href=\"css/install.css\" type=\"text/css\" />");
          writer.println(" </head>");
          writer.println(" <body>");
-         writer.println("  <h1>Digit Triplets Test Installer</h1>");
+         writer.println("  <h1>Digit Triplets Test Install</h1>");
          writer.println("  <form method=\"POST\"><table>");
 
          // MySQL server
@@ -198,7 +198,7 @@ public class Installer extends HttpServlet {
          writer.println("<!DOCTYPE html>");
          writer.println("<html>");
          writer.println(" <head>");
-         writer.println("  <title>Digit Triplets Test Installer</title>");
+         writer.println("  <title>Digit Triplets Test Install</title>");
          writer.println("  <link rel=\"shortcut icon\" href=\"logo.png\" />");
          writer.println("  <link rel=\"stylesheet\" href=\"css/install.css\" type=\"text/css\" />");
          writer.println(" </head>");
@@ -503,7 +503,6 @@ public class Installer extends HttpServlet {
       }
       return new String(buf);
    } // end of randomString()
-
    
    private static final long serialVersionUID = 1;
-} // end of class Installer
+} // end of class Install
