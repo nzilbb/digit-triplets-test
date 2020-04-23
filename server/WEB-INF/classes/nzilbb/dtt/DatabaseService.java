@@ -25,6 +25,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import java.io.PrintWriter;
 import java.io.File;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -45,6 +46,8 @@ import java.lang.reflect.InvocationTargetException;
 public class DatabaseService {
    
    // Attributes:
+
+   PrintWriter logFile;
    
    /**
     * Current webapp version, of the form <i>YYYYMMDD</i>.<i>hhmm</i>
@@ -153,9 +156,17 @@ public class DatabaseService {
    public ServletContext getContext() { return context; }
    /**
     * Setter for {@link #context}: The servlet context of the service.
+    * <p> This method also sets the "nzilbb.dtt.DatabaseService" attribute of the servlet
+    * context to be this object. 
     * @param newContext The servlet context of the service.
     */
-   public DatabaseService setContext(ServletContext newContext) { context = newContext; return this; }
+   public DatabaseService setContext(ServletContext newContext) {
+      context = newContext;
+      if (context != null) {
+         context.setAttribute("nzilbb.dtt.DatabaseService", this);
+      }
+      return this;
+   }
    
    // Methods:
    
@@ -253,7 +264,7 @@ public class DatabaseService {
     * <em>greater than</em> the current {@link #version} are executed.
     * @return true if upgrade scripts were executed, false otherwise.
     */
-   protected boolean upgrade(File upgradeScriptDirectory) throws SQLException {
+   protected boolean upgrade(File upgradeScriptDirectory, File log) throws SQLException {
       
       boolean upgradesExecuted = false;
       
@@ -267,6 +278,14 @@ public class DatabaseService {
          rs.close();
       } catch(SQLException exception) {} // the table might not exist yet
       sql.close();
+
+      try {
+         Files.createDirectories(log.getParentFile().toPath());
+         logFile = new PrintWriter(log);
+      }
+      catch(Exception exception) {
+         log("Can't log to " + log.getPath() + ": " + exception);
+      }
 
       log("upgrade - current version: " + version);
       String originalVersion = version;
@@ -343,6 +362,10 @@ public class DatabaseService {
          log("upgrade finished - version now: " + version);
          
          connection.close();
+         if (logFile != null) {
+            logFile.close();
+            logFile = null;
+         }
       }
       return upgradesExecuted;
    } // end of upgrade()
@@ -389,6 +412,10 @@ public class DatabaseService {
     */
    public void log(String message) {
       if (context != null) context.log(message);
+      if (logFile != null) {
+         logFile.println(new java.util.Date().toString() + ": " + message);
+         logFile.flush();
+      }
    } // end of log()
    
    /**
