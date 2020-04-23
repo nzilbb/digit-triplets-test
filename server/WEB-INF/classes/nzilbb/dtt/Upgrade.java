@@ -148,6 +148,8 @@ public class Upgrade extends HttpServlet {
                   File war = File.createTempFile(item.getName(), ".war");
                   item.write(war);
                   log("Saved: " + war.getPath());
+
+                  // TODO somehow validate it's actually this webapp before unpacking it
                   
                   // unpack it
                   JarFile jar = new JarFile(war);
