@@ -93,7 +93,9 @@ public class Install extends HttpServlet {
                .setConnectionPassword(xpath.evaluate("//Realm/@connectionPassword", doc));
 
             // look for upgrades
-            db.upgrade(new File(getServletContext().getRealPath("WEB-INF/sql")));
+            db.upgrade(
+               new File(getServletContext().getRealPath("WEB-INF/sql")),
+               new File(getServletContext().getRealPath("admin/upgrade/log.txt")));
             
          } else {
             log("Configuration file not found: " + contextXml.getPath());
@@ -238,7 +240,9 @@ public class Install extends HttpServlet {
             
             log("Installing database schema...");
             writer.print("Installing database schema...");
-            db.upgrade(new File(getServletContext().getRealPath("WEB-INF/sql")));
+            db.upgrade(
+               new File(getServletContext().getRealPath("WEB-INF/sql")),
+               new File(getServletContext().getRealPath("admin/upgrade/log.txt")));
             writer.println("OK");
             
             String adminUser = "admin";
@@ -275,7 +279,7 @@ public class Install extends HttpServlet {
             writer.println("<p>Installation complete. Now:</p>");
             writer.println("<ol>");
             writer.println("<li>Restart Tomcat</li>");
-            writer.println("<li>Click <a href=\"admin/\" target=\"admin/\">here</a></li>");
+            writer.println("<li>Click <a href=\"admin/\" target=\"admin\">here</a></li>");
             writer.println("<li>Log in with username: <em>"+adminUser+"</em>"
                            +" password: <em>"+adminPassword+"</em></li>");
             writer.print("</ol><pre>");
