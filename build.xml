@@ -7,8 +7,8 @@
   <property name="dist" location="./bin"/>
   <property name="server-lib" location="./server/WEB-INF/lib"/>
   <property name="server-build" location="build_${ant.project.name}"/>
-  <property name="server-srcfiles" value="nzilbb/dtt/*.java" /> 
-  <property name="server-testsrcfiles" value="nzilbb/dtt/**/Test*.java" />
+  <property name="server-srcfiles" value="nzilbb/webapp/*.java nzilbb/dtt/*.java" /> 
+  <property name="server-testsrcfiles" value="nzilbb/**/Test*.java" />
   <property name="admin-client-dir" location="./client/admin"/>
   
   <target name="all" depends="server-compile,war">
@@ -25,7 +25,7 @@
     <javac srcdir="${server-src}" destdir="${server-build}"
 	   includes="${server-srcfiles}"
 	   excludes="${server-testsrcfiles}"
-	   classpath="${config.tomcat}/lib/servlet-api.jar;${config.tomcat}/lib/catalina.jar"
+	   classpath="${config.tomcat}/lib/servlet-api.jar;${config.tomcat}/lib/catalina.jar;${server-lib}/commons-fileupload.jar"
 	   listfiles="yes"
 	   target="${config.classversion}"
 	   source="${config.classversion}"
