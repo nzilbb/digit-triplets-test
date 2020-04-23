@@ -97,6 +97,7 @@ public class Install extends HttpServlet {
             
          } else {
             log("Configuration file not found: " + contextXml.getPath());
+            log("Webapp not installed yet.");
          }
       } catch (Exception x) {
          log("failed", x);
@@ -270,10 +271,15 @@ public class Install extends HttpServlet {
             writer.println("OK");
             log("context.xml saved.");
             
-            writer.println();
-            writer.println("Installation complete, please click <a href=\"admin/\">here</a>");
-            writer.println("and log in with username: <em>"+adminUser+"</em>"
-                           +" password: <em>"+adminPassword+"</em>");
+            writer.println("</pre>");
+            writer.println("<p>Installation complete. Now:</p>");
+            writer.println("<ol>");
+            writer.println("<li>Restart Tomcat</li>");
+            writer.println("<li>Click <a href=\"admin/\" target=\"admin/\">here</a></li>");
+            writer.println("<li>Log in with username: <em>"+adminUser+"</em>"
+                           +" password: <em>"+adminPassword+"</em></li>");
+            writer.print("</ol><pre>");
+            
          } catch(Exception x) {
             // reset state
             db.setVersion(null);
@@ -292,7 +298,7 @@ public class Install extends HttpServlet {
          log("Finished request");
       } // need to install
    }
-   
+      
    private static void XPathSearchReplace(Document doc, String query, String value)
       throws XPathExpressionException, IOException {
       
