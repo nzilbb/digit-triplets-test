@@ -23,18 +23,9 @@ package nzilbb.dtt;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.PrintWriter;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.PreparedStatement;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,11 +45,9 @@ import javax.xml.transform.stream.*;
 import javax.xml.xpath.*;
 import org.w3c.dom.*;
 import org.xml.sax.*;
-import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
-import org.apache.catalina.realm.MessageDigestCredentialHandler;
 
 /**
  * Servlet that manages installation and upgrade.
@@ -71,11 +60,7 @@ public class Install extends HttpServlet {
    
    // Attributes:
 
-   protected String version;
-   protected String driverName = "com.mysql.cj.jdbc.Driver";
-   protected String connectionURL;
-   protected String connectionName;
-   protected String connectionPassword;
+   protected DatabaseService db;
 
    // Methods:
    
@@ -92,8 +77,8 @@ public class Install extends HttpServlet {
       try {
          log("init...");
 
-         // ensure JDBC driver registered with the driver manager
-         Class.forName(driverName).getConstructor().newInstance();
+         db = new DatabaseService()
+            .setContext(getServletContext());
 
          // get database connection info
          File contextXml = new File(getServletContext().getRealPath("META-INF/context.xml"));
@@ -103,18 +88,15 @@ public class Install extends HttpServlet {
             
             // locate the node(s)
             XPath xpath = XPathFactory.newInstance().newXPath();
-            connectionURL = xpath.evaluate("//Realm/@connectionURL", doc);
-            connectionName = xpath.evaluate("//Realm/@connectionName", doc);
-            connectionPassword = xpath.evaluate("//Realm/@connectionPassword", doc);
+            db.setConnectionURL(xpath.evaluate("//Realm/@connectionURL", doc))
+               .setConnectionName(xpath.evaluate("//Realm/@connectionName", doc))
+               .setConnectionPassword(xpath.evaluate("//Realm/@connectionPassword", doc));
 
             // look for upgrades
-            upgrade();
+            db.upgrade(new File(getServletContext().getRealPath("WEB-INF/sql")));
             
          } else {
             log("Configuration file not found: " + contextXml.getPath());
-
-            // trigger a new installation
-            version = null;
          }
       } catch (Exception x) {
          log("failed", x);
@@ -129,7 +111,8 @@ public class Install extends HttpServlet {
       throws ServletException, IOException {
 
       // are we a new installation?
-      if (version != null) { // already installed
+      assert db != null : "db != null";
+      if (db.getVersion() != null) { // already installed
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
          // send the installation form
@@ -190,7 +173,8 @@ public class Install extends HttpServlet {
       throws ServletException, IOException {
       
       // are we a new installation?
-      if (version != null) { // already installed
+      assert db != null : "db != null";
+      if (db.getVersion() != null) { // already installed
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
          log("Installing...");
@@ -244,86 +228,26 @@ public class Install extends HttpServlet {
                return;
             }
 
-            String dbUserHosts = mysqlHost.equals("localhost")?"localhost":"*";
-         
             writer.println("mysqlHost: "+mysqlHost);
             writer.println("dbName: "+dbName);	 
             writer.println("dbUser: "+dbUser);
-            
-            String dbConnectString =
-               "jdbc:mysql://" + mysqlHost + "/mysql"
-               + "?dontTrackOpenResources=true" // this prevents 'leakage'
-               + "&characterEncoding=UTF-8" // this ensures non-roman data is correctly saved
-               + "&useSSL=false&allowPublicKeyRetrieval=true"; // this disables SSL, avoiding log errors
-            writer.println("connect string: "+dbConnectString);
 
-            Connection connection = DriverManager.getConnection(
-               dbConnectString, rootUser, rootPassword);
-
-            writer.print("Creating database...");
-            log("Creating database...");
-            PreparedStatement sql = connection.prepareStatement(
-               "CREATE DATABASE IF NOT EXISTS " + dbName
-               + " CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci");
-            sql.executeUpdate();
-            sql.close();
-            writer.println("OK.");
-            
-            writer.print("Creating user...");
-            sql = connection.prepareStatement(
-               "CREATE USER '" + dbUser.replaceAll("'", "\\'") + "'@'"+dbUserHosts+"'"
-               +" IDENTIFIED BY '" + dbPassword.replaceAll("'", "\\'") + "'");
-            sql.executeUpdate();
-            sql.close();
-            writer.println("OK.");
-
-            writer.print("Setting database user access...");
-            sql = connection.prepareStatement(
-               "GRANT ALL PRIVILEGES ON " + dbName + ".* TO '" 
-               + dbUser.replaceAll("'", "\\'") + "'@'"+dbUserHosts+"';");
-            sql.executeUpdate();
-            sql.close();
-            writer.println("OK.");
-            
-            log("Database/user created.");
-            connection.close();
-
-            // set attributes so that SQL scripts can run
-            dbConnectString =
-               "jdbc:mysql://" + mysqlHost + "/" + dbName // now with new database
-               + "?dontTrackOpenResources=true" // this prevents 'leakage'
-               + "&characterEncoding=UTF-8" // this ensures non-roman data is correctly saved
-               + "&useSSL=false&allowPublicKeyRetrieval=true"; // this disables SSL, avoiding log errors
-            connectionURL = dbConnectString;
-            connectionName = dbName;
-            connectionPassword = dbPassword;
+            db.createDatabase(
+               mysqlHost, rootUser, rootPassword, dbName,  dbUser, dbPassword, writer);
             
             log("Installing database schema...");
             writer.print("Installing database schema...");
-            upgrade();
+            db.upgrade(new File(getServletContext().getRealPath("WEB-INF/sql")));
             writer.println("OK");
             
             String adminUser = "admin";
             String adminPassword = "admin";
             log("Set '"+adminUser+"' user password...");
             writer.print("Set '"+adminUser+"' user password to '"+adminPassword+"'...");
-            MessageDigestCredentialHandler credentials = new MessageDigestCredentialHandler();
-            credentials.setAlgorithm("SHA-256");
-            credentials.setEncoding("UTF-8");
-            credentials.setIterations(1000);
-            credentials.setSaltLength(8);
-            String credential = credentials.mutate("admin");
-            connection = newConnection();
-            try {
-               sql = connection.prepareStatement(
-                  "UPDATE user SET password = ? WHERE user = ?");
-               sql.setString(1, credential);
-               sql.setString(2, adminUser);
-               sql.executeUpdate();
-               sql.close();
+            if (db.setUserPassword(adminUser, adminPassword)) {
                writer.println("OK");
-            } finally {
-               connection.close();
+            } else {
+               writer.println("FAILED");
             }
 
             log("Creating context.xml from context-template.xml...");
@@ -333,11 +257,11 @@ public class Install extends HttpServlet {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder()
                .parse(new InputSource(new FileInputStream(contextXmlTemplate)));            
             XPathSearchReplace(
-               doc, "//Realm/@connectionURL", dbConnectString);
+               doc, "//Realm/@connectionURL", db.getConnectionURL());
             XPathSearchReplace(
-               doc, "//Realm/@connectionName", dbUser);
+               doc, "//Realm/@connectionName", db.getConnectionName());
             XPathSearchReplace(
-               doc, "//Realm/@connectionPassword", dbPassword);
+               doc, "//Realm/@connectionPassword", db.getConnectionPassword());
             File contextXmlFile
                = new File(getServletContext().getRealPath("/META-INF/context.xml"));
             // save the result
@@ -352,15 +276,15 @@ public class Install extends HttpServlet {
                            +" password: <em>"+adminPassword+"</em>");
          } catch(Exception x) {
             // reset state
-            version = null;
-            connectionURL = null;
-            connectionName = null;
-            connectionPassword = null;
+            db.setVersion(null);
+            db.setConnectionURL(null);
+            db.setConnectionName(null);
+            db.setConnectionPassword(null);
             
             log("ERROR: " + x);
             writer.println("\n<span class=\"error\">ERROR: " + x + "</span>");
             x.printStackTrace(writer);
-
+            
          } finally {
             writer.println("</pre></body></html>");
          }
@@ -368,7 +292,7 @@ public class Install extends HttpServlet {
          log("Finished request");
       } // need to install
    }
-
+   
    private static void XPathSearchReplace(Document doc, String query, String value)
       throws XPathExpressionException, IOException {
       
@@ -381,110 +305,7 @@ public class Install extends HttpServlet {
       {
          nodes.item(idx).setTextContent(value);
       }
-   }
-
-   /**
-    * Creates a new database connection object
-    * @return A connected connection object
-    * @throws Exception
-    */
-   protected Connection newConnection()
-      throws SQLException { 
-      return DriverManager.getConnection(connectionURL, connectionName, connectionPassword);
-   } // end of newDatabaseConnection()
-   
-   /**
-    * Run SQL scripts to upgrade the database schema.
-    */
-   protected void upgrade() throws SQLException {
-      Connection connection = newConnection();
-      connection.setAutoCommit(false);
-
-      PreparedStatement sql = connection.prepareStatement("SELECT version FROM version");
-      try {
-         ResultSet rs = sql.executeQuery();
-         if (rs.next()) version = rs.getString("version");
-         rs.close();
-      } catch(SQLException exception) {} // the table might not exist yet
-      sql.close();
-
-      log("upgrade - current version: " + version);
-      String originalVersion = version;
-
-      // list files in WEB-INF/sql in order
-      File dir = new File(getServletContext().getRealPath("WEB-INF/sql"));
-      File[] scripts = dir.listFiles(new FileFilter() {
-            public boolean accept(File f) {
-               return f.getName().endsWith(".sql");
-            }});
-      Arrays.sort(scripts);
-
-      // execute scripts greater than our current version
-      if (version == null) version = "";
-      try {
-         for (File script : scripts) {
-            String scriptVersion = script.getName().replace(".sql","");
-            if (version.compareTo(scriptVersion) < 0) {
-               
-               // execute this script...
-               log("upgrade : " + version + " -> " + scriptVersion);
-               
-               // read the file
-               StringBuilder content = new StringBuilder();
-               try {
-                  BufferedReader reader = new BufferedReader(new FileReader(script));
-                  String line = reader.readLine();
-                  while (line != null) {
-                     content.append(line);
-                     content.append("\n");
-                     line = reader.readLine();
-                  } // next line
-                  
-               } catch(IOException exception) {
-                  log("ERROR: " + exception);
-               }
-               // execute each statement in it
-               String[] statements = content.toString().split(";");
-               for (String statement : statements) {
-                  if (statement.trim().length() == 0) continue;
-                  
-                  sql = connection.prepareStatement(statement);
-                  try {
-                     
-                     sql.executeUpdate();
-                     
-                  } catch(SQLException exception) {
-                     log("ERROR upgrade " + scriptVersion + ": " + exception.getMessage());
-                     // rollback if possible
-                     try { connection.rollback(); } catch(SQLException x) {}
-                     throw exception;
-                  } finally {
-                     sql.close();
-                  }
-               } // next statement
-               connection.commit();
-               version = scriptVersion;
-            } // version < scriptVersion
-         } // next script
-      } finally {
-         if (version != null && !version.equals(originalVersion)) {
-            // save version
-            sql = connection.prepareStatement(
-               "REPLACE INTO version (version) VALUES (?)");
-            sql.setString(1, version);
-            try {
-               sql.executeUpdate();
-            } catch(SQLException exception) {
-               log("ERROR updating version: " + exception.getMessage());
-            } finally {
-               sql.close();
-            }
-         }
-         log("upgrade finished - version now: " + version);
-         
-         connection.close();
-      }
-   } // end of upgrade()
+   }   
    
    /**
     * Generates a random string.
