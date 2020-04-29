@@ -28,3 +28,38 @@ footer {
     text-align: center;
     font-size: 10pt;
 }
+
+/* lists of things */
+
+.list .item {
+    display: flex;
+    flex-direction: column;
+}
+.list .item span {
+    display: block;
+    padding-left: 10px;
+    white-space: nowrap;
+}
+.list .item button {
+    margin-left: 15px;
+}
+.list .item span.user:first-child {
+    padding-left: 5px;
+}
+.list .item span input {
+    width: 95%;
+}
+/* Layout on wider screens */
+@media all and (min-width: 640px) {
+    .list .item {
+        flex-direction: row;
+    }
+    .list .item span {
+        width: 30%;
+        padding-left: 10px;
+    }
+    .list .item span.user {
+        padding-left: 10px;
+    }
+}
+

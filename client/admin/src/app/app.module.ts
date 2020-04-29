@@ -3,6 +3,9 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { APP_BASE_HREF, Location } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,6 +24,9 @@ import { TextsComponent } from './texts/texts.component';
     ],
     imports: [
         BrowserModule,
+        FormsModule,
+        HttpClientModule,
+        ReactiveFormsModule,
         AppRoutingModule,
         RouterModule.forRoot([
             { path: '', component: FieldsComponent },
