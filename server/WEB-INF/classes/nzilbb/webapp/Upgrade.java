@@ -74,10 +74,10 @@ public class Upgrade extends HttpServlet {
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-      if (db == null || db.getVersion() == null) { // not installed yey
+      if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
-         // send the installation form
+         // send upgrade form
          response.setContentType("text/html");
          response.setCharacterEncoding("UTF-8");
 
@@ -107,7 +107,7 @@ public class Upgrade extends HttpServlet {
          writer.println(" </body>");
          writer.println("</html>");
          writer.flush();
-      } // need to install
+      } // send upgrade form
    }
 
    /**
