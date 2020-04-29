@@ -423,7 +423,7 @@ public class DatabaseService {
     * @return A connected connection object
     * @throws Exception
     */
-   protected Connection newConnection()
+   public Connection newConnection()
       throws SQLException { 
       return DriverManager.getConnection(connectionURL, connectionName, connectionPassword);
    } // end of newDatabaseConnection()
