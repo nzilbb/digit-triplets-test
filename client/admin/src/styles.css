@@ -43,11 +43,11 @@ footer {
 .list .item button {
     margin-left: 15px;
 }
-.list .item span.user:first-child {
+.list .item span:first-child {
     padding-left: 5px;
 }
 .list .item span input {
-    width: 95%;
+    width: 85%;
 }
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
@@ -56,9 +56,6 @@ footer {
     }
     .list .item span {
         width: 30%;
-        padding-left: 10px;
-    }
-    .list .item span.user {
         padding-left: 10px;
     }
 }
