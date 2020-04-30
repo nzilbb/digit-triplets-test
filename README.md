@@ -32,10 +32,10 @@ Prerequisites:
 
 ### Admin
 
-To run for debugging:
+To run during development you can compile the client directly into the webapp location, e.g.:
 
 ```
 cd client/admin
-ng serve --open
+ng build --output-path /var/lib/tomcat9/webapps/digit-triplets-test/admin/
 ```
 
