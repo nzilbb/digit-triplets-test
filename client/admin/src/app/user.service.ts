@@ -35,8 +35,17 @@ export class UserService {
         // TODO validation
         return this.http.post<User>(this.baseUrl, user, this.httpOptions)
             .pipe(
-                tap((newUser: User) => this.info('addUser', `Added user: ${newUser.user}`)),
+                tap((newUser: User) => this.info('addUser', `Added user: "${newUser.user}"`)),
                 catchError(this.handleError<User>('addUser',`Could not add "${user.user}"` ))
+            );
+    }
+
+    updateUser(user: User): Observable<User> {
+        // TODO validation
+        return this.http.put<User>(this.baseUrl, user, this.httpOptions)
+            .pipe(
+                tap((updatedUser: User) => this.info('updateUser', `Updated user: "${updatedUser.user}"`)),
+                catchError(this.handleError<User>('updateUser',`Could not update "${user.user}"` ))
             );
     }
 

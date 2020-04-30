@@ -1,2 +1,1 @@
-.item .password input[type=checkbox] { width: 10%; }
-.item .password input[type=password] { width: 80%; }
+.item .reset-password input[type=checkbox] { width: 20px; }

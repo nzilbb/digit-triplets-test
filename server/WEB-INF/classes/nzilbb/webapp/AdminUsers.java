@@ -146,7 +146,13 @@ public class AdminUsers extends HttpServlet {
                if (!db.setUserPassword(user, password)) {
                   log("AdminUsers POST: Could not set the password for: " + user);
                }
-               
+
+               sql.close();
+               sql = connection.prepareStatement(
+                  "INSERT INTO role (user, role) VALUES (?,'admin')");
+               sql.setString(1, user);
+               sql.executeUpdate();
+
                // user added, so return it
                JsonGenerator json = Json.createGenerator(response.getWriter());
                json.writeStartObject();
@@ -168,6 +174,75 @@ public class AdminUsers extends HttpServlet {
             // user is already there
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             returnMessage("User already exists: " + user, response);
+         } catch(SQLException exception) {
+            // TODO return JSON-encoded informative message 
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            returnMessage("ERROR: " + exception.getMessage(), response);
+            log("AdminUsers POST: ERROR: " + exception);
+         }
+      } 
+   }
+
+   /**
+    * PUT handler - update an existing user.
+    */
+   @Override
+   protected void doPut(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+      
+      if (db == null || db.getVersion() == null) { // not installed yet
+         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      } else {
+         // read the incoming object
+         JsonReader reader = Json.createReader(request.getReader());
+         JsonObject jsonUser = reader.readObject();
+         String user = jsonUser.getString("user");
+         String email = jsonUser.getString("email");
+         boolean resetPassword = jsonUser.getBoolean("reset_password");
+         
+         String password = jsonUser.containsKey("password")?jsonUser.getString("password"):null;
+         if (password.length() == 0) password = null;
+         
+         try {
+            
+            // insert the user
+            Connection connection = db.newConnection();
+            PreparedStatement sql = connection.prepareStatement(
+               "UPDATE user SET email = ?, reset_password = ? WHERE user = ?");
+            sql.setString(1, email);
+            sql.setInt(2, resetPassword?1:0);
+            sql.setString(3, user);
+            int rows = sql.executeUpdate();
+            if (rows == 0) {
+               response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+               returnMessage("User not found: " + user, response);
+            } else {
+
+               if (password != null) {
+                  if (!db.setUserPassword(user, password)) {
+                     response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                     returnMessage("Could not update password: " + user, response);
+                     log("AdminUsers PUT: Could not set the password for: " + user);
+                  }
+               } // updating password
+               
+               // user added, so return it
+               JsonGenerator json = Json.createGenerator(response.getWriter());
+               json.writeStartObject();
+               try {
+                  json.write("user", user);
+                  if (email != null) {
+                     json.write("email", email);
+                  }
+                  json.write("reset_password", resetPassword);
+               } finally {
+                  json.writeEnd();
+                  json.close();
+                  
+                  sql.close();
+                  connection.close();
+               }
+            } // user updated
          } catch(SQLException exception) {
             // TODO return JSON-encoded informative message 
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -207,6 +282,10 @@ public class AdminUsers extends HttpServlet {
                   response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                   returnMessage("User doesn't exist: " + user, response);
                } 
+               sql = connection.prepareStatement(
+                  "DELETE FROM role WHERE user = ?");
+               sql.setString(1, user);
+               sql.executeUpdate();
 
             } // not self
          } catch(SQLException exception) {

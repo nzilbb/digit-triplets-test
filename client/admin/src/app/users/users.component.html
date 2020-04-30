@@ -13,21 +13,38 @@
              placeholder="Email" />
     </span>
     <span class="password" title="Password">
-      <input #reset_password
-             type="checkbox"
-             title="Required to change password next time they log in?" />
       <input #password
              type="password"
              placeholder="Change password">
     </span>
-    <button (click)="addUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">+</button>
+    <span class="reset-password" title="Password">
+      <label>
+        <input #reset_password
+               type="checkbox"
+               title="Required to change password next time they log in?" />
+        Change
+      </label>
+    </span>
+    <span class="buttons">
+      <button (click)="addUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">+</button>
+    </span>
   </div>
   
   <div class="item user-item" *ngFor="let user of users">
-    <span class="user" title="User ID">{{user.user}}</span>
+    <span class="user" title="User ID"> {{user.user}} </span>
     <span class="email" title="Email address">
       <input type="email" [(ngModel)]="user.email" placeholder="Email" />
     </span>
-    <button (click)="removeUser(user);">-</button>
+    <span class="password" title="Change Password">
+      <input type="password" [(ngModel)]="user.password" placeholder="Change Password" />
+    </span>
+    <span class="reset-password" title="Required to change password next time they log in?">
+      <input #reset_password
+             type="checkbox" />
+    </span>
+    <span class="buttons">
+      <button (click)="updateUser(user);">!</button>
+      <button (click)="removeUser(user);">-</button>
+    </span>
   </div>
 </div>

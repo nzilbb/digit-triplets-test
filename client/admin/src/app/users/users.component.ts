@@ -30,6 +30,16 @@ export class UsersComponent implements OnInit {
                 if (user) this.users.push(user); });
     }
     
+    updateUser(user: User) {
+        this.userService.updateUser(user)
+            .subscribe(user => {
+                // update the model with the user returned
+                this.users.findIndex(u => { return u.user == user.user; });
+                const i = this.users.findIndex(u => { return u.user == user.user; });
+                if (i >= 0) this.users[i] = user;
+            });
+    }
+    
     removeUser(user: User) {
         this.userService.removeUser(user)
             .subscribe(returnedUser => {
