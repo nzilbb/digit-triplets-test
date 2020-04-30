@@ -73,4 +73,14 @@
     </war>
     <delete dir="${server-build}"/>
   </target>  
+
+  <target name="dev-war" depends="war"
+          description="Generate a development version of the web application archive">
+    <!-- use web-dev.xml instead of web.xml -->
+    <war destfile="${dist}/${ant.project.name}.war"
+         update="true"
+         webxml="./server/WEB-INF/web-dev.xml"
+         />
+    <delete dir="${server-build}"/>
+  </target>  
 </project>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 
 import { User } from './user';
 import { MessageService } from './message.service';
@@ -11,7 +12,7 @@ import { MessageService } from './message.service';
 })
 export class UserService {
     
-    private baseUrl = 'users';
+    private baseUrl = environment.baseUrl+'users';
 
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
