@@ -40,14 +40,15 @@ footer {
     padding-left: 10px;
     white-space: nowrap;
 }
-.list .item button {
-    margin-left: 15px;
+.list .item .buttons button {
+    margin-left: 5px;
+    width: 35px;
 }
 .list .item span:first-child {
     padding-left: 5px;
 }
 .list .item span input {
-    width: 85%;
+    width: 90%;
 }
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
