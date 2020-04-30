@@ -11,8 +11,8 @@ import { MessageService } from './message.service';
 })
 export class UserService {
     
-    // private baseUrl = 'users';
-    private baseUrl = 'http://localhost:8080/digit-triplets-test/admin/users';
+    private baseUrl = 'users';
+
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
