@@ -40,7 +40,8 @@
     </span>
     <span class="reset-password" title="Required to change password next time they log in?">
       <input #reset_password
-             type="checkbox" />
+             type="checkbox"
+             [(ngModel)]="user.reset_password" [ngModelOptions]="{standalone: true}"/>
     </span>
     <span class="buttons">
       <button (click)="updateUser(user);">!</button>
