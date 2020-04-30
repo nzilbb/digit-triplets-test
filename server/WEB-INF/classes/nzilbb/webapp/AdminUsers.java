@@ -201,7 +201,7 @@ public class AdminUsers extends HttpServlet {
          boolean resetPassword = jsonUser.getBoolean("reset_password");
          
          String password = jsonUser.containsKey("password")?jsonUser.getString("password"):null;
-         if (password.length() == 0) password = null;
+         if (password != null && password.length() == 0) password = null;
          
          try {
             
