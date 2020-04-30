@@ -38,11 +38,11 @@
   
   <target name="admin-client-build" depends="init"
           description="Build the admin client app">
-    <exec executable="npm"
+    <exec executable="ng"
           dir="${admin-client-dir}"
           failonerror="true">
-      <arg value="run-script"/>
       <arg value="build"/>
+      <arg value="--prod"/>
     </exec>
   </target>
   
