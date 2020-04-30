@@ -23,20 +23,20 @@ export class UserService {
         private messageService: MessageService
     ) { }
 
-    getUsers(): Observable<User[]> {
+    readUsers(): Observable<User[]> {
         return this.http.get<User[]>(this.baseUrl)
             .pipe(
                 tap(_ => this.log('fetched users')),
-                catchError(this.handleError<User[]>('getUsers', "Could not get user list.", []))
+                catchError(this.handleError<User[]>('readUsers', "Could not get user list.", []))
             );
     }
 
-    addUser(user: User): Observable<User> {
+    createUser(user: User): Observable<User> {
         // TODO validation
         return this.http.post<User>(this.baseUrl, user, this.httpOptions)
             .pipe(
-                tap((newUser: User) => this.info('addUser', `Added user: "${newUser.user}"`)),
-                catchError(this.handleError<User>('addUser',`Could not add "${user.user}"` ))
+                tap((newUser: User) => this.info('createUser', `Added user: "${newUser.user}"`)),
+                catchError(this.handleError<User>('createUser',`Could not add "${user.user}"` ))
             );
     }
 
@@ -49,12 +49,12 @@ export class UserService {
             );
     }
 
-    removeUser(user: User): Observable<User> {
+    deleteUser(user: User): Observable<User> {
         // TODO validation
         return this.http.delete<User>(`${this.baseUrl}/${user.user}`)
             .pipe(
-                tap(_ => this.info('removeUser', `Removed user: ${user.user}`)),
-                catchError(this.handleError<User>('removeUser',`Could not remove "${user.user}"`,
+                tap(_ => this.info('deleteUser', `Removed user: ${user.user}`)),
+                catchError(this.handleError<User>('deleteUser',`Could not remove "${user.user}"`,
                                                   user)) // return user, meaning it wasn't deleted
             );
     }

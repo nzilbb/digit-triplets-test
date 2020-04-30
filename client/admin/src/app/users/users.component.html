@@ -26,7 +26,7 @@
       </label>
     </span>
     <span class="buttons">
-      <button (click)="addUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">+</button>
+      <button (click)="createUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">+</button>
     </span>
   </div>
   
@@ -45,7 +45,7 @@
     </span>
     <span class="buttons">
       <button (click)="updateUser(user);">!</button>
-      <button (click)="removeUser(user);">-</button>
+      <button (click)="deleteUser(user);">-</button>
     </span>
   </div>
 </div>

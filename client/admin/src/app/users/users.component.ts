@@ -15,21 +15,21 @@ export class UsersComponent implements OnInit {
     ) {}
     
     ngOnInit(): void {
-        this.getUsers();
+        this.readUsers();
     }
 
-    getUsers(): void {
-        this.userService.getUsers()
-            .subscribe(users => this.users = users);
-    }
-
-    addUser(user: string, email: string, reset_password: boolean, password: string) {
-        this.userService.addUser({ user, email, reset_password, password } as User)
+    createUser(user: string, email: string, reset_password: boolean, password: string) {
+        this.userService.createUser({ user, email, reset_password, password } as User)
             .subscribe(user => {
                 // add to the model/view
                 if (user) this.users.push(user); });
     }
     
+    readUsers(): void {
+        this.userService.readUsers()
+            .subscribe(users => this.users = users);
+    }
+
     updateUser(user: User) {
         this.userService.updateUser(user)
             .subscribe(user => {
@@ -41,8 +41,8 @@ export class UsersComponent implements OnInit {
             });
     }
     
-    removeUser(user: User) {
-        this.userService.removeUser(user)
+    deleteUser(user: User) {
+        this.userService.deleteUser(user)
             .subscribe(returnedUser => {
                 // when removal is successful, returnedUser == null
                 if (!returnedUser) {
