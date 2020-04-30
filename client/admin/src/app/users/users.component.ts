@@ -36,7 +36,8 @@ export class UsersComponent implements OnInit {
                 // update the model with the user returned
                 this.users.findIndex(u => { return u.user == user.user; });
                 const i = this.users.findIndex(u => { return u.user == user.user; });
-                if (i >= 0) this.users[i] = user;
+                // ensure password they entered disappears
+                if (i >= 0) this.users[i].password = user.password;
             });
     }
     
