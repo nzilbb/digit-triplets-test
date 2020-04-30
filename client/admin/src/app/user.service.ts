@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { User } from './user';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,14 +18,15 @@ export class UserService {
     };
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private messageService: MessageService
     ) { }
 
     getUsers(): Observable<User[]> {
         return this.http.get<User[]>(this.baseUrl)
             .pipe(
                 tap(_ => this.log('fetched users')),
-                catchError(this.handleError<User[]>('getUsers', []))
+                catchError(this.handleError<User[]>('getUsers', "Could not get user list.", []))
             );
     }
 
@@ -32,23 +34,42 @@ export class UserService {
         // TODO validation
         return this.http.post<User>(this.baseUrl, user, this.httpOptions)
             .pipe(
-                tap((newUser: User) => this.log(`Added user: ${newUser.user}`)),
-                catchError(this.handleError<User>('addUser'))
+                tap((newUser: User) => this.info('addUser', `Added user: ${newUser.user}`)),
+                catchError(this.handleError<User>('addUser',`Could not add "${user.user}"` ))
             );
     }
 
-    handleError<T>(operation = 'operation', result?:T) {
+    removeUser(user: User): Observable<User> {
+        // TODO validation
+        return this.http.delete<User>(`${this.baseUrl}/${user.user}`)
+            .pipe(
+                tap(_ => this.info('removeUser', `Removed user: ${user.user}`)),
+                catchError(this.handleError<User>('removeUser',`Could not remove "${user.user}"`,
+                                                  user)) // return user, meaning it wasn't deleted
+            );
+    }
+
+    handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {
             console.error(error);
-            this.log(`${operation} failed: ${error.message}`);
+            if (error.error && error.error.message) message += " - " + error.error.message;
+            this.error(operation, message);
             // Let the app keep running by returning an empty result.
             return of(result as T);
         };
     }
 
-    /** Log a message */
+    private info(operation: string, message: string) {
+        this.messageService.info(message);
+        this.log(`${operation} - ${message}`);
+    }
+    
+    private error(operation: string, message: string) {
+        this.messageService.error(message);
+        this.log(`ERROR: ${operation} - ${message}`);
+    }
+    
     private log(message: string) {
-        //this.messageService.add(`UserService: ${message}`); TODO
         console.log(message);
     }
 }

@@ -25,6 +25,18 @@ export class UsersComponent implements OnInit {
 
     addUser(user: string, email: string, reset_password: boolean, password: string) {
         this.userService.addUser({ user, email, reset_password, password } as User)
-            .subscribe(user => { if (user) this.users.push(user); });
+            .subscribe(user => {
+                // add to the model/view
+                if (user) this.users.push(user); });
+    }
+    
+    removeUser(user: User) {
+        this.userService.removeUser(user)
+            .subscribe(returnedUser => {
+                // when removal is successful, returnedUser == null
+                if (!returnedUser) {
+                    // remove from the model/view
+                    this.users = this.users.filter(u => { return u !== user;});
+                }});
     }
 }

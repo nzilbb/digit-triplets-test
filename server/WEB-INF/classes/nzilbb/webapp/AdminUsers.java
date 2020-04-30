@@ -43,8 +43,8 @@ import javax.servlet.http.HttpServletResponse;
  * @author Robert Fromont robert@fromont.net.nz
  */
 @WebServlet(
-   urlPatterns = "/admin/users",
-   loadOnStartup = 10)
+   urlPatterns = "/admin/users/*",
+   loadOnStartup = 20)
 public class AdminUsers extends HttpServlet {
    
    // Attributes:
@@ -104,6 +104,7 @@ public class AdminUsers extends HttpServlet {
             }
          } catch(SQLException exception) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            returnMessage("ERROR: " + exception.getMessage(), response);
             log("AdminUsers GET: ERROR: " + exception);
          }
       } 
@@ -119,14 +120,14 @@ public class AdminUsers extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         // read the incoming object
+         JsonReader reader = Json.createReader(request.getReader());
+         JsonObject jsonUser = reader.readObject();
+         String user = jsonUser.getString("user");
+         String email = jsonUser.getString("email");
+         boolean resetPassword = jsonUser.getBoolean("reset_password");
+         String password = jsonUser.getString("password");
          try {
-            // read the incoming object
-            JsonReader reader = Json.createReader(request.getReader());
-            JsonObject jsonUser = reader.readObject();
-            String user = jsonUser.getString("user");
-            String email = jsonUser.getString("email");
-            boolean resetPassword = jsonUser.getBoolean("reset_password");
-            String password = jsonUser.getString("password");
             
             // insert the user
             Connection connection = db.newConnection();
@@ -137,8 +138,8 @@ public class AdminUsers extends HttpServlet {
             sql.setInt(3, resetPassword?1:0);
             int rows = sql.executeUpdate();
             if (rows == 0) {
-               // TODO return JSON-encoded informative message 
                response.setStatus(HttpServletResponse.SC_CONFLICT);
+               returnMessage("User not added: " + user, response);
             } else {
 
                // set password
@@ -166,14 +167,70 @@ public class AdminUsers extends HttpServlet {
          } catch(SQLIntegrityConstraintViolationException exception) {
             // user is already there
             response.setStatus(HttpServletResponse.SC_CONFLICT);
-            // TODO return JSON-encoded informative message 
+            returnMessage("User already exists: " + user, response);
          } catch(SQLException exception) {
             // TODO return JSON-encoded informative message 
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            returnMessage("ERROR: " + exception.getMessage(), response);
             log("AdminUsers POST: ERROR: " + exception);
          }
       } 
    }
+
+   /**
+    * DELETE handler - remove existing user.
+    */
+   @Override
+   protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+      
+      if (db == null || db.getVersion() == null) { // not installed yet
+         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      } else {
+         try {
+            String user = request.getPathInfo().replaceAll("^/","");
+
+            // can't delete yourself
+            if (user.equals(request.getRemoteUser())) {
+               response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+               returnMessage("You cannot delete yourself.", response);
+            } else {
+            
+               // delete the user
+               Connection connection = db.newConnection();
+               PreparedStatement sql = connection.prepareStatement(
+                  "DELETE FROM user WHERE user = ?");
+               sql.setString(1, user);
+               int rows = sql.executeUpdate();
+               if (rows == 0) {
+                  // TODO return JSON-encoded informative message 
+                  response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                  returnMessage("User doesn't exist: " + user, response);
+               } 
+
+            } // not self
+         } catch(SQLException exception) {
+            // TODO return JSON-encoded informative message 
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            returnMessage("ERROR: " + exception.getMessage(), response);
+         }
+      } 
+   }
+   
+   /**
+    * Writes a JSON-formatted via the given response.
+    * @param message The message to return.
+    * @param response The response to write to.
+    * @throws IOException
+    */
+   protected void returnMessage(String message, HttpServletResponse response) throws IOException {
+      Json.createGenerator(response.getWriter())
+         .writeStartObject()
+         .write("message", message)
+         .writeEnd()
+         .close();
+   } // end of returnMessage()
+
 
    private static final long serialVersionUID = 1;
 } // end of class AdminUsers
