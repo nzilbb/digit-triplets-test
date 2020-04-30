@@ -13,6 +13,7 @@ import { MenuComponent } from './menu/menu.component';
 import { FieldsComponent } from './fields/fields.component';
 import { UsersComponent } from './users/users.component';
 import { TextsComponent } from './texts/texts.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { TextsComponent } from './texts/texts.component';
         MenuComponent,
         FieldsComponent,
         UsersComponent,
-        TextsComponent
+        TextsComponent,
+        MessagesComponent
     ],
     imports: [
         BrowserModule,
