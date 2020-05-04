@@ -39,7 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet that manages installation and upgrade.
+ * Servlet that allows management of users.
  * @author Robert Fromont robert@fromont.net.nz
  */
 @WebServlet(
@@ -67,7 +67,7 @@ public class AdminUsers extends HttpServlet {
    }
    
    /**
-    * GET handler
+    * GET handler lists all users. 
     */
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -175,7 +175,6 @@ public class AdminUsers extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             returnMessage("User already exists: " + user, response);
          } catch(SQLException exception) {
-            // TODO return JSON-encoded informative message 
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             returnMessage("ERROR: " + exception.getMessage(), response);
             log("AdminUsers POST: ERROR: " + exception);
@@ -244,7 +243,6 @@ public class AdminUsers extends HttpServlet {
                }
             } // user updated
          } catch(SQLException exception) {
-            // TODO return JSON-encoded informative message 
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             returnMessage("ERROR: " + exception.getMessage(), response);
             log("AdminUsers POST: ERROR: " + exception);
@@ -278,7 +276,6 @@ public class AdminUsers extends HttpServlet {
                sql.setString(1, user);
                int rows = sql.executeUpdate();
                if (rows == 0) {
-                  // TODO return JSON-encoded informative message 
                   response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                   returnMessage("User doesn't exist: " + user, response);
                } 
@@ -289,7 +286,6 @@ public class AdminUsers extends HttpServlet {
 
             } // not self
          } catch(SQLException exception) {
-            // TODO return JSON-encoded informative message 
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             returnMessage("ERROR: " + exception.getMessage(), response);
          }
@@ -309,7 +305,6 @@ public class AdminUsers extends HttpServlet {
          .writeEnd()
          .close();
    } // end of returnMessage()
-
 
    private static final long serialVersionUID = 1;
 } // end of class AdminUsers
