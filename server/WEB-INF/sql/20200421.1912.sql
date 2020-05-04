@@ -7,7 +7,7 @@ CREATE TABLE form_field (
   required INT(10) NOT NULL default 1,
   display_order int(11) NOT NULL default 0,
   update_date datetime NULL,
-  update_user_id varchar(100) NOT NULL,
+  update_user_id varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci  NULL,
   PRIMARY KEY  (field)
 );
 
@@ -17,7 +17,7 @@ CREATE TABLE form_field_option (
   description varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL default '',
   display_order int(11) NOT NULL default 0,
   update_date datetime NULL,
-  update_user_id varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  update_user_id varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   PRIMARY KEY  (field,value)
 );
 

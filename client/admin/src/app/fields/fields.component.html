@@ -1,1 +1,86 @@
-<p>fields works!</p>
+<h2>Fields</h2>
+<p>These are meta-data fields that the participant is asked to provide values for before they begin.</p>
+<div class="list field-list">
+  <div class="item field-item add-new">
+    <span class="field" title="Field ID - the participant does not see this.">
+      <input #field
+             type="text" required
+             placeholder="Field ID" />
+    </span>
+    <span class="name" title="Label - the participant can see this.">
+      <input #name
+             type="text"
+             placeholder="Label" />
+    </span>
+    <span class="description" title="Description - the participant can see this.">
+      <input #description
+             type="text"
+             placeholder="Description" />
+    </span>
+    <span class="type" title="Type of data">
+      <select #type>
+        <option>Type
+        <option value="string">Short Text
+        <option value="text">Long Text
+        <option value="number">Number
+        <option value="email">Email
+        <option value="select">Choose
+      </select>
+    </span>
+    <span class="size" title="Size">
+      <input #size
+             type="text"
+             placeholder="Size">
+    </span>
+    <span class="display-order" title="Order the fields are listed in">
+      <input #display_order
+             type="number"
+             placeholder="Order">
+    </span>
+    <span class="required" title="Whether entry is compulsory or optional">
+      <label>
+        <input #required
+               type="checkbox"
+               title="Required" />
+        Required
+      </label>
+    </span>
+    <span class="buttons">
+      <button (click)="createField(field.value, name.value, description.value, type.value, size.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = size.value = display_order.value = '';">+</button>
+    </span>
+  </div>
+  
+  <div class="item field-item" *ngFor="let field of fields">
+    <span class="field" title="Field ID"> {{field.field}} </span>
+    <span class="name" title="Field label">
+      <input type="text" [(ngModel)]="field.name" placeholder="Label - the participant can see this." />
+    </span>
+    <span class="description" title="Description">
+      <input type="text" [(ngModel)]="field.description" placeholder="Description - the participant can see this." />
+    </span>
+    <span class="type" title="Type of data">
+      <select [(ngModel)]="field.type">
+        <option value="string">Short Text
+        <option value="text">Long Text
+        <option value="number">Number
+        <option value="email">Email
+        <option value="select">Choose
+      </select>
+    </span>
+    <span class="size" title="Size">
+      <input type="text" [(ngModel)]="field.size" placeholder="Size" />
+    </span>
+    <span class="display-order" title="Order the fields are listed in">
+      <input type="number" [(ngModel)]="field.display_order" placeholder="Order" />
+    </span>
+    <span class="required" title="Whether entry is compulsory or optional">
+      <input #required
+             type="checkbox"
+             [(ngModel)]="field.required" [ngModelOptions]="{standalone: true}"/>
+    </span>
+    <span class="buttons">
+      <button (click)="updateField(field);">!</button>
+      <button (click)="deleteField(field);">-</button>
+    </span>
+  </div>
+</div>
