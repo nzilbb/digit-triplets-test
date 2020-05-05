@@ -43,7 +43,7 @@ footer {
     padding-left: 10px;
     white-space: nowrap;
 }
-.list .item span legend {
+.list > .item > span > legend {
     font-size: 10pt;
 }
 .list .item .buttons button {
@@ -55,9 +55,13 @@ footer {
 .list .item span input {
     width: 90%;
 }
+.list .item .display-order input{
+    width: 40px;
+}
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
-    nav { min-height: 100px; }
+    nav { min-height: 100px; max-width: 120px; }
+    aside { max-width: 120px; }
     .list { display: table; }
     .list .item {
         display: table-row;
@@ -65,6 +69,7 @@ footer {
         padding-bottom: 0px;
     }
     .list .item span { display: table-cell; }
-    .list .item span legend { display: none; }
+    .list > .item > span > legend { display: none; }
 }
+aside { display: none; }
 
