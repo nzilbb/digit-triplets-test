@@ -3,7 +3,7 @@ app-root, #main { display: flex; flex-direction: column; }
 article, nav, aside { order: 0; }
 article { flex: 3 1 60%; min-height: 100px; }
 nav { flex: 1 6 20%; }
-aside { flex: 1 6 20%; min-height: 100px; }
+aside { flex: 1 6 10%; min-height: 100px; }
 header, footer { min-height: 50px; }
 /* Layout on wider screens - 3 columns */
 @media all and (min-width: 640px) {
@@ -33,15 +33,21 @@ footer {
 .list .item {
     display: flex;
     flex-direction: column;
+    padding-bottom: 10px;
+}
+.list .item:not(:first-child) {
+    border-top: 1px dashed silver;
 }
 .list .item span {
     display: block;
     padding-left: 10px;
     white-space: nowrap;
 }
+.list .item span legend {
+    font-size: 10pt;
+}
 .list .item .buttons button {
     margin-left: 5px;
-    width: 35px;
 }
 .list .item span:first-child {
     padding-left: 5px;
@@ -52,12 +58,13 @@ footer {
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
     nav { min-height: 100px; }
+    .list { display: table; }
     .list .item {
-        flex-direction: row;
+        display: table-row;
+        border-top: none;
+        padding-bottom: 0px;
     }
-    .list .item span {
-        width: 30%;
-        padding-left: 10px;
-    }
+    .list .item span { display: table-cell; }
+    .list .item span legend { display: none; }
 }
 

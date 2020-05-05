@@ -2,22 +2,22 @@
 <p>These are meta-data fields that the participant is asked to provide values for before they begin.</p>
 <div class="list field-list">
   <div class="item field-item add-new">
-    <span class="field" title="Field ID - the participant does not see this.">
+    <span class="field" title="Field ID - the participant does not see this."><legend>ID</legend>
       <input #field
              type="text" required
              placeholder="Field ID" />
     </span>
-    <span class="name" title="Label - the participant can see this.">
+    <span class="name" title="Label - the participant can see this."><legend>Label</legend>
       <input #name
              type="text"
              placeholder="Label" />
     </span>
-    <span class="description" title="Description - the participant can see this.">
+    <span class="description" title="Description - the participant can see this."><legend>Description</legend>
       <input #description
              type="text"
              placeholder="Description" />
     </span>
-    <span class="type" title="Type of data">
+    <span class="type" title="Type of data"><legend>Type</legend>
       <select #type>
         <option>Type
         <option value="string">Short Text
@@ -27,17 +27,17 @@
         <option value="select">Choose
       </select>
     </span>
-    <span class="size" title="Size">
+    <span class="size" title="The size of the box e.g. 25 or 80x5"><legend>Size</legend>
       <input #size
              type="text"
              placeholder="Size">
     </span>
-    <span class="display-order" title="Order the fields are listed in">
+    <span class="display-order" title="Order the fields are listed in"><legend>Order</legend>
       <input #display_order
              type="number"
              placeholder="Order">
     </span>
-    <span class="required" title="Whether entry is compulsory or optional">
+    <span class="required" title="Whether entry is compulsory or optional"><legend>Required</legend>
       <label>
         <input #required
                type="checkbox"
@@ -46,19 +46,19 @@
       </label>
     </span>
     <span class="buttons">
-      <button (click)="createField(field.value, name.value, description.value, type.value, size.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = size.value = display_order.value = '';">+</button>
+      <button (click)="createField(field.value, name.value, description.value, type.value, size.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = size.value = display_order.value = '';">➕</button>
     </span>
   </div>
   
   <div class="item field-item" *ngFor="let field of fields">
     <span class="field" title="Field ID"> {{field.field}} </span>
-    <span class="name" title="Field label">
+    <span class="name" title="Field label"><legend>Label</legend>
       <input type="text" [(ngModel)]="field.name" placeholder="Label - the participant can see this." />
     </span>
-    <span class="description" title="Description">
+    <span class="description" title="Description"><legend>Description</legend>
       <input type="text" [(ngModel)]="field.description" placeholder="Description - the participant can see this." />
     </span>
-    <span class="type" title="Type of data">
+    <span class="type" title="Type of data"><legend>Type</legend>
       <select [(ngModel)]="field.type">
         <option value="string">Short Text
         <option value="text">Long Text
@@ -67,20 +67,20 @@
         <option value="select">Choose
       </select>
     </span>
-    <span class="size" title="Size">
+    <span class="size" title="The size of the box e.g. 25 or 80x5"><legend>Size</legend>
       <input type="text" [(ngModel)]="field.size" placeholder="Size" />
     </span>
-    <span class="display-order" title="Order the fields are listed in">
+    <span class="display-order" title="Order the fields are listed in"><legend>Order</legend>
       <input type="number" [(ngModel)]="field.display_order" placeholder="Order" />
     </span>
-    <span class="required" title="Whether entry is compulsory or optional">
+    <span class="required" title="Whether entry is compulsory or optional"><legend>Required</legend>
       <input #required
              type="checkbox"
              [(ngModel)]="field.required" [ngModelOptions]="{standalone: true}"/>
     </span>
     <span class="buttons">
-      <button (click)="updateField(field);">!</button>
-      <button (click)="deleteField(field);">-</button>
+      <button (click)="updateField(field);">💾</button>
+      <button (click)="deleteField(field);">➖</button>
     </span>
   </div>
 </div>

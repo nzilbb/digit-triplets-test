@@ -2,50 +2,50 @@
 
 <div class="list user-list">
   <div class="item user-item add-new">
-    <span class="user" title="User ID">
+    <span class="user" title="User ID"><legend>User ID</legend>
       <input #user
              type="text"
              placeholder="User ID" />
     </span>
-    <span class="email" title="Email address">
+    <span class="email" title="Email address"><legend>Email</legend>
       <input #email
              type="email"
              placeholder="Email" />
     </span>
-    <span class="password" title="Password">
+    <span class="password" title="Password"><legend>Password</legend>
       <input #password
              type="password"
              placeholder="Change password">
     </span>
-    <span class="reset-password" title="Password">
+    <span class="reset-password" title="Password"><legend>Reset</legend>
       <label>
         <input #reset_password
                type="checkbox"
                title="Required to change password next time they log in?" />
-        Change
+        Reset
       </label>
     </span>
     <span class="buttons">
-      <button (click)="createUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">+</button>
+      <button (click)="createUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">➕</button>
     </span>
   </div>
   
   <div class="item user-item" *ngFor="let user of users">
     <span class="user" title="User ID"> {{user.user}} </span>
-    <span class="email" title="Email address">
+    <span class="email" title="Email address"><legend>Email</legend>
       <input type="email" [(ngModel)]="user.email" placeholder="Email" />
     </span>
-    <span class="password" title="Change Password">
+    <span class="password" title="Change Password"><legend>Change Password</legend>
       <input type="password" [(ngModel)]="user.password" placeholder="Change Password" />
     </span>
-    <span class="reset-password" title="Required to change password next time they log in?">
+    <span class="reset-password" title="Required to change password next time they log in?"><legend>Reset</legend>
       <input #reset_password
              type="checkbox"
              [(ngModel)]="user.reset_password" [ngModelOptions]="{standalone: true}"/>
     </span>
     <span class="buttons">
-      <button (click)="updateUser(user);">!</button>
-      <button (click)="deleteUser(user);">-</button>
+      <button (click)="updateUser(user);">💾</button>
+      <button (click)="deleteUser(user);">➖</button>
     </span>
   </div>
 </div>
