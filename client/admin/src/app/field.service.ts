@@ -29,7 +29,7 @@ export class FieldService {
                 catchError(this.handleError<Field[]>('readFields', "Could not get field list.", []))
             );
     }
-    
+
     createField(field: Field): Observable<Field> {
         // TODO validation
         return this.http.post<Field>(this.baseUrl, field, this.httpOptions)

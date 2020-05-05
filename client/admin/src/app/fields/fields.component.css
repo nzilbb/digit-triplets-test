@@ -1,1 +1,4 @@
 .item .required input[type=checkbox] { width: 20px; }
+.options {
+    display: block;
+}

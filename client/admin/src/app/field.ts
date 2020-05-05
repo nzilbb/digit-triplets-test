@@ -1,3 +1,5 @@
+import { Option } from './option';
+
 export interface Field {
     field: string;
     name: string;
@@ -6,4 +8,5 @@ export interface Field {
     size: string;
     required: boolean;
     display_order: number;
+    options: Option[];
 }

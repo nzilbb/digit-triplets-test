@@ -1,0 +1,29 @@
+<fieldset *ngIf="field.type === 'select'"><legend>Options</legend>
+  <div class="list option-list">
+    <div class="item option-item add-new">
+      <span class="value" title="Value - the participant does not see this."><legend>Value</legend>
+        <input #value
+               type="text" required
+               placeholder="Value" />
+      </span>
+      <span class="description" title="Label - the participant can see this."><legend>Label</legend>
+        <input #description
+               type="text" required
+               placeholder="Label" />
+      </span>
+      <span class="buttons">
+        <button (click)="createOption(value.value, description.value); value.value = description.value = '';">➕</button>
+      </span>
+    </div>
+    
+    <div class="item option-item" *ngFor="let option of field.options">
+      <span class="value" title="Value - the participant does not see this."> {{option.value}} </span>
+      <span class="description" title="Label - the participant can see this."><legend>Label</legend>
+        <input type="text" [(ngModel)]="option.description" placeholder="Label" />
+      </span>
+      <span class="buttons">
+        <button (click)="deleteOption(option);">➖</button>
+      </span>
+    </div>
+  </div>
+</fieldset>

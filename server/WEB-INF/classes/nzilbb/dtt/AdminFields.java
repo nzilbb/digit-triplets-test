@@ -28,6 +28,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 import javax.json.stream.JsonGenerator;
@@ -81,6 +82,8 @@ public class AdminFields extends HttpServlet {
             Connection connection = db.newConnection();
             PreparedStatement sql = connection.prepareStatement(
                "SELECT * FROM form_field ORDER BY display_order");
+            PreparedStatement sqlOptions = connection.prepareStatement(
+               "SELECT * FROM form_field_option WHERE field = ? ORDER BY display_order");
             ResultSet rs = sql.executeQuery();
             JsonGenerator json = Json.createGenerator(response.getWriter());
             json.writeStartArray();
@@ -94,7 +97,24 @@ public class AdminFields extends HttpServlet {
                   json.write("size", rs.getString("size"));
                   json.write("required", rs.getInt("required") != 0);
                   json.write("display_order", rs.getInt("display_order"));
-                  // TODO return options if type=select
+                  
+                  // return options if type=select
+                  if ("select".equals(rs.getString("type"))) {
+                     sqlOptions.setString(1, rs.getString("field"));
+                     ResultSet rsOptions = sqlOptions.executeQuery();
+                     json.writeStartArray("options");
+                     try {
+                        while(rsOptions.next()) {
+                           json.writeStartObject();
+                           json.write("value", rsOptions.getString("value"));
+                           json.write("description", rsOptions.getString("description"));
+                           json.writeEnd();
+                        } // next option
+                     } finally {
+                        json.writeEnd();
+                        rsOptions.close();
+                     }
+                  } // send options
                   json.writeEnd();
                } // next user
             } finally {
@@ -103,6 +123,7 @@ public class AdminFields extends HttpServlet {
                
                rs.close();
                sql.close();
+               sqlOptions.close();
                connection.close();
             }
          } catch(SQLException exception) {
@@ -236,7 +257,9 @@ public class AdminFields extends HttpServlet {
          int display_order = jsonUser.getInt("display_order");
          boolean required = jsonUser.getBoolean("required");
          
-         // TODO read options
+         // options
+         JsonArray options = jsonUser.containsKey("options") && !jsonUser.isNull("options")
+            ?jsonUser.getJsonArray("options"):null;
          
          try {
             Connection connection = db.newConnection();
@@ -258,7 +281,31 @@ public class AdminFields extends HttpServlet {
                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                returnMessage("Field not found: " + field, response);
             } else {
-               // TODO update options
+               // update options
+               sql = connection.prepareStatement(
+                  "DELETE FROM form_field_option WHERE field = ?");
+               sql.setString(1, field);
+               sql.executeUpdate();
+               if (options != null && "select".equals(type)) {
+                  // add given options
+                  sql = connection.prepareStatement(
+                     "INSERT INTO form_field_option"
+                     +" (field, value, description, display_order, update_date, update_user_id)"
+                     +" VALUES (?,?,?,?,Now(),?)");
+                  sql.setString(1, field);
+                  for (int o = 0; o < options.size(); o++) {
+                     JsonObject jsonOption = options.getJsonObject(o);
+                     sql.setString(2, jsonOption.getString("value"));
+                     sql.setString(3, jsonOption.getString("description"));
+                     sql.setInt(4, o);
+                     sql.setString(5, request.getRemoteUser());
+                     try {
+                        sql.executeUpdate();
+                     } catch(SQLException exception) {
+                        log("AdminFields POST: options ERROR: " + exception);
+                     }
+                  } // next option
+               }
 
                // row updated, so return it
                JsonGenerator json = Json.createGenerator(response.getWriter());
@@ -271,6 +318,17 @@ public class AdminFields extends HttpServlet {
                   json.write("size", size);
                   json.write("required", required);
                   json.write("display_order", display_order);
+                  if (options != null && "select".equals(type)) {
+                     json.writeStartArray("options");
+                     for (int o = 0; o < options.size(); o++) {
+                        JsonObject jsonOption = options.getJsonObject(o);
+                        json.writeStartObject();
+                        json.write("value", jsonOption.getString("value"));
+                        json.write("description", jsonOption.getString("description"));
+                        json.writeEnd();
+                     } // next option
+                     json.writeEnd();
+                  } // send options
                } finally {
                   json.writeEnd();
                   json.close();

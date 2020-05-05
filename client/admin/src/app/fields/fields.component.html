@@ -78,6 +78,9 @@
              type="checkbox"
              [(ngModel)]="field.required" [ngModelOptions]="{standalone: true}"/>
     </span>
+    <span class="options">
+      <app-options [field]="field"></app-options>
+    </span>
     <span class="buttons">
       <button (click)="updateField(field);">💾</button>
       <button (click)="deleteField(field);">➖</button>
