@@ -65,7 +65,6 @@ footer {
     .list { display: table; }
     .list .item {
         display: table-row;
-        border-top: none;
         padding-bottom: 0px;
     }
     .list .item span { display: table-cell; }

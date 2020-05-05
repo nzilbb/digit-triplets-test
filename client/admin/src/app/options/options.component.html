@@ -2,17 +2,17 @@
   <div class="list option-list">
     <div class="item option-item add-new">
       <span class="value" title="Value - the participant does not see this."><legend>Value</legend>
-        <input #value
+        <input #value name="value" [(ngModel)]="newOption.value"
                type="text" required
                placeholder="Value" />
       </span>
       <span class="description" title="Label - the participant can see this."><legend>Label</legend>
-        <input #description
+        <input #description name="description" [(ngModel)]="newOption.description"
                type="text" required
                placeholder="Label" />
       </span>
       <span class="buttons">
-        <button (click)="createOption(value.value, description.value); value.value = description.value = '';">➕</button>
+        <button (click)="value.reportValidity() && description.reportValidity() && createOption();">➕</button>
       </span>
     </div>
     

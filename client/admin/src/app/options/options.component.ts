@@ -11,18 +11,21 @@ import { FieldService } from '../field.service';
 })
 export class OptionsComponent implements OnInit {
     @Input() field: Field;
+    newOption: Option;
     
     constructor(
         private fieldService: FieldService
-    ) { }
+    ) {
+        this.newOption = {value : "", description : ""} as Option;
+    }
 
     ngOnInit(): void {
     }
 
-    createOption(value: string, description: string) {
+    createOption() {
         if (!this.field.options) this.field.options = [];
-        this.field.options.push({ value, description } as Option); // TODO:
-        console.log("options " + this.field.options.length);
+        this.field.options.push(this.newOption);
+        this.newOption = {value : "", description : ""} as Option;
     }
     
     deleteOption(option: Option) {
