@@ -14,6 +14,7 @@ import { FieldsComponent } from './fields/fields.component';
 import { UsersComponent } from './users/users.component';
 import { TextsComponent } from './texts/texts.component';
 import { MessagesComponent } from './messages/messages.component';
+import { OptionsComponent } from './options/options.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { MessagesComponent } from './messages/messages.component';
         FieldsComponent,
         UsersComponent,
         TextsComponent,
-        MessagesComponent
+        MessagesComponent,
+        OptionsComponent
     ],
     imports: [
         BrowserModule,
@@ -31,7 +33,7 @@ import { MessagesComponent } from './messages/messages.component';
         ReactiveFormsModule,
         AppRoutingModule,
         RouterModule.forRoot([
-            { path: '', component: FieldsComponent },
+            { path: 'fields', component: FieldsComponent },
             { path: 'users', component: UsersComponent },
             { path: 'texts', component: TextsComponent },
         ])
