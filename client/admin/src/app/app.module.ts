@@ -15,6 +15,7 @@ import { UsersComponent } from './users/users.component';
 import { TextsComponent } from './texts/texts.component';
 import { MessagesComponent } from './messages/messages.component';
 import { OptionsComponent } from './options/options.component';
+import { TextComponent } from './text/text.component';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { OptionsComponent } from './options/options.component';
         UsersComponent,
         TextsComponent,
         MessagesComponent,
-        OptionsComponent
+        OptionsComponent,
+        TextComponent
     ],
     imports: [
         BrowserModule,
@@ -36,6 +38,7 @@ import { OptionsComponent } from './options/options.component';
             { path: 'fields', component: FieldsComponent },
             { path: 'users', component: UsersComponent },
             { path: 'texts', component: TextsComponent },
+            { path: 'texts/:id', component: TextComponent }
         ])
     ],
     providers: [

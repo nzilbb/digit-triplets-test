@@ -1,0 +1,7 @@
+<div *ngIf="text">
+  <h2>{{text.label}}</h2>
+  <div class="text-html">
+    <textarea [(ngModel)]="text.html"></textarea>
+  </div>
+  <button (click)="save()">save</button>
+</div>

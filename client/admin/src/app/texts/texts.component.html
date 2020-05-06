@@ -1,1 +1,8 @@
-<p>texts works!</p>
+<h2>Texts</h2>
+<p>These are instructions and test results reports shown to the participant.</p>
+
+<div class="list text-list">
+  <div class="item text-item" *ngFor="let text of texts">
+    <span class="text" title="Which text"> <a routerLink="/texts/{{text.id}}">{{text.label}}</a> </span>
+  </div>
+</div>
