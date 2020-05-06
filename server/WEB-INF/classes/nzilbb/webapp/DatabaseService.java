@@ -271,10 +271,11 @@ public class DatabaseService {
       Connection connection = newConnection();
       connection.setAutoCommit(false);
 
-      PreparedStatement sql = connection.prepareStatement("SELECT version FROM version");
+      PreparedStatement sql = connection.prepareStatement(
+         "SELECT value FROM attribute WHERE attribute = 'version'");
       try {
          ResultSet rs = sql.executeQuery();
-         if (rs.next()) version = rs.getString("version");
+         if (rs.next()) version = rs.getString(1);
          rs.close();
       } catch(SQLException exception) {} // the table might not exist yet
       sql.close();
@@ -349,7 +350,7 @@ public class DatabaseService {
          if (version != null && !version.equals(originalVersion)) {
             // save version
             sql = connection.prepareStatement(
-               "REPLACE INTO version (version) VALUES (?)");
+               "UPDATE attribute SET value = ?, update_date = Now() WHERE attribute = 'version'");
             sql.setString(1, version);
             try {
                sql.executeUpdate();
