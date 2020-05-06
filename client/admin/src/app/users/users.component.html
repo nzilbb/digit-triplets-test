@@ -26,7 +26,8 @@
       </label>
     </span>
     <span class="buttons">
-      <button (click)="createUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';">➕</button>
+      <button (click)="createUser(user.value, email.value, reset_password.checked, password.value); user.value = email.value = password.value = '';"
+              title="Add a new user">➕</button>
     </span>
   </div>
   
@@ -44,8 +45,8 @@
              [(ngModel)]="user.reset_password" [ngModelOptions]="{standalone: true}"/>
     </span>
     <span class="buttons">
-      <button (click)="updateUser(user);">💾</button>
-      <button (click)="deleteUser(user);">➖</button>
+      <button (click)="updateUser(user);" title="Save changes to this user">💾</button>
+      <button (click)="deleteUser(user);" title="Delete this user">➖</button>
     </span>
   </div>
 </div>

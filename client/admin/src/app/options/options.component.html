@@ -12,7 +12,8 @@
                placeholder="Label" />
       </span>
       <span class="buttons">
-        <button (click)="value.reportValidity() && description.reportValidity() && createOption();">➕</button>
+        <button (click)="value.reportValidity() && description.reportValidity() && createOption();"
+                title="Add a new option">➕</button>
       </span>
     </div>
     
@@ -22,7 +23,7 @@
         <input type="text" [(ngModel)]="option.description" placeholder="Label" />
       </span>
       <span class="buttons">
-        <button (click)="deleteOption(option);">➖</button>
+        <button (click)="deleteOption(option);" title="Remove this option">➖</button>
       </span>
     </div>
   </div>

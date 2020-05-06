@@ -46,7 +46,8 @@
       </label>
     </span>
     <span class="buttons">
-      <button (click)="createField(field.value, name.value, description.value, type.value, size.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = size.value = display_order.value = '';">➕</button>
+      <button (click)="createField(field.value, name.value, description.value, type.value, size.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = size.value = display_order.value = '';"
+              title="Add new field">➕</button>
     </span>
   </div>
   
@@ -82,8 +83,8 @@
       <app-options [field]="field"></app-options>
     </span>
     <span class="buttons">
-      <button (click)="updateField(field);">💾</button>
-      <button (click)="deleteField(field);">➖</button>
+      <button (click)="updateField(field);" title="Save changes to this field">💾</button>
+      <button (click)="deleteField(field);" title="Delete this field">➖</button>
     </span>
   </div>
 </div>

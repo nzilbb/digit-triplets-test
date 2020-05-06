@@ -3,6 +3,8 @@
 
 <div class="list text-list">
   <div class="item text-item" *ngFor="let text of texts">
-    <span class="text" title="Which text"> <a routerLink="/texts/{{text.id}}">{{text.label}}</a> </span>
+    <span class="text">
+      <a routerLink="/texts/{{text.id}}" title="Edit this text">{{text.label}}</a>
+    </span>
   </div>
 </div>
