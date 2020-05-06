@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import { TextService }  from '../text.service';
 import { Text } from '../text';
@@ -13,6 +14,7 @@ import { Text } from '../text';
 export class TextComponent implements OnInit {
 
     @Input() text: Text;
+    public Editor = ClassicEditor;
 
     constructor(private route: ActivatedRoute,
                 private textService: TextService,

@@ -6,6 +6,7 @@ import { APP_BASE_HREF, Location } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -34,6 +35,7 @@ import { TextComponent } from './text/text.component';
         HttpClientModule,
         ReactiveFormsModule,
         AppRoutingModule,
+        CKEditorModule,
         RouterModule.forRoot([
             { path: 'fields', component: FieldsComponent },
             { path: 'users', component: UsersComponent },
