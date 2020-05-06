@@ -19,7 +19,7 @@
 //    along with this software; if not, write to the Free Software
 //    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-package nzilbb.webapp;
+package nzilbb.dtt;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -38,6 +38,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nzilbb.webapp.DatabaseService;
 
 /**
  * Servlet that allows management of meta-data fields.
@@ -64,7 +65,7 @@ public class AdminFields extends HttpServlet {
     * Initialise the servlet by loading the database connection settings.
     */
    public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.dtt.DatabaseService");
+      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
    }
    
    /**

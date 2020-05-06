@@ -64,7 +64,7 @@ public class Upgrade extends HttpServlet {
     * Initialise the servlet by loading the database connection settings.
     */
    public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.dtt.DatabaseService");
+      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
    }
 
    /**

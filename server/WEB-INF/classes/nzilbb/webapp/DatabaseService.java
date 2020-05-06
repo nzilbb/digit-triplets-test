@@ -156,14 +156,14 @@ public class DatabaseService {
    public ServletContext getContext() { return context; }
    /**
     * Setter for {@link #context}: The servlet context of the service.
-    * <p> This method also sets the "nzilbb.dtt.DatabaseService" attribute of the servlet
+    * <p> This method also sets the "nzilbb.webapp.DatabaseService" attribute of the servlet
     * context to be this object. 
     * @param newContext The servlet context of the service.
     */
    public DatabaseService setContext(ServletContext newContext) {
       context = newContext;
       if (context != null) {
-         context.setAttribute("nzilbb.dtt.DatabaseService", this);
+         context.setAttribute("nzilbb.webapp.DatabaseService", this);
       }
       return this;
    }
