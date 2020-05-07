@@ -50,12 +50,6 @@ public class ServletBase extends HttpServlet {
    
    // Methods:
    
-   /**
-    * Default constructor.
-    */
-   public ServletBase() {
-   } // end of constructor
-   
    /** 
     * Initialise the servlet by loading the database connection settings.
     */

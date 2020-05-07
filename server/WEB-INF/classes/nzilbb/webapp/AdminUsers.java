@@ -47,14 +47,6 @@ import javax.servlet.http.HttpServletResponse;
    loadOnStartup = 20)
 public class AdminUsers extends ServletBase {   
    
-   // Methods:
-   
-   /**
-    * Default constructor.
-    */
-   public AdminUsers() {
-   } // end of constructor
-   
    /**
     * GET handler lists all users. 
     */

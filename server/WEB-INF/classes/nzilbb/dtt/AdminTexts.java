@@ -49,14 +49,6 @@ import nzilbb.webapp.ServletBase;
    loadOnStartup = 30)
 public class AdminTexts extends ServletBase {
    
-   // Methods:
-   
-   /**
-    * Default constructor.
-    */
-   public AdminTexts() {
-   } // end of constructor
-   
    /**
     * GET handler lists all rows.
     */

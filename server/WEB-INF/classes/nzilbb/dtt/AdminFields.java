@@ -49,14 +49,6 @@ import nzilbb.webapp.ServletBase;
    loadOnStartup = 30)
 public class AdminFields extends ServletBase {
    
-   // Methods:
-   
-   /**
-    * Default constructor.
-    */
-   public AdminFields() {
-   } // end of constructor
-   
    /**
     * GET handler lists all rows.
     */
