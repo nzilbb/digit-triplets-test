@@ -20,7 +20,7 @@
     <div class="item option-item" *ngFor="let option of field.options">
       <span class="value" title="Value - the participant does not see this."> {{option.value}} </span>
       <span class="description" title="Label - the participant can see this."><legend>Label</legend>
-        <input type="text" [(ngModel)]="option.description" placeholder="Label" />
+        <input type="text" [(ngModel)]="option.description" placeholder="Label" (input)="onChange(option)" />
       </span>
       <span class="buttons">
         <button (click)="deleteOption(option);" title="Remove this option">➖</button>

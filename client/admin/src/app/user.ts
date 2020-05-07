@@ -3,4 +3,6 @@ export interface User {
     email: string;
     reset_password: boolean;
     password: string;
+
+    changed: boolean;
 }

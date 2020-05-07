@@ -9,4 +9,6 @@ export interface Field {
     required: boolean;
     display_order: number;
     options: Option[];
+
+    changed: boolean;
 }

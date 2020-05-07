@@ -34,19 +34,27 @@
   <div class="item user-item" *ngFor="let user of users">
     <span class="user" title="User ID"> {{user.user}} </span>
     <span class="email" title="Email address"><legend>Email</legend>
-      <input type="email" [(ngModel)]="user.email" placeholder="Email" />
+      <input type="email"
+             [(ngModel)]="user.email" (input)="onChange(user)"
+             placeholder="Email"/>
     </span>
     <span class="password" title="Change Password"><legend>Change Password</legend>
-      <input type="password" [(ngModel)]="user.password" placeholder="Change Password" />
+      <input type="password"
+             [(ngModel)]="user.password" (input)="onChange(user)"
+             placeholder="Change Password"/>
     </span>
     <span class="reset-password" title="Required to change password next time they log in?"><legend>Reset</legend>
-      <input #reset_password
-             type="checkbox"
-             [(ngModel)]="user.reset_password" [ngModelOptions]="{standalone: true}"/>
+      <input type="checkbox"
+             [(ngModel)]="user.reset_password" [ngModelOptions]="{standalone: true}"
+             (input)="onChange(user)"/>
     </span>
     <span class="buttons">
-      <button (click)="updateUser(user);" title="Save changes to this user">💾</button>
       <button (click)="deleteUser(user);" title="Delete this user">➖</button>
     </span>
   </div>
+</div>
+<div class="buttons">
+  <button (click)="updateChangedUsers();"
+          *ngIf="changed"
+          title="Save all changed users">💾</button>
 </div>

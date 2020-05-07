@@ -10,6 +10,7 @@ import { FieldService } from '../field.service';
 })
 export class FieldsComponent implements OnInit {
     fields: Field[];
+    changed = false;
     
     constructor(
         private fieldService: FieldService
@@ -36,7 +37,9 @@ export class FieldsComponent implements OnInit {
         this.fieldService.updateField(field)
             .subscribe(field => {
                 // update the model with the field returned
-                this.fields.findIndex(u => { return u.field == field.field; });
+                const i = this.fields.findIndex(u => { return u.field == field.field; })
+                this.fields[i] = field;
+                this.updateChangedFlag();
             });
     }
     
@@ -47,6 +50,27 @@ export class FieldsComponent implements OnInit {
                 if (!returnedField) {
                     // remove from the model/view
                     this.fields = this.fields.filter(u => { return u !== field;});
+                    this.updateChangedFlag();
                 }});
+    }
+    
+    onChange(field: Field) {
+        field.changed = this.changed = true;        
+    }
+
+    updateChangedFields() {
+        this.fields
+            .filter(f => f.changed)
+            .forEach(f => this.updateField(f));
+    }
+
+    updateChangedFlag() {
+        this.changed = false;
+        for (let field of this.fields) {
+            if (field.changed) {
+                this.changed = true;
+                break; // only need to find one
+            }
+        } // next field
     }
 }

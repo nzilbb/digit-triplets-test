@@ -9,6 +9,7 @@ import { UserService } from '../user.service';
 })
 export class UsersComponent implements OnInit {
     users: User[];
+    changed = false;
     
     constructor(
         private userService: UserService
@@ -34,10 +35,9 @@ export class UsersComponent implements OnInit {
         this.userService.updateUser(user)
             .subscribe(user => {
                 // update the model with the user returned
-                this.users.findIndex(u => { return u.user == user.user; });
                 const i = this.users.findIndex(u => { return u.user == user.user; });
-                // ensure password they entered disappears
-                if (i >= 0) this.users[i].password = user.password;
+                if (i >= 0) this.users[i] = user;
+                this.updateChangedFlag();
             });
     }
     
@@ -48,6 +48,27 @@ export class UsersComponent implements OnInit {
                 if (!returnedUser) {
                     // remove from the model/view
                     this.users = this.users.filter(u => { return u !== user;});
+                    this.updateChangedFlag();
                 }});
+    }
+    
+    onChange(user: User) {
+        user.changed = this.changed = true;        
+    }
+
+    updateChangedUsers() {
+        this.users
+            .filter(u => u.changed)
+            .forEach(u => this.updateUser(u));
+    }
+
+    updateChangedFlag() {
+        this.changed = false;
+        for (let user of this.users) {
+            if (user.changed) {
+                this.changed = true;
+                break; // only need to find one
+            }
+        } // next user
     }
 }
