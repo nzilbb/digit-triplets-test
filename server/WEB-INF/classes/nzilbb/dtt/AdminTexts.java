@@ -78,6 +78,8 @@ public class AdminTexts extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         response.setContentType("application/json");
+         response.setCharacterEncoding("UTF-8");
          try {
             Connection connection = db.newConnection();
             try {
@@ -148,6 +150,8 @@ public class AdminTexts extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         response.setContentType("application/json");
+         response.setCharacterEncoding("UTF-8");
          // read the incoming object
          JsonReader reader = Json.createReader(request.getReader());
          JsonObject jsonUser = reader.readObject();

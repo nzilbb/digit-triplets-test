@@ -76,6 +76,8 @@ public class AdminUsers extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         response.setContentType("application/json");
+         response.setCharacterEncoding("UTF-8");
          try {
             // return a list of users
             Connection connection = db.newConnection();
@@ -120,6 +122,8 @@ public class AdminUsers extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         response.setContentType("application/json");
+         response.setCharacterEncoding("UTF-8");
          // read the incoming object
          JsonReader reader = Json.createReader(request.getReader());
          JsonObject jsonUser = reader.readObject();
@@ -192,6 +196,8 @@ public class AdminUsers extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         response.setContentType("application/json");
+         response.setCharacterEncoding("UTF-8");
          // read the incoming object
          JsonReader reader = Json.createReader(request.getReader());
          JsonObject jsonUser = reader.readObject();
@@ -260,6 +266,8 @@ public class AdminUsers extends HttpServlet {
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
+         response.setContentType("application/json");
+         response.setCharacterEncoding("UTF-8");
          try {
             String user = request.getPathInfo().replaceAll("^/","");
 
