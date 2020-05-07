@@ -45,11 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(
    urlPatterns = "/admin/users/*",
    loadOnStartup = 20)
-public class AdminUsers extends HttpServlet {
-   
-   // Attributes:
-   
-   protected DatabaseService db;
+public class AdminUsers extends ServletBase {   
    
    // Methods:
    
@@ -58,13 +54,6 @@ public class AdminUsers extends HttpServlet {
     */
    public AdminUsers() {
    } // end of constructor
-   
-   /** 
-    * Initialise the servlet by loading the database connection settings.
-    */
-   public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
-   }
    
    /**
     * GET handler lists all users. 
@@ -299,20 +288,6 @@ public class AdminUsers extends HttpServlet {
          }
       } 
    }
-   
-   /**
-    * Writes a JSON-formatted via the given response.
-    * @param message The message to return.
-    * @param response The response to write to.
-    * @throws IOException
-    */
-   protected void returnMessage(String message, HttpServletResponse response) throws IOException {
-      Json.createGenerator(response.getWriter())
-         .writeStartObject()
-         .write("message", message)
-         .writeEnd()
-         .close();
-   } // end of returnMessage()
 
    private static final long serialVersionUID = 1;
 } // end of class AdminUsers

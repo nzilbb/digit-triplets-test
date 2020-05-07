@@ -38,7 +38,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import nzilbb.webapp.DatabaseService;
+import nzilbb.webapp.ServletBase;
 
 /**
  * Servlet that allows management of prompts and results texts.
@@ -47,11 +47,7 @@ import nzilbb.webapp.DatabaseService;
 @WebServlet(
    urlPatterns = "/admin/texts/*",
    loadOnStartup = 30)
-public class AdminTexts extends HttpServlet {
-   
-   // Attributes:
-   
-   protected DatabaseService db;
+public class AdminTexts extends ServletBase {
    
    // Methods:
    
@@ -60,13 +56,6 @@ public class AdminTexts extends HttpServlet {
     */
    public AdminTexts() {
    } // end of constructor
-   
-   /** 
-    * Initialise the servlet by loading the database connection settings.
-    */
-   public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
-   }
    
    /**
     * GET handler lists all rows.
@@ -197,20 +186,6 @@ public class AdminTexts extends HttpServlet {
          }
       } 
    }
-
-   /**
-    * Writes a JSON-formatted via the given response.
-    * @param message The message to return.
-    * @param response The response to write to.
-    * @throws IOException
-    */
-   protected void returnMessage(String message, HttpServletResponse response) throws IOException {
-      Json.createGenerator(response.getWriter())
-         .writeStartObject()
-         .write("message", message)
-         .writeEnd()
-         .close();
-   } // end of returnMessage()
 
    private static final long serialVersionUID = 1;
 } // end of class AdminTexts

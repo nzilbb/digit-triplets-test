@@ -38,7 +38,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import nzilbb.webapp.DatabaseService;
+import nzilbb.webapp.ServletBase;
 
 /**
  * Servlet that allows management of meta-data fields.
@@ -47,11 +47,7 @@ import nzilbb.webapp.DatabaseService;
 @WebServlet(
    urlPatterns = "/admin/fields/*",
    loadOnStartup = 30)
-public class AdminFields extends HttpServlet {
-   
-   // Attributes:
-   
-   protected DatabaseService db;
+public class AdminFields extends ServletBase {
    
    // Methods:
    
@@ -60,13 +56,6 @@ public class AdminFields extends HttpServlet {
     */
    public AdminFields() {
    } // end of constructor
-   
-   /** 
-    * Initialise the servlet by loading the database connection settings.
-    */
-   public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
-   }
    
    /**
     * GET handler lists all rows.
@@ -390,19 +379,5 @@ public class AdminFields extends HttpServlet {
       }
    }
    
-   /**
-    * Writes a JSON-formatted via the given response.
-    * @param message The message to return.
-    * @param response The response to write to.
-    * @throws IOException
-    */
-   protected void returnMessage(String message, HttpServletResponse response) throws IOException {
-      Json.createGenerator(response.getWriter())
-         .writeStartObject()
-         .write("message", message)
-         .writeEnd()
-         .close();
-   } // end of returnMessage()
-
    private static final long serialVersionUID = 1;
 } // end of class AdminFields
