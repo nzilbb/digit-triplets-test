@@ -6,12 +6,14 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 
 import { Text } from './text';
+import { Instance } from './instance';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DttService {
     private baseUrl = environment.baseUrl;
+    private instance = {} as Instance;
 
     constructor(
         private http: HttpClient,
@@ -32,6 +34,16 @@ export class DttService {
         }
     }
     
+    start(mode: string): void {
+        this.instance.mode = mode;
+        this.router.navigateByUrl('/sound-check');
+    }
+
+    volumeCheckUrl(): string {
+        return `${this.baseUrl}/mp3/DTT${this.instance.mode}/sound-check.mp3`;
+    }
+
+
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {
             console.error(error);

@@ -61,6 +61,9 @@
       <!-- UX resources -->
       <fileset dir="server" includes="*.html *.png css/*.css" />
 
+      <!-- media -->
+      <!--fileset dir="server" includes="mp3/**/*.mp3" /-->
+
       <!-- Admin app -->
       <fileset dir="server" includes="admin/**/*" />
 

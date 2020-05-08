@@ -12,12 +12,13 @@ import { DttService }  from '../dtt.service';
 export class TextComponent implements OnInit {
 
     text = {} as Text;
+    mode: string;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
     
     ngOnInit(): void {
-        this.getText()
+        this.getText();
     }
 
     getText(): void {
@@ -28,6 +29,10 @@ export class TextComponent implements OnInit {
 
     next(): void {
         this.dttService.nextAfterText(this.text.id);
+    }
+
+    start(): void {
+        this.dttService.start(this.mode);
     }
 
 }

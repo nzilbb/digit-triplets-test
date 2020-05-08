@@ -1,2 +1,15 @@
 <div class="text" [innerHTML]="text.html"></div>
-<div class="controls"><button (click)="next()">Continue</button></div>
+<div class="controls" *ngIf="text.id !== 'introduction'"><button (click)="next()">Continue</button></div>
+<div class="mode" *ngIf="text.id === 'introduction'">
+  <div class="mode-option">
+    <input type="radio" name="m" value="l" id="headphones" [(ngModel)]="mode" />
+    <label for="headphones">I have plugged in headphones</label><!-- TODO coonfigurable labels -->
+  </div>
+  <div class="mode-option">
+    <input type="radio" name="m" value="" id="speakers" [(ngModel)]="mode" />
+    <label for="speakers">I have switched my speakers on</label>
+  </div>
+  <div class="controls">
+    <button (click)="start()" [disabled]="mode == null">Start</button>
+  </div>
+</div>

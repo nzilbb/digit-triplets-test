@@ -1,1 +1,6 @@
-<p>sound-check works!</p>
+<div class="text" [innerHTML]="text.html"></div>
+<audio #player preload="auto" (play)="playing = true" (pause)="playing = false" (ended)="playing = false"><p>Audio not supported. Please try with a different browser.</p></audio>
+<div class="controls">
+  <button (click)="play()" [disabled]="playing">Play</button>
+  <button>Next</button>
+</div>
