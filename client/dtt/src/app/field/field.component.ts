@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
@@ -16,6 +16,8 @@ export class FieldComponent implements OnInit {
 
     field: Field;
     value: string;
+    valid = false;
+    @ViewChild("input") input: ElementRef; // only works the first time TODO
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
@@ -31,9 +33,22 @@ export class FieldComponent implements OnInit {
         ).subscribe(field => this.field = field);
     }
     
+    ngAfterViewInit(): void {
+        this.input.nativeElement.focus();
+    }
+
     saveFieldValue() {
         this.dttService.saveFieldValue(this.field.field, this.value);
         this.value = null;
+        this.valid = false;
+    }
+
+    validity(input) {
+        this.valid = input.validity.valid;
+        console.log("input " + input);
+        if (!this.valid) {
+            input.reportValidity();
+        }
     }
 
 }

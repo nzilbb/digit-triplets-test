@@ -2,24 +2,49 @@
 <div class="description">{{field.description}}</div>
 
 <div class="field" *ngIf="field.type === 'string'">
-  <input type="text" title="{{field.description}}" [(ngModel)]="value">
+  <input #input type="text"
+         [(ngModel)]="value"
+         (change)="validity(input)" (keyup)="validity(input)"
+         [required]="field.required"
+         autofocus
+         title="{{field.description}}" >
 </div>
 <div class="field" *ngIf="field.type === 'number'">
-  <input type="number" title="{{field.description}}" [(ngModel)]="value">
+  <input #input type="number"
+         [(ngModel)]="value"
+         (change)="validity(input)" (keyup)="validity(input)"
+         [required]="field.required"
+         autofocus
+         title="{{field.description}}">
 </div>
 <div class="field" *ngIf="field.type === 'email'">
-  <input type="email" title="{{field.description}}" [(ngModel)]="value">
+  <input #input type="email"
+         [(ngModel)]="value"
+         (change)="validity(input)" (keyup)="validity(input)"
+         [required]="field.required"
+         autofocus
+         title="{{field.description}}">
 </div>
 <div class="field" *ngIf="field.type == 'text'">
-  <textarea title="{{field.description}}" [(ngModel)]="value"></textarea>
+  <textarea #input
+            [(ngModel)]="value"
+            (change)="validity(input)" (keyup)="validity(input)"
+            [required]="field.required"
+            autofocus
+            title="{{field.description}}"></textarea>
 </div>
 <div *ngIf="field.type === 'select'">
-  <select title="{{field.description}}" [(ngModel)]="value">
+  <select #input
+          [(ngModel)]="value"
+          (change)="validity(input)"
+          [required]="field.required"
+          autofocus
+          title="{{field.description}}">
     <option *ngIf="!field.required">
     <option *ngFor="let option of field.options" value="{{option.value}}">{{option.description}}</option>
   </select>
 </div>
 
 <div class="controls">
-  <button (click)="saveFieldValue()">Continue</button>
+  <button (click)="saveFieldValue()" [disabled]="!valid">Continue</button>
 </div>
