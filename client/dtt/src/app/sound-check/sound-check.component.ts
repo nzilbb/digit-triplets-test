@@ -2,11 +2,13 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 
 import { DttService }  from '../dtt.service';
 import { Text } from '../text';
+import { slider } from '../router-animations';
 
 @Component({
-  selector: 'app-sound-check',
-  templateUrl: './sound-check.component.html',
-  styleUrls: ['./sound-check.component.css']
+    selector: 'app-sound-check',
+    templateUrl: './sound-check.component.html',
+    styleUrls: ['./sound-check.component.css'],
+    animations: [ slider ],
 })
 export class SoundCheckComponent implements OnInit {
 
@@ -17,6 +19,7 @@ export class SoundCheckComponent implements OnInit {
     constructor(private dttService: DttService) { }
     
     ngOnInit(): void {
+        this.dttService.checkStarted();
         this.getText();
     }
 
@@ -31,5 +34,9 @@ export class SoundCheckComponent implements OnInit {
 
     play(): void {
         this.player.nativeElement.play();
+    }
+
+    next(): void {
+        this.dttService.nextAfterSoundCheck();
     }
 }

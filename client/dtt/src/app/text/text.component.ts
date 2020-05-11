@@ -23,8 +23,8 @@ export class TextComponent implements OnInit {
 
     getText(): void {
         const id = this.route.snapshot.paramMap.get('id');
-        this.dttService.getText(id).
-            subscribe(text => this.text = text);
+        this.dttService.getText(id)
+            .subscribe(text => this.text = text);
     }
 
     next(): void {

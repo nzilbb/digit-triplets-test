@@ -6,6 +6,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 
 import { Text } from './text';
+import { Field } from './field';
+import { Option } from './option';
 import { Instance } from './instance';
 
 @Injectable({
@@ -14,6 +16,7 @@ import { Instance } from './instance';
 export class DttService {
     private baseUrl = environment.baseUrl;
     private instance = {} as Instance;
+    private fields: Field[];
 
     constructor(
         private http: HttpClient,
@@ -28,15 +31,64 @@ export class DttService {
             );
     }
 
+    getField(f: string): Observable<Field> {
+        for (let field of this.fields) {
+            if (field.field === f) return of(field);
+        } // next field
+        return null;
+    }
+
     nextAfterText(id: string): void {
         if (id === "introduction") {
             this.router.navigateByUrl('/sound-check');
         }
     }
     
+    nextAfterSoundCheck(): void {
+        this.log("nextAfterSoundCheck");
+
+        // get the fields
+        this.http.get<Field[]>(`${this.baseUrl}/fields`)
+            .pipe(
+                tap((fields: Field[]) => {
+                    this.log('fetched fields');
+                    this.fields = fields;
+                    this.instance.nextField = 0;
+                    this.instance.fields = {};
+                    this.nextField();
+                }),
+                catchError(this.handleError<Field[]>('getText', 'Could not get fields.'))
+            ).subscribe();
+    }
+
+    nextField(): void {
+        console.log("next field: " + this.instance.nextField);
+        if (this.instance.nextField < this.fields.length) {
+            this.router.navigateByUrl('/field/' + this.fields[this.instance.nextField].field);
+        } else {
+            this.router.navigateByUrl(`/test/${this.instance.mode}`);
+        }
+    }
+
+    saveFieldValue(field: string, value: string): void {
+        this.log(`${field} = ${value}`);
+        this.instance.fields[field] = value;
+        if (field === this.fields[this.instance.nextField].field) {
+            // move to next field
+            this.instance.nextField++;
+        }
+        this.nextField();
+    }
+    
     start(mode: string): void {
         this.instance.mode = mode;
         this.router.navigateByUrl('/sound-check');
+    }
+
+    checkStarted(): void {
+        if (this.instance.mode == null) {
+            this.router.navigateByUrl('/');
+        }
     }
 
     volumeCheckUrl(): string {

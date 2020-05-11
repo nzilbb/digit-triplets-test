@@ -1,0 +1,25 @@
+<h1>{{field.name}}</h1>
+<div class="description">{{field.description}}</div>
+
+<div class="field" *ngIf="field.type === 'string'">
+  <input type="text" title="{{field.description}}" [(ngModel)]="value">
+</div>
+<div class="field" *ngIf="field.type === 'number'">
+  <input type="number" title="{{field.description}}" [(ngModel)]="value">
+</div>
+<div class="field" *ngIf="field.type === 'email'">
+  <input type="email" title="{{field.description}}" [(ngModel)]="value">
+</div>
+<div class="field" *ngIf="field.type == 'text'">
+  <textarea title="{{field.description}}" [(ngModel)]="value"></textarea>
+</div>
+<div *ngIf="field.type === 'select'">
+  <select title="{{field.description}}" [(ngModel)]="value">
+    <option *ngIf="!field.required">
+    <option *ngFor="let option of field.options" value="{{option.value}}">{{option.description}}</option>
+  </select>
+</div>
+
+<div class="controls">
+  <button (click)="saveFieldValue()">Continue</button>
+</div>
