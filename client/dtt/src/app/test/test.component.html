@@ -1,4 +1,4 @@
-<audio #player preload="auto"><p>Audio not supported. Please try with a different browser.</p></audio>
+<audio #player preload="auto" autoplay><p>Audio not supported. Please try with a different browser.</p></audio>
     
 <table class="dtt" onselectstart="return false;">
   <thead>
@@ -8,7 +8,7 @@
     <tr>
       <td class="dtt-input" colspan="3">
         <input #input
-               [(ngModel)]="value"
+               [(ngModel)]="answer"
                (keydown)="keyDown($event)"
                type="tel"
                autocomplete="off"
@@ -43,9 +43,9 @@
       <td id="btn9" (click)="press('9')" accesskey="9" class="dtt-button">9</td>
     </tr>
     <tr>
-      <td id="btnc" (click)="press('c')" class="dtt-command" title="Clear all digits entered"><img src="clear.png" alt="&times;"/>Clear</td>
+      <td id="btnc" (click)="press('c')" class="dtt-command" title="Clear all digits entered"><img src="clear.png" alt="❌"/> <label>Clear</label> </td>
       <td id="btn0" (click)="press('0');" accesskey="0" class="dtt-button">0</td>
-      <td id="btnn" (click)="press('n');" class="dtt-command" title="Go to the next step"><img id="imgNext" src="play.png" alt="&rarr;"/><span id="btnNext">Next</span></td>
+      <td id="btnn" (click)="press('n');" class="dtt-command" title="Go to the next step"><img id="imgNext" src="play.png" alt="▷"/> <label>Next</label> </td>
     </tr>
   </tbody>
   <tfoot></tfoot>

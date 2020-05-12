@@ -9,6 +9,7 @@ import { Text } from './text';
 import { Field } from './field';
 import { Option } from './option';
 import { Instance } from './instance';
+import { Result } from './result';
 
 @Injectable({
   providedIn: 'root'
@@ -17,6 +18,12 @@ export class DttService {
     private baseUrl = environment.baseUrl;
     private instance = {} as Instance;
     private fields: Field[];
+    private nextMode: string;
+
+    jsonRequestOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+
 
     constructor(
         private http: HttpClient,
@@ -31,6 +38,10 @@ export class DttService {
             );
     }
 
+    getNextMode(): boolean {
+        return this.nextMode;
+    }
+
     getField(f: string): Observable<Field> {
         for (let field of this.fields) {
             if (field.field === f) return of(field);
@@ -41,7 +52,10 @@ export class DttService {
     nextAfterText(id: string): void {
         if (id === "introduction") {
             this.router.navigateByUrl('/sound-check');
-        }
+        } else if (this.nextMode) {
+            
+            this.router.navigateByUrl(`/sound-check`);
+        } 
     }
     
     nextAfterSoundCheck(): void {
@@ -73,16 +87,35 @@ export class DttService {
     saveFieldValue(field: string, value: string): void {
         this.log(`${field} = ${value}`);
         this.instance.fields[field] = value;
-        if (field === this.fields[this.instance.nextField].field) {
-            // move to next field
-            this.instance.nextField++;
-        }
-        this.nextField();
+        this.http.post<any>(`${this.baseUrl}/test/${this.instance.id}`, {
+            field : field, value : ""/*TODO WTF??*/+value }, this.jsonRequestOptions)
+            .pipe(
+                tap(_ => this.info('field', `Saved: ${field} = "${value}"`)),
+                catchError(this.handleError<Instance>('field',`Could not save ${field} = "${value}"` ))
+            ).subscribe(_ => {
+                if (field === this.fields[this.instance.nextField].field) {
+                    // move to next field
+                    this.instance.nextField++;
+                }
+                this.nextField();
+            });
     }
     
     start(mode: string): void {
-        this.instance.mode = mode;
-        this.router.navigateByUrl('/sound-check');
+        // get an instance ID
+        this.http.post<Instance>(`${this.baseUrl}/test`, { mode : mode }, this.jsonRequestOptions)
+            .pipe(
+                tap((instance: Instance) => this.info('start', `Created instance: "${instance.id}"`)),
+                catchError(this.handleError<Instance>('start',`Could not create instance with mode "${mode}"` ))
+            ).subscribe(instance => {
+                if (instance) {
+                    this.instance = instance;
+                    this.instance.trialCount = 0;
+                    this.log("new instance: " + JSON.stringify(this.instance));
+                    this.router.navigateByUrl('/sound-check');
+                    //TODO remove: this.router.navigateByUrl(`/test/${this.instance.mode}`);
+                }
+            });
     }
 
     checkStarted(): void {
@@ -95,10 +128,37 @@ export class DttService {
         return `${this.baseUrl}/mp3/DTT${this.instance.mode}/sound-check.mp3`;
     }
 
+    mediaUrl(answer: string): string {
+        this.log(`mediaUrl ${this.instance.trialCount}/${this.instance.numTrials}`);
+        if (++this.instance.trialCount <= this.instance.numTrials) { // keep going
+            this.log(`mediaUrl ${this.baseUrl}/test/${this.instance.id}?a=${answer}`);
+            if (!answer) {
+                return `${this.baseUrl}/test/${this.instance.id}`;
+            } else {
+                return `${this.baseUrl}/test/${this.instance.id}?a=${answer}`;
+            }
+        } else { // this test is finished
+            this.log(`mediaUrl - no more trials`);
+            // first submit the last answer
+            this.http.get(`${this.baseUrl}/test/${this.instance.id}?a=${answer}`, {
+                responseType : "arraybuffer" })
+                .subscribe(_=> { // then get the result
+                    this.log(`mediaUrl - submitted last answer`);
+                    this.http.get<Result>(`${this.baseUrl}/test/${this.instance.id}/result`)
+                        .subscribe(result => { // then get the result
+                            this.log(`mediaUrl - result: ${result.textId} - ${result.mode}`);
+                            this.router.navigateByUrl(`/text/${result.textId}`);
+                            this.instance = null; // TODO link left with right
+                            this.nextMode = result.mode;
+                        });
+                });
+            return null;
+        }
+    }
 
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {
-            console.error(error);
+            console.error(error); // TODO something informative for the user?
             if (error.error && error.error.message) message += " - " + error.error.message;
             this.error(operation, message);
             // Let the app keep running by returning an empty result.

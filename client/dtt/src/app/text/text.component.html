@@ -1,5 +1,5 @@
 <div class="text" [innerHTML]="text.html"></div>
-<div class="controls" *ngIf="text.id !== 'introduction'"><button (click)="next()">Continue</button></div>
+<div class="controls" *ngIf="nextMode"><button (click)="next()">Continue</button></div>
 <div class="mode" *ngIf="text.id === 'introduction'">
   <div class="mode-option">
     <input type="radio" name="m" value="l" id="headphones" [(ngModel)]="mode" />

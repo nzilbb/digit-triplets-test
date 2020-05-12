@@ -13,12 +13,14 @@ export class TextComponent implements OnInit {
 
     text = {} as Text;
     mode: string;
+    nextMode: string;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
     
     ngOnInit(): void {
         this.getText();
+        this.getNextMode();
     }
 
     getText(): void {
@@ -26,9 +28,17 @@ export class TextComponent implements OnInit {
         this.dttService.getText(id)
             .subscribe(text => this.text = text);
     }
+    
+    getNextMode(): void {
+        this.nextMode = this.dttService.getNextMode();
+    }
 
     next(): void {
-        this.dttService.nextAfterText(this.text.id);
+        if (this.nextMode) {
+            this.dttService.start(this.nextMode);
+        } else {
+            this.dttService.nextAfterText(this.text.id);
+        }
     }
 
     start(): void {

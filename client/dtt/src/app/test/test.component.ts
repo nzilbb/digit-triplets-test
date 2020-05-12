@@ -14,7 +14,7 @@ export class TestComponent implements OnInit {
     @ViewChild("player") player: ElementRef;
     @ViewChild("input") input: ElementRef;
     message = "";
-    value = "";
+    answer = "";
     numTrials = 100; // TODO
     trial = 0;
     
@@ -28,6 +28,7 @@ export class TestComponent implements OnInit {
     
     ngAfterViewInit(): void {
         this.input.nativeElement.focus();
+        this.player.nativeElement.src = this.dttService.mediaUrl(null);
     }
 
     getMode(): void {
@@ -36,20 +37,33 @@ export class TestComponent implements OnInit {
 
     keyDown(event: any): boolean {
         if (event.keyCode == 8) return true; // backspace gets through
+        if (event.keyCode == 13) { // enter means next
+            this.next();
+            return false;
+        }
         if (!/[0-9]/.test(event.key)) return false; // non-digits don't get through
-        if (this.value.length >= 3) return false; // input too long
+        if (this.answer.length >= 3) return false; // input too long
         return true;
     }
 
     press(key: string): void {
         console.log(`press ${key}`);
         if (key === "c") {
-            this.value = "";
+            this.answer = "";
         } else if (key === "n") {
-            console.log("Next TODO");
-        } else if (key && this.value.length < 3) {
-            this.value += key;
+            this.next();
+        } else if (key && this.answer.length < 3) {
+            this.answer += key;
         }
         this.input.nativeElement.focus();
+    }
+
+    next(): void {
+        // set the next media url, given the current
+        const answer = this.answer;
+        this.answer = "";
+        this.player.nativeElement.src = this.dttService.mediaUrl(answer);
+        // if there's no URL, it's because the dttService has submitted the lasrt answer
+        // and the test is finished.
     }
 }

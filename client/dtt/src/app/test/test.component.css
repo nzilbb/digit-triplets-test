@@ -63,6 +63,10 @@ td.dtt-command {
 td.dtt-command img {
     vertical-align: middle;
 }
+td.dtt-command label {
+    vertical-align: middle;
+    padding-left: 10px;
+}
 progress {
     width: 100%;
 }

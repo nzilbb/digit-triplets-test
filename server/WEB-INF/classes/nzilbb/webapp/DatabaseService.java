@@ -306,7 +306,7 @@ public class DatabaseService {
             if (version.compareTo(scriptVersion) < 0) {
                
                // execute this script...
-               log("upgrade : " + version + " -> " + scriptVersion);
+               log("upgrade : " + version + " → " + scriptVersion);
                
                // read the file
                StringBuilder content = new StringBuilder();

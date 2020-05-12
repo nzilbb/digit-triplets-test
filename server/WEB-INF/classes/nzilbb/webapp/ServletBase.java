@@ -70,6 +70,59 @@ public class ServletBase extends HttpServlet {
          .writeEnd()
          .close();
    } // end of returnMessage()
+   
+   /**
+    * Get a value from the attribute table.
+    * @param attribute The attribute name.
+    * @param connection A connection to the database.
+    * @return The attribute value or null if the attribute isn't found.
+    * @throws SQLException
+    */
+   protected String getAttribute(String attribute, Connection connection) throws SQLException {
+      PreparedStatement sql = connection.prepareStatement(
+         "SELECT value FROM attribute WHERE attribute = ?");
+      sql.setString(1, attribute);
+      ResultSet rs = sql.executeQuery();
+      try {
+         if (!rs.next()) return null;
+         return rs.getString(1);
+      } finally {
+         try { rs.close(); } catch (SQLException x) {}
+         try { sql.close(); } catch (SQLException x) {}
+      }
+   } // end of getAttribute()
+  
+   /**
+    * Gets an integer value from the attribute table.
+    * @param attribute
+    * @param connection
+    * @return The value of the attribute, or 0 if it's not found, or not parseable as an integer.
+    * @throws SQLException
+    */
+   protected int getIntAttribute(String attribute, Connection connection) throws SQLException {
+      String value = getAttribute(attribute, connection);
+      try {
+         return Integer.parseInt(value);
+      } catch(Throwable t) {
+         return 0;
+      }
+   } // end of getIntAttribute()
+
+   /**
+    * Gets a double value from the attribute table.
+    * @param attribute
+    * @param connection
+    * @return The value of the attribute, or 0 if it's not found, or not parseable as a double.
+    * @throws SQLException
+    */
+   protected double getDoubleAttribute(String attribute, Connection connection) throws SQLException {
+      String value = getAttribute(attribute, connection);
+      try {
+         return Double.parseDouble(value);
+      } catch(Throwable t) {
+         return 0.0;
+      }
+   } // end of getIntAttribute()
 
    private static final long serialVersionUID = 1;
 } // end of class ServletBase
