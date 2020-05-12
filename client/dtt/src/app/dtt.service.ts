@@ -38,7 +38,7 @@ export class DttService {
             );
     }
 
-    getNextMode(): boolean {
+    getNextMode(): string {
         return this.nextMode;
     }
 
