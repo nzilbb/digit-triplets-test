@@ -22,12 +22,13 @@ CREATE TABLE form_field_option (
 );
 
 CREATE TABLE instance (
-  instance_id INTEGER NOT NULL AUTO_INCREMENT,
+  instance_id varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL default '',
+  other_instance_id varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   user_agent varchar(255) NOT NULL default '',
   ip varchar(30) NOT NULL default '',
   start_time datetime NULL,
   end_time datetime NULL,
-  trial_set_number INTEGER NULL,
+  trial_set_id INTEGER NULL,
   test_result INTEGER NULL,
   mean_snr DOUBLE NULL,
   mode varchar(1) NOT NULL default '',
@@ -36,14 +37,14 @@ CREATE TABLE instance (
 );
 
 CREATE TABLE instance_field (
-  instance_id INTEGER NOT NULL,
+  instance_id varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL default '',
   field varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL default '',
   value varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL default '',
   PRIMARY KEY  (instance_id, field)
 );
 
 CREATE TABLE trial (
-  instance_id INTEGER NOT NULL AUTO_INCREMENT,
+  instance_id varchar(36) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL default '',
   trial_number INTEGER NOT NULL,
   correct_answer VARCHAR(10) NOT NULL,
   decibels_signal INTEGER NULL,
