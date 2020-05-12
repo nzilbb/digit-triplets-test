@@ -349,7 +349,7 @@ public class AdminFields extends ServletBase {
          try {
             String field = request.getPathInfo().replaceAll("^/","");
             
-            // delete the user
+            // delete the field
             Connection connection = db.newConnection();
             PreparedStatement sql = connection.prepareStatement(
                "DELETE FROM form_field WHERE field = ?");
