@@ -107,7 +107,8 @@ export class DttService {
                 tap(_ => this.info('field', `Saved: ${field} = "${value}"`)),
                 catchError(this.handleError<Instance>('field',`Could not save ${field} = "${value}"` ))
             ).subscribe(_ => {
-                if (field === this.fields[this.instance.nextField].field) {
+                if (this.instance.nextField < this.fields.length
+                    && field === this.fields[this.instance.nextField].field) {
                     // move to next field
                     this.instance.nextField++;
                 }
@@ -141,7 +142,6 @@ export class DttService {
     }
 
     checkStarted(): void {
-        this.log(`checkStarted - mode: ${this.instance.mode}`);
         if (this.instance == null || this.instance.mode == null) {
             this.router.navigateByUrl('/');
         }
