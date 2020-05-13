@@ -114,6 +114,7 @@ public class DigitTripletsTest extends ServletBase {
          } catch (SQLException exception) {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             returnMessage("ERROR: " + exception.getMessage(), response);
+            log("ERROR: " + exception.getMessage());
          }
       }
    }
@@ -128,7 +129,14 @@ public class DigitTripletsTest extends ServletBase {
          // read the incoming object
          JsonReader reader = Json.createReader(request.getReader());
          JsonObject json = reader.readObject();
+         
+         if (!json.containsKey("mode")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            returnMessage("No mode provided.", response);
+            return;
+         }
          String mode = json.getString("mode");
+         
          String otherInstanceId = json.containsKey("otherInstanceId")
             ?json.getString("otherInstanceId"):null;      
          
@@ -206,6 +214,10 @@ public class DigitTripletsTest extends ServletBase {
          jsonResponse.write("numTrials", trials.size());
          jsonResponse.writeEnd();
          jsonResponse.close();
+      } catch (Throwable t) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            returnMessage("ERROR: " + t.getMessage(), response);
+            log("ERROR: " + t.getMessage());
       } finally {
          connection.close();
       }
@@ -220,8 +232,21 @@ public class DigitTripletsTest extends ServletBase {
          // read the incoming object
          JsonReader reader = Json.createReader(request.getReader());
          JsonObject json = reader.readObject();
+         
+         if (!json.containsKey("field")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            returnMessage("No field provided.", response);
+            return;
+         }
          String field = json.getString("field");
-         String value = json.getString("value"); // TODO should validate incomin values
+         
+         if (!json.containsKey("value")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            returnMessage("No value provided.", response);
+            return;
+         }
+         String value = json.getString("value"); // TODO should validate incoming values
+         
          PreparedStatement sql = connection.prepareStatement(
             "REPLACE INTO instance_field (instance_id, field, value) VALUES (?,?,?)"); 
          sql.setString(1, instanceId);
@@ -236,6 +261,10 @@ public class DigitTripletsTest extends ServletBase {
          } else {
             response.setStatus(HttpServletResponse.SC_OK);
          }
+      } catch (Throwable t) {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            returnMessage("ERROR: " + t.getMessage(), response);
+            log("ERROR: " + t.getMessage());
       } finally {
          connection.close();
       }
