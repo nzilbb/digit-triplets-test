@@ -1,10 +1,15 @@
-<audio #player preload="auto" autoplay><p>Audio not supported. Please try with a different browser.</p></audio>
+<audio #player
+       preload="auto"
+       autoplay
+       (loadstart)="playing = true"
+       (play)="playing = true"
+       (pause)="playing = false"
+       (ended)="playing = false; startTimeout();">
+  <p>Audio not supported. Please try with a different browser.</p>
+</audio>
     
 <table class="dtt" onselectstart="return false;" >
   <thead>
-    <tr>
-      <td class="dtt-message" colspan="3">{{message}}</td>
-    </tr>
     <tr>
       <td class="dtt-input" colspan="3">
         <label #input> {{answer}} </label>
@@ -45,7 +50,10 @@
       </td>
       <td class="dtt-button"><button #btn0 (click)="press('0');" accesskey="0"><label>0</label></button></td>
       <td class="dtt-command">
-        <button #btnn (click)="press('n');" title="Go to the next step">
+        <button #btnn
+                (click)="press('n');"
+                [disabled]="playing || answer.length < 3"
+                title="Go to the next step">
           <label>Next ▷</label>
         </button>
       </td>

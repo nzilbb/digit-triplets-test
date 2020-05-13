@@ -1,6 +1,16 @@
 <div class="text" [innerHTML]="text.html"></div>
-<audio #player preload="auto" (play)="playing = true" (pause)="playing = false" (ended)="playing = false"><p>Audio not supported. Please try with a different browser.</p></audio>
+<audio #player
+       preload="auto"
+       (play)="playing = true"
+       (pause)="playing = false"
+       (ended)="playing = false">
+  <p>Audio not supported. Please try with a different browser.</p>
+</audio>
 <div class="controls">
-  <button (click)="play()" [disabled]="playing" appAutofocus>Play</button>
-  <button (click)="next()">Next</button>
+  <button (click)="play()" [disabled]="playing" appAutofocus>
+    <label>Play 🔊</label>
+  </button>
+  <button (click)="next()">
+    <label>Next ▷</label>
+  </button>
 </div>
