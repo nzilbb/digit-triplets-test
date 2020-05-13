@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
+import { APP_BASE_HREF, Location } from '@angular/common';
 
 import { Text } from './text';
 import { Field } from './field';
@@ -32,6 +33,7 @@ export class DttService {
         private router: Router
     ) {
         this.resultTexts = [];
+        this.baseUrl = this.baseUrl || location.href.replace(/\/[^/]+\/#.*$/,"/");
     }
 
     getText(id: string): Observable<Text> {

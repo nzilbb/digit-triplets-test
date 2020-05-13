@@ -10,6 +10,7 @@
   <property name="server-srcfiles" value="nzilbb/webapp/*.java nzilbb/dtt/*.java" /> 
   <property name="server-testsrcfiles" value="nzilbb/**/Test*.java" />
   <property name="admin-client-dir" location="./client/admin"/>
+  <property name="dtt-client-dir" location="./client/dtt"/>
   
   <target name="all" depends="server-compile,war">
   </target>
@@ -46,7 +47,17 @@
     </exec>
   </target>
   
-  <target name="war" depends="server-compile,admin-client-build"
+  <target name="dtt-client-build" depends="init"
+          description="Build the dtt client app">
+    <exec executable="ng"
+          dir="${dtt-client-dir}"
+          failonerror="true">
+      <arg value="build"/>
+      <arg value="--prod"/>
+    </exec>
+  </target>
+  
+  <target name="war" depends="server-compile,admin-client-build,dtt-client-build"
           description="Generate the web application archive">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>    
@@ -63,6 +74,9 @@
 
       <!-- media -->
       <!--fileset dir="server" includes="mp3/**/*.mp3" /-->
+
+      <!-- Digit Tripleets Test app -->
+      <fileset dir="server" includes="dtt/**/*" />
 
       <!-- Admin app -->
       <fileset dir="server" includes="admin/**/*" />
@@ -82,8 +96,9 @@
     <!-- use web-dev.xml instead of web.xml -->
     <war destfile="${dist}/${ant.project.name}.war"
          update="true"
+         duplicate="add"
          webxml="./server/WEB-INF/web-dev.xml"
          />
-    <delete dir="${server-build}"/>
+    <echo message="Development war created."/>
   </target>  
 </project>

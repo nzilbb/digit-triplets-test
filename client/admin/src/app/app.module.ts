@@ -54,7 +54,5 @@ import { TextComponent } from './text/text.component';
 })
 export class AppModule { }
 export function getBaseLocation() {
-    let paths: string[] = location.pathname.split('/').splice(1, 1);
-    let basePath: string = (paths && paths[0]) || ''; // Default: my-account
-    return '/' + basePath;
+    return location.pathname;
 }

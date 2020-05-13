@@ -4,7 +4,7 @@
 
 export const environment = {
     production: false,
-    baseUrl: "http://localhost:8080/digit-triplets-test"
+    baseUrl: "http://localhost:8080/digit-triplets-test/"
 };
 
 /*
