@@ -1,16 +1,16 @@
 <div class="text" [innerHTML]="text.html"></div>
 <div *ngIf="text2"class="text" [innerHTML]="text2.html"></div>
-<div class="controls" *ngIf="canContinue"><button (click)="next()" appAutofocus>Continue</button></div>
+<div class="controls" *ngIf="canContinue"><button (click)="next()" appAutofocus>Continue ▷</button></div>
 <div class="mode" *ngIf="text.id === 'introduction'">
   <div class="mode-option">
     <button (click)="start('l')" appAutofocus>
-      <label>I have plugged in headphones</label><!-- TODO coonfigurable labels -->
+      <label>I have plugged in headphones 🎧</label><!-- TODO coonfigurable labels -->
     </button>
     
   </div>
   <div class="mode-option">
     <button (click)="start('')">
-      <label>I have switched my speakers on</label>
+      <label>I have switched my speakers on 🔊</label>
     </button>
   </div>
 </div>
