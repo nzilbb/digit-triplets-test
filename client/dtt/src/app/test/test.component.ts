@@ -59,11 +59,13 @@ export class TestComponent implements OnInit {
     }
 
     next(): void {
-        // set the next media url, given the current
-        const answer = this.answer;
-        this.answer = "";
-        this.player.nativeElement.src = this.dttService.mediaUrl(answer);
-        // if there's no URL, it's because the dttService has submitted the lasrt answer
-        // and the test is finished.
+        if (this.answer != "") {
+            // set the next media url, given the current
+            const answer = this.answer;
+            this.answer = "";
+            this.player.nativeElement.src = this.dttService.mediaUrl(answer);
+            // if there's no URL, it's because the dttService has submitted the lasrt answer
+            // and the test is finished.
+        }
     }
 }

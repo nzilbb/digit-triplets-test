@@ -5,6 +5,7 @@
   <input #input type="text"
          [(ngModel)]="value"
          (change)="validity(input)" (keyup)="validity(input)"
+         (keyup.enter)="btn.click()"
          [required]="field.required"
          autofocus
          title="{{field.description}}" >
@@ -13,6 +14,7 @@
   <input #input type="number"
          [(ngModel)]="value"
          (change)="validity(input)" (keyup)="validity(input)"
+         (keyup.enter)="btn.click()"
          [required]="field.required"
          autofocus
          title="{{field.description}}">
@@ -21,6 +23,7 @@
   <input #input type="email"
          [(ngModel)]="value"
          (change)="validity(input)" (keyup)="validity(input)"
+         (keyup.enter)="btn.click()"
          [required]="field.required"
          autofocus
          title="{{field.description}}">
@@ -37,6 +40,7 @@
   <select #input
           [(ngModel)]="value"
           (change)="validity(input)"
+          (keyup.enter)="btn.click()"
           [required]="field.required"
           autofocus
           title="{{field.description}}">
@@ -46,5 +50,5 @@
 </div>
 
 <div class="controls">
-  <button (click)="saveFieldValue()" [disabled]="!valid">Continue</button>
+  <button #btn (click)="saveFieldValue()" [disabled]="!valid">Continue</button>
 </div>

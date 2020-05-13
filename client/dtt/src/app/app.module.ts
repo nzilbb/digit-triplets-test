@@ -10,6 +10,7 @@ import { TextComponent } from './text/text.component';
 import { SoundCheckComponent } from './sound-check/sound-check.component';
 import { FieldComponent } from './field/field.component';
 import { TestComponent } from './test/test.component';
+import { AutofocusDirective } from './autofocus.directive';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { TestComponent } from './test/test.component';
         TextComponent,
         SoundCheckComponent,
         FieldComponent,
-        TestComponent
+        TestComponent,
+        AutofocusDirective
     ],
     imports: [
         BrowserModule,
