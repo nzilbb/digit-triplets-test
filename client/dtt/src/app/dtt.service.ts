@@ -19,6 +19,7 @@ export class DttService {
     private instance = {} as Instance;
     private fields: Field[];
     private nextMode: string;
+    private otherInstanceId: string;
 
     jsonRequestOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -51,36 +52,46 @@ export class DttService {
 
     nextAfterText(id: string): void {
         if (id === "introduction") {
-            this.router.navigateByUrl('/sound-check');
-        } else if (this.nextMode) {
-            
-            this.router.navigateByUrl(`/sound-check`);
+            this.nextField();
+        } else {            
+            this.router.navigateByUrl(`/test/${this.instance.mode}`);
         } 
     }
-    
+
     nextAfterSoundCheck(): void {
-        this.log("nextAfterSoundCheck");
+        this.router.navigateByUrl(`/text/test${this.instance.mode}`);
+    }
+    
+    loadFields(): void {
+        this.log("loadFields");
 
         // get the fields
         this.http.get<Field[]>(`${this.baseUrl}/fields`)
             .pipe(
-                tap((fields: Field[]) => {
-                    this.log('fetched fields');
-                    this.fields = fields;
-                    this.instance.nextField = 0;
-                    this.instance.fields = {};
-                    this.nextField();
-                }),
                 catchError(this.handleError<Field[]>('getText', 'Could not get fields.'))
-            ).subscribe();
+            ).subscribe((fields: Field[]) => {
+                this.log('fetched fields');
+                this.fields = fields;
+                this.instance.nextField = 0;
+                this.instance.fields = {};
+                this.nextField();
+            });
     }
 
     nextField(): void {
-        console.log("next field: " + this.instance.nextField);
+        this.log("next field: " + this.instance.nextField);
         if (this.instance.nextField < this.fields.length) {
             this.router.navigateByUrl('/field/' + this.fields[this.instance.nextField].field);
         } else {
-            this.router.navigateByUrl(`/test/${this.instance.mode}`);
+            if (!this.nextMode) { // first test
+                this.log("no more fields - sound-check...");
+                // sound check before doing the test
+                this.router.navigateByUrl(`/sound-check`);
+            } else { // already done a test
+                this.log(`no more fields - next round, mode ${this.nextMode}...`);
+                // go to the next test
+                this.start(this.nextMode);
+            }
         }
     }
 
@@ -103,7 +114,10 @@ export class DttService {
     
     start(mode: string): void {
         // get an instance ID
-        this.http.post<Instance>(`${this.baseUrl}/test`, { mode : mode }, this.jsonRequestOptions)
+        this.log(`start(${mode})`);
+        this.http.post<Instance>(`${this.baseUrl}/test`,
+                                 { mode : mode, otherInstanceId : this.otherInstanceId },
+                                 this.jsonRequestOptions)
             .pipe(
                 tap((instance: Instance) => this.info('start', `Created instance: "${instance.id}"`)),
                 catchError(this.handleError<Instance>('start',`Could not create instance with mode "${mode}"` ))
@@ -112,20 +126,25 @@ export class DttService {
                     this.instance = instance;
                     this.instance.trialCount = 0;
                     this.log("new instance: " + JSON.stringify(this.instance));
-                    this.router.navigateByUrl('/sound-check');
-                    //TODO remove: this.router.navigateByUrl(`/test/${this.instance.mode}`);
+                    if (this.nextMode == null) { // first test
+                        this.loadFields();
+                    } else { // second time around
+                        // go straight to the test
+                        this.router.navigateByUrl(`/test/${this.instance.mode}`);
+                    }
                 }
             });
     }
 
     checkStarted(): void {
-        if (this.instance.mode == null) {
+        this.log(`checkStarted - mode: ${this.instance.mode}`);
+        if (this.instance == null || this.instance.mode == null) {
             this.router.navigateByUrl('/');
         }
     }
 
     volumeCheckUrl(): string {
-        return `${this.baseUrl}/mp3/DTT${this.instance.mode}/sound-check.mp3`;
+        return `${this.baseUrl}/mp3/DTT/sound-check.mp3`;
     }
 
     mediaUrl(answer: string): string {
@@ -148,8 +167,9 @@ export class DttService {
                         .subscribe(result => { // then get the result
                             this.log(`mediaUrl - result: ${result.textId} - ${result.mode}`);
                             this.router.navigateByUrl(`/text/${result.textId}`);
-                            this.instance = null; // TODO link left with right
+                            this.otherInstanceId = this.instance.id;
                             this.nextMode = result.mode;
+                            this.instance = null; // TODO link left with right
                         });
                 });
             return null;

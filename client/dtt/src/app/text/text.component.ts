@@ -14,19 +14,23 @@ export class TextComponent implements OnInit {
     text = {} as Text;
     mode: string;
     nextMode: string;
+    canContinue: boolean;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
     
     ngOnInit(): void {
-        this.getText();
         this.getNextMode();
+        this.getText();
     }
 
     getText(): void {
         const id = this.route.snapshot.paramMap.get('id');
         this.dttService.getText(id)
-            .subscribe(text => this.text = text);
+            .subscribe((text) => {
+                this.text = text
+                this.canContinue = this.nextMode != null || this.text.id.startsWith("test"); 
+            });
     }
     
     getNextMode(): void {

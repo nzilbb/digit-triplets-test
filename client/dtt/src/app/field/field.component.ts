@@ -45,7 +45,6 @@ export class FieldComponent implements OnInit {
 
     validity(input) {
         this.valid = input.validity.valid;
-        console.log("input " + input);
         if (!this.valid) {
             input.reportValidity();
         }
