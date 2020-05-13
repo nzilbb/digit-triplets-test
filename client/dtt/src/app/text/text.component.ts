@@ -12,6 +12,7 @@ import { DttService }  from '../dtt.service';
 export class TextComponent implements OnInit {
 
     text = {} as Text;
+    text2: Text;
     mode: string;
     nextMode: string;
     canContinue: boolean;
@@ -31,6 +32,13 @@ export class TextComponent implements OnInit {
                 this.text = text
                 this.canContinue = this.nextMode != null || this.text.id.startsWith("test"); 
             });
+        const id2 = this.route.snapshot.paramMap.get('id2');
+        if (id2) {
+            this.dttService.getText(id2)
+                .subscribe((text) => {
+                    this.text2 = text
+                });
+        }
     }
     
     getNextMode(): void {
@@ -38,11 +46,7 @@ export class TextComponent implements OnInit {
     }
 
     next(): void {
-        if (this.nextMode) {
-            this.dttService.start(this.nextMode);
-        } else {
-            this.dttService.nextAfterText(this.text.id);
-        }
+        this.dttService.nextAfterText(this.text.id);
     }
 
     start(): void {

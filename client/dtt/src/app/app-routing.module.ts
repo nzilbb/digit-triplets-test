@@ -9,6 +9,7 @@ import { SoundCheckComponent } from './sound-check/sound-check.component';
 const routes: Routes = [
     { path: '', redirectTo: 'text/introduction', pathMatch: 'full' },
     { path: 'text/:id', component: TextComponent },
+    { path: 'text/:id/:id2', component: TextComponent },
     { path: 'field/:field', component: FieldComponent },
     { path: 'test/:mode', component: TestComponent },
     { path: 'sound-check', component: SoundCheckComponent }

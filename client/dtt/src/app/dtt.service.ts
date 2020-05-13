@@ -18,6 +18,7 @@ export class DttService {
     private baseUrl = environment.baseUrl;
     private instance = {} as Instance;
     private fields: Field[];
+    private resultTexts: string[];
     private nextMode: string;
     private otherInstanceId: string;
 
@@ -29,7 +30,9 @@ export class DttService {
     constructor(
         private http: HttpClient,
         private router: Router
-    ) { }
+    ) {
+        this.resultTexts = [];
+    }
 
     getText(id: string): Observable<Text> {
         return this.http.get<Text>(`${this.baseUrl}/text/${id}`)
@@ -129,8 +132,9 @@ export class DttService {
                     if (this.nextMode == null) { // first test
                         this.loadFields();
                     } else { // second time around
+                        this.log(`next test: ${this.instance.mode}`);
                         // go straight to the test
-                        this.router.navigateByUrl(`/test/${this.instance.mode}`);
+                        this.router.navigateByUrl(`/text/test${this.instance.mode}`);
                     }
                 }
             });
@@ -166,14 +170,25 @@ export class DttService {
                     this.http.get<Result>(`${this.baseUrl}/test/${this.instance.id}/result`)
                         .subscribe(result => { // then get the result
                             this.log(`mediaUrl - result: ${result.textId} - ${result.mode}`);
-                            this.router.navigateByUrl(`/text/${result.textId}`);
+                            this.resultTexts.push(result.textId);
                             this.otherInstanceId = this.instance.id;
                             this.nextMode = result.mode;
-                            this.instance = null; // TODO link left with right
+                            this.instance = null;
+                            if (this.nextMode != null) {
+                                this.start(this.nextMode);
+                            } else {
+                                this.showResults(this.resultTexts);
+                            }
                         });
                 });
             return null;
         }
+    }
+
+    showResults(textIds: string[]): void {
+        let url = "/text";
+        for (let id of textIds) url += `/${id}`;
+        this.router.navigateByUrl(url);
     }
 
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {

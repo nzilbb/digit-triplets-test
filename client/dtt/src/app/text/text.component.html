@@ -1,4 +1,5 @@
 <div class="text" [innerHTML]="text.html"></div>
+<div *ngIf="text2"class="text" [innerHTML]="text2.html"></div>
 <div class="controls" *ngIf="canContinue"><button (click)="next()">Continue</button></div>
 <div class="mode" *ngIf="text.id === 'introduction'">
   <div class="mode-option">
