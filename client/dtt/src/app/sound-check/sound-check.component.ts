@@ -19,7 +19,6 @@ export class SoundCheckComponent implements OnInit {
     constructor(private dttService: DttService) { }
     
     ngOnInit(): void {
-        console.log("SoundCheckComponent.ngOnInit()");
         this.dttService.checkStarted();
         this.getText();
     }
