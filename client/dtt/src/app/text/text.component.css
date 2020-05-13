@@ -1,0 +1,9 @@
+.mode-option {
+    text-align: center;
+    margin: auto;
+    padding: 10px;
+}
+.mode-option button {
+    padding: 10px;
+    min-width: 80%;
+}

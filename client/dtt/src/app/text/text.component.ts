@@ -13,7 +13,6 @@ export class TextComponent implements OnInit {
 
     text = {} as Text;
     text2: Text;
-    mode: string;
     nextMode: string;
     canContinue: boolean;
     
@@ -49,8 +48,8 @@ export class TextComponent implements OnInit {
         this.dttService.nextAfterText(this.text.id);
     }
 
-    start(): void {
-        this.dttService.start(this.mode);
+    start(mode: string): void {
+        this.dttService.start(mode);
     }
 
 }

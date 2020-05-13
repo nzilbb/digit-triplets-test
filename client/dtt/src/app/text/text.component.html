@@ -3,21 +3,14 @@
 <div class="controls" *ngIf="canContinue"><button (click)="next()" appAutofocus>Continue</button></div>
 <div class="mode" *ngIf="text.id === 'introduction'">
   <div class="mode-option">
-    <input type="radio" name="m" value="l" id="headphones"
-           [(ngModel)]="mode"
-           (keyup.enter)="btn.click()"
-           (change)="btn.focus()"
-           appAutofocus />
-    <label for="headphones">I have plugged in headphones</label><!-- TODO coonfigurable labels -->
+    <button (click)="start('l')" appAutofocus>
+      <label>I have plugged in headphones</label><!-- TODO coonfigurable labels -->
+    </button>
+    
   </div>
   <div class="mode-option">
-    <input type="radio" name="m" value="" id="speakers"
-           [(ngModel)]="mode"
-           (keyup.enter)="btn.click()"
-           (change)="btn.focus()"/>
-    <label for="speakers">I have switched my speakers on</label>
-  </div>
-  <div class="controls">
-    <button #btn (click)="start()" [disabled]="mode == null">Start</button>
+    <button (click)="start('')">
+      <label>I have switched my speakers on</label>
+    </button>
   </div>
 </div>

@@ -1,18 +1,13 @@
 <audio #player preload="auto" autoplay><p>Audio not supported. Please try with a different browser.</p></audio>
     
-<table class="dtt" onselectstart="return false;">
+<table class="dtt" onselectstart="return false;" >
   <thead>
     <tr>
       <td class="dtt-message" colspan="3">{{message}}</td>
     </tr>
     <tr>
       <td class="dtt-input" colspan="3">
-        <input #input
-               [(ngModel)]="answer"
-               (keydown)="keyDown($event)"
-               type="tel"
-               autocomplete="off"
-               autofocus />
+        <label #input> {{answer}} </label>
       </td>
     </tr>
     <tr>
@@ -28,26 +23,31 @@
   </thead>
   <tbody>
     <tr>
-      <td #btn1 (click)="press('1')" accesskey="1" class="dtt-button">1</td>
-      <td #btn2 (click)="press('2')" accesskey="2" class="dtt-button">2</td>
-      <td #btn3 (click)="press('3')" accesskey="3" class="dtt-button">3</td>
+      <td class="dtt-button"><button #btn1 (click)="press('1')" accesskey="1"><label>1</label></button></td>
+      <td class="dtt-button"><button #btn2 (click)="press('2')" accesskey="2"><label>2</label></button></td>
+      <td class="dtt-button"><button #btn3 (click)="press('3')" accesskey="3"><label>3</label></button></td>
     </tr>
     <tr>
-      <td #btn4 (click)="press('4')" accesskey="4" class="dtt-button">4</td>
-      <td #btn5 (click)="press('5')" accesskey="5" class="dtt-button">5</td>
-      <td #btn6 (click)="press('6')" accesskey="6" class="dtt-button">6</td>
+      <td class="dtt-button"><button #btn4 (click)="press('4')" accesskey="4"><label>4</label></button></td>
+      <td class="dtt-button"><button #btn5 (click)="press('5')" accesskey="5"><label>5</label></button></td>
+      <td class="dtt-button"><button #btn6 (click)="press('6')" accesskey="6"><label>6</label></button></td>
     </tr>
     <tr>
-      <td #btn7 (click)="press('7')" accesskey="7" class="dtt-button">7</td>
-      <td #btn8 (click)="press('8')" accesskey="8" class="dtt-button">8</td>
-      <td #btn9 (click)="press('9')" accesskey="9" class="dtt-button">9</td>
+      <td class="dtt-button"><button #btn7 (click)="press('7')" accesskey="7"><label>7</label></button></td>
+      <td class="dtt-button"><button #btn8 (click)="press('8')" accesskey="8"><label>8</label></button></td>
+      <td class="dtt-button"><button #btn9 (click)="press('9')" accesskey="9"><label>9</label></button></td>
     </tr>
     <tr>
-      <td #btnc (click)="press('c')" class="dtt-command" title="Clear all digits entered"><img src="clear.png" alt="❌"/> <label>Clear</label> </td>
-      <td #btn0 (click)="press('0');" accesskey="0" class="dtt-button">0</td>
-      <td #btnn (click)="press('n');" class="dtt-command" title="Go to the next step">
-        <img #imgNext src="play.png" alt="▷"/> 
-        <label>Next</label>
+      <td class="dtt-command">
+        <button #btnc (click)="press('c')" title="Clear all digits entered">
+          <label>❌ Clear</label>
+        </button>
+      </td>
+      <td class="dtt-button"><button #btn0 (click)="press('0');" accesskey="0"><label>0</label></button></td>
+      <td class="dtt-command">
+        <button #btnn (click)="press('n');" title="Go to the next step">
+          <label>Next ▷</label>
+        </button>
       </td>
     </tr>
   </tbody>

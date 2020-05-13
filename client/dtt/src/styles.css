@@ -1,3 +1,22 @@
 div.controls {
     text-align: center;
 }
+body {
+    margin: 0px;
+}
+div.text {
+    margin: 3vw;
+}
+button {
+    height: 10vh;
+    min-height: 50px;
+    min-width: 100px;
+    font-size: 14pt;
+}
+
+/* Layout on wider screens */
+@media all and (min-width: 640px) {
+    button {
+        height: auto;
+    }
+}
