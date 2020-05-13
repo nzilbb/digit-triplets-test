@@ -68,7 +68,7 @@ export class TestComponent implements OnInit {
     // if they close or reload or navigate away, ask if they're sure
     @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: any) {
-        $event.returnValue = true;
+        $event.returnValue = "The test is not finished yet";
     }
     
     press(key: string): void {
