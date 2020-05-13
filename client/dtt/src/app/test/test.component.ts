@@ -9,10 +9,12 @@ import { DttService }  from '../dtt.service';
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
+    // TODO timeout -> next
 
     mode: string;
     @ViewChild("player") player: ElementRef;
     @ViewChild("input") input: ElementRef;
+    @ViewChild("btnn") nextButton: ElementRef;
     message = "";
     answer = "";
     numTrials = 100; // TODO
@@ -24,6 +26,7 @@ export class TestComponent implements OnInit {
     ngOnInit(): void { 
         this.dttService.checkStarted();
         this.getMode();
+        this.getNumTrials();
     }
     
     ngAfterViewInit(): void {
@@ -33,6 +36,10 @@ export class TestComponent implements OnInit {
 
     getMode(): void {
         this.mode = this.route.snapshot.paramMap.get('mode');
+    }
+
+    getNumTrials(): void {
+        this.numTrials = this.dttService.getNumTrials();
     }
 
     keyDown(event: any): boolean {
@@ -59,11 +66,12 @@ export class TestComponent implements OnInit {
     }
 
     next(): void {
-        if (this.answer != "") {
+        if (this.answer.length >= 3) {
             // set the next media url, given the current
             const answer = this.answer;
             this.answer = "";
             this.player.nativeElement.src = this.dttService.mediaUrl(answer);
+            this.trial++;
             // if there's no URL, it's because the dttService has submitted the lasrt answer
             // and the test is finished.
         }

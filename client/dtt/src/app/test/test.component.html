@@ -28,24 +28,27 @@
   </thead>
   <tbody>
     <tr>
-      <td id="btn1" (click)="press('1')" accesskey="1" class="dtt-button">1</td>
-      <td id="btn2" (click)="press('2')" accesskey="2" class="dtt-button">2</td>
-      <td id="btn3" (click)="press('3')" accesskey="3" class="dtt-button">3</td>
+      <td #btn1 (click)="press('1')" accesskey="1" class="dtt-button">1</td>
+      <td #btn2 (click)="press('2')" accesskey="2" class="dtt-button">2</td>
+      <td #btn3 (click)="press('3')" accesskey="3" class="dtt-button">3</td>
     </tr>
     <tr>
-      <td id="btn4" (click)="press('4')" accesskey="4" class="dtt-button">4</td>
-      <td id="btn5" (click)="press('5')" accesskey="5" class="dtt-button">5</td>
-      <td id="btn6" (click)="press('6')" accesskey="6" class="dtt-button">6</td>
+      <td #btn4 (click)="press('4')" accesskey="4" class="dtt-button">4</td>
+      <td #btn5 (click)="press('5')" accesskey="5" class="dtt-button">5</td>
+      <td #btn6 (click)="press('6')" accesskey="6" class="dtt-button">6</td>
     </tr>
     <tr>
-      <td id="btn7" (click)="press('7')" accesskey="7" class="dtt-button">7</td>
-      <td id="btn8" (click)="press('8')" accesskey="8" class="dtt-button">8</td>
-      <td id="btn9" (click)="press('9')" accesskey="9" class="dtt-button">9</td>
+      <td #btn7 (click)="press('7')" accesskey="7" class="dtt-button">7</td>
+      <td #btn8 (click)="press('8')" accesskey="8" class="dtt-button">8</td>
+      <td #btn9 (click)="press('9')" accesskey="9" class="dtt-button">9</td>
     </tr>
     <tr>
-      <td id="btnc" (click)="press('c')" class="dtt-command" title="Clear all digits entered"><img src="clear.png" alt="❌"/> <label>Clear</label> </td>
-      <td id="btn0" (click)="press('0');" accesskey="0" class="dtt-button">0</td>
-      <td id="btnn" (click)="press('n');" class="dtt-command" title="Go to the next step"><img id="imgNext" src="play.png" alt="▷"/> <label>Next</label> </td>
+      <td #btnc (click)="press('c')" class="dtt-command" title="Clear all digits entered"><img src="clear.png" alt="❌"/> <label>Clear</label> </td>
+      <td #btn0 (click)="press('0');" accesskey="0" class="dtt-button">0</td>
+      <td #btnn (click)="press('n');" class="dtt-command" title="Go to the next step">
+        <img #imgNext src="play.png" alt="▷"/> 
+        <label>Next</label>
+      </td>
     </tr>
   </tbody>
   <tfoot></tfoot>

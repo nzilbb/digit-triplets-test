@@ -46,6 +46,11 @@ export class DttService {
         return this.nextMode;
     }
 
+    getNumTrials(): number {
+        if (!this.instance) return null;
+        return this.instance.numTrials;
+    }
+
     getField(f: string): Observable<Field> {
         for (let field of this.fields) {
             if (field.field === f) return of(field);
