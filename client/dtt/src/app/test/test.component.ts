@@ -9,7 +9,6 @@ import { DttService }  from '../dtt.service';
   styleUrls: ['./test.component.css']
 })
 export class TestComponent implements OnInit {
-    // TODO timeout -> next
 
     mode: string;
     @ViewChild("player") player: ElementRef;
@@ -17,8 +16,10 @@ export class TestComponent implements OnInit {
     @ViewChild("btnn") nextButton: ElementRef;
     message = "";
     answer = "";
-    numTrials = 100; // TODO
+    numTrials = 100;
     trial = 0;
+    playing = false;
+    timeout: any;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
@@ -33,6 +34,18 @@ export class TestComponent implements OnInit {
         this.player.nativeElement.src = this.dttService.mediaUrl(null);
     }
 
+    startTimeout() {
+        this.cancelTimeout();
+        this.timeout = window.setTimeout(
+            () => {
+                while (this.answer.length < 3) this.answer += " ";
+                this.next();
+            }, 10000);
+    }
+    cancelTimeout() {
+        if (this.timeout) window.clearTimeout(this.timeout);
+    }
+    
     getMode(): void {
         this.mode = this.route.snapshot.paramMap.get('mode');
     }
@@ -44,9 +57,9 @@ export class TestComponent implements OnInit {
     @HostListener('document:keydown', ['$event'])
     keyDown(event: KeyboardEvent) {
         if (event.keyCode == 8 || event.keyCode == 46) { // backspace/del means clear
-            this.press("c");
+            this.clearButton.nativeElement.click();
         } else if (event.keyCode == 13) { // enter means next
-            this.press("n");
+            this.nextButton.nativeElement.click();
         } else  if (/[0-9]/.test(event.key)) {
             this.press(event.key);
         }
@@ -67,11 +80,11 @@ export class TestComponent implements OnInit {
         } else if (key && this.answer.length < 3) {
             this.answer += key;
         }
-        this.nextButton.nativeElement.focus();
     }
 
     next(): void {
         if (this.answer.length >= 3) {
+            this.cancelTimeout();
             // set the next media url, given the current
             const answer = this.answer;
             this.answer = "";
