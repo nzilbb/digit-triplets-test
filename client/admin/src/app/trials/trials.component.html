@@ -1,0 +1,18 @@
+<h2>Trials</h2>
+<h3>Instance: {{instanceId}}</h3>
+<div class="list trial-list">
+  <div class="item header">
+    <span class="trial-number" title="Trial Number"> # </span>
+    <span class="decibels-signal number" title="Decibels signal"> Decibels </span>
+    <span class="correct-answer" title="Correct answer"> Correct </span>
+    <span class="participant-answer" title="Participant's answer"> Participant </span>
+    <span class="correct" title="Did the participant enter the correct answer?"> Correct? </span>
+  </div>
+  <div class="item trial-item" *ngFor="let trial of trials">
+    <span class="trial-number" title="Trial Number"> {{trial.trial_number}} </span>
+    <span class="decibels-signal number" title="Desibels signal"> {{trial.decibels_signal}} </span>
+    <span class="correct-answer" title="Correct answer"> {{trial.correct_answer}} </span>
+    <span class="participant-answer" title="Participant's answer"> {{trial.participant_answer}} </span>
+    <span class="correct" title="Did the participant enter the correct answer?"> {{trial.participant_answer == trial.correct_answer}} </span>
+  </div>
+</div>

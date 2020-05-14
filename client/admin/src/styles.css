@@ -30,10 +30,17 @@ footer {
 
 /* lists of things */
 
+.list {
+    width: 100%;
+}
+
 .list .item {
     display: flex;
     flex-direction: column;
     padding-bottom: 10px;
+}
+.list .header {
+    font-weight: bold;
 }
 .list .item:not(:first-child) {
     border-top: 1px dashed silver;
@@ -45,6 +52,12 @@ footer {
 }
 .list > .item > span > legend {
     font-size: 10pt;
+}
+.list > .item > span.number {
+    text-align: right;
+}
+.list > .item > span.center {
+    text-align: center;
 }
 .list .item .buttons button {
     margin-left: 5px;

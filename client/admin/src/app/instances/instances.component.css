@@ -1,0 +1,7 @@
+.instance-list > .item > .instance-id {
+    max-width: 100px;
+    overflow: hidden;
+}
+label.page {
+    padding: 20px;
+}

@@ -1,0 +1,28 @@
+<h2>Instances</h2>
+<p>These are instances of the test run by a participant.</p>
+<div class="list instance-list">
+  <div class="item header">
+    <span class="instance-id" title="Instance ID"> ID </span>
+    <span class="start-time" title="Test started at"> Start </span>
+    <span class="end-time" title="Test ended at"> End </span>
+    <span class="trial-set-id number" title="Which set of trials was randomly selected?"> Trial Set </span>
+    <span class="test-result number" title="Test result"> Result </span>
+    <span class="mean-snr number" title="Mean signal to noise ratio"> Mean SNR </span>
+    <span class="mode center" title="Which ear?"> Mode </span>
+  </div>
+  <div class="item instance-item" *ngFor="let instance of instances">
+    <span class="instance-id" title="{{instance.instance_id}}"> {{instance.instance_id}} </span>
+    <span class="start-time" title="Test started at"> {{instance.start_time | date:'short'}} </span>
+    <span class="end-time" title="Test ended at"> {{instance.end_time | date:'shortTime'}} </span>
+    <span class="trial-set-id number" title="Which set of trials was randomly selected?"> {{instance.trial_set_id}} </span>
+    <span class="test-result number" title="Test result"> {{instance.test_result}} </span>
+    <span class="mean-snr number" title="Mean signal to noise ratio"> {{instance.mean_snr}} </span>
+    <span class="mode center" title="Which ear?"> {{instance.mode}} </span>
+    <span class="trials"><a [routerLink]="['/trials',instance.instance_id]">Trials</a></span>
+  </div>
+</div>
+<div class="controls">
+  <button (click)="pageUp()" [disabled]="page == 0" title="Previous Page">▲</button>
+  <label class="page">Page {{page + 1}}</label>
+  <button (click)="pageDown()" [disabled]="noMorePages" title="Next Page">▼</button>
+</div>

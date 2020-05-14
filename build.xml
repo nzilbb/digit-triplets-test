@@ -91,14 +91,31 @@
     <delete dir="${server-build}"/>
   </target>  
 
-  <target name="dev-war" depends="war"
+  <target name="dev-war" depends="server-compile"
           description="Generate a development version of the web application archive">
-    <!-- use web-dev.xml instead of web.xml -->
-    <war destfile="${dist}/${ant.project.name}.war"
-         update="true"
-         duplicate="add"
+    <war destfile="${dist}/${ant.project.name}-dev.war" 
          webxml="./server/WEB-INF/web-dev.xml"
-         />
-    <echo message="Development war created."/>
+         comment="version ${DSTAMP}.${TSTAMP}-dev"
+         >
+      <!-- for installation and upgrades -->
+      <fileset dir="server" includes="WEB-INF/context-template.xml" />
+      <fileset dir="server" includes="WEB-INF/sql/*.sql" />
+      
+      <!-- UX resources -->
+      <fileset dir="server" includes="*.html *.png css/*.css" />
+      
+      <!-- Digit Tripleets Test app -->
+      <fileset dir="server" includes="dtt/**/*" />
+
+      <!-- Admin app -->
+      <fileset dir="server" includes="admin/**/*" />
+
+      <!-- servlets etc. -->
+      <fileset dir="server" includes="WEB-INF/lib/*.jar" />
+      <zipfileset 
+	  dir="${server-build}" 
+	  includes="**/*.class"
+	  prefix="WEB-INF/classes" />
+    </war>
   </target>  
 </project>

@@ -1,0 +1,33 @@
+<h2>Trial Sets</h2>
+
+<div class="list trial-set-list">
+  <div class="item trial-set-item add-new">
+    <span class="header id">ID</span>
+    <span class="trials" title="Comma-separated list of digits"><legend>Trials</legend>
+      <input #trials
+             type="text"
+             placeholder="Comma-separated list of digits" />
+    </span>
+    <span class="buttons">
+      <button (click)="createTrialSet(trials.value); trials.value = '';"
+              title="Add a new trial set">➕</button>
+    </span>
+  </div>
+  
+  <div class="item trial-set-item" *ngFor="let trialSet of trialSets">
+    <span class="trial-set-id" title="Trial Set ID"> {{trialSet.id}} </span>
+    <span class="trials" title="Comma-separated list of digits"><legend>Trials</legend>
+      <input type="text"
+             [(ngModel)]="trialSet.trials" (input)="onChange(trialSet)"
+             placeholder="Comma-separated list of digits"/>
+    </span>
+    <span class="buttons">
+      <button (click)="deleteTrialSet(trialSet);" title="Delete this trial set">➖</button>
+    </span>
+  </div>
+</div>
+<div class="buttons">
+  <button (click)="updateChangedTrialSets();"
+          *ngIf="changed"
+          title="Save all changed trial sets">💾</button>
+</div>
