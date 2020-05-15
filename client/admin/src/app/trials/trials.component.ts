@@ -30,5 +30,9 @@ export class TrialsComponent implements OnInit {
             .subscribe((trials) => {
                 this.trials = trials;
             });
-    }    
+    }
+
+    csv(): void {
+        this.trialService.csv(this.instanceId);
+    }
 }

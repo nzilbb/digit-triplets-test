@@ -25,4 +25,5 @@
   <button (click)="pageUp()" [disabled]="page == 0" title="Previous Page">▲</button>
   <label class="page">Page {{page + 1}}</label>
   <button (click)="pageDown()" [disabled]="noMorePages" title="Next Page">▼</button>
+  <button (click)="csv()" title="Download all intances as CSV">CSV</button>
 </div>

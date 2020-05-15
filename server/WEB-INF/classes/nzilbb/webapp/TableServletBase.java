@@ -46,6 +46,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 
 /**
  * Base class that handles generic database table management.
@@ -113,6 +115,8 @@ public class TableServletBase extends ServletBase {
    
    /**
     * GET handler lists all rows. 
+    * <p> The return is JSON encoded, unless the "Accept" request header, or the "Accept"
+    * request parameter, is "text/csv", in which case CSV is returned.
     */
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -123,7 +127,15 @@ public class TableServletBase extends ServletBase {
       } else if (!read) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       } else {
-         response.setContentType("application/json");
+         // servlet returns JSON by default, but can be asked to return CSV
+         boolean csv = request.getHeader("Accept").indexOf("text/csv") >= 0
+            || "text/csv".equals(request.getParameter("Accept"));
+         if (csv) {
+            response.setContentType("text/csv");
+         } else {
+            response.setContentType("application/json");
+         }
+         
          response.setCharacterEncoding("UTF-8");
          try {
             String[] keyValues = null;
@@ -131,6 +143,13 @@ public class TableServletBase extends ServletBase {
                keyValues = request.getPathInfo().substring(1).split("/");
             }
             boolean partialKey = keyValues != null && keyValues.length < keys.size();
+            if (csv) {
+               String name = table;
+               if (keyValues != null) {
+                  for (String value : keyValues) name += "-"+value;
+               }
+               response.setHeader("Content-Disposition", "attachment; filename=" + name + ".csv");
+            }
             
             // return a list of rows
             Connection connection = db.newConnection();
@@ -198,58 +217,39 @@ public class TableServletBase extends ServletBase {
                } // next key
             } // key values specified in path
             ResultSet rs = sql.executeQuery();
-            JsonGenerator json = Json.createGenerator(response.getWriter());
-            if (keyValues == null || partialKey) {
-               json.writeStartArray(); // all rows, start an array
+            CSVPrinter csvOut = csv
+               ?new CSVPrinter(response.getWriter(), CSVFormat.EXCEL.withDelimiter(','))
+               :null;
+            JsonGenerator jsonOut = csv
+               ?null:
+               Json.createGenerator(response.getWriter());
+            if (jsonOut != null && (keyValues == null || partialKey)) {
+               jsonOut.writeStartArray(); // all rows, start an array
             }
             int rowCount = 0;
             try {
+               boolean headersWritten = false;
                while (rs.next()) {
                   ResultSetMetaData meta = rs.getMetaData();
-                  json.writeStartObject();
-                  int c = 1;
-                  try {
-                     for (String column: allColumns) {
-                        String value = rs.getString(column);
-                        if (value == null) {
-                           json.writeNull(column);
-                        } else {
-                           try {
-                              switch(meta.getColumnType(c++)) { // get the type right
-                                 case Types.BIGINT:   json.write(column, rs.getLong(column)); break;
-                                 case Types.BIT:      json.write(column, rs.getInt(column) != 0); break;
-                                 case Types.BOOLEAN:  json.write(column, rs.getBoolean(column)); break;
-                                 case Types.DECIMAL:  json.write(column, rs.getDouble(column)); break;
-                                 case Types.DOUBLE:   json.write(column, rs.getDouble(column)); break;
-                                 case Types.FLOAT:    json.write(column, rs.getDouble(column)); break;
-                                 case Types.NUMERIC:  json.write(column, rs.getDouble(column)); break;
-                                 case Types.INTEGER:  json.write(column, rs.getInt(column)); break;
-                                 case Types.SMALLINT: json.write(column, rs.getInt(column)); break;
-                                 case Types.TINYINT:  json.write(column, rs.getInt(column)); break;
-                                 case Types.NULL:     json.writeNull(column); break;
-                                 default:             json.write(column, value); break;
-                              }
-                           } catch (SQLDataException x) { // can't determine the type?
-                              json.write(column, value);
-                           }
-                           
-                        } // no null
-                     } // next column
-                  } finally {
-                     json.writeEnd();
-                  }
+                  outputRow(rs, allColumns, meta, jsonOut);
+                  headersWritten = outputRow(rs, allColumns, meta, csvOut, headersWritten);
                   rowCount++;
                } // next row
                if (rowCount == 0 && keyValues != null && !partialKey) {
                   response.setStatus(HttpServletResponse.SC_NOT_FOUND);
                   // JsonWriter hates to write nothing, so give it an empty object
-                  json.writeStartObject().writeEnd();
+                  if (jsonOut != null) jsonOut.writeStartObject().writeEnd();
                }
             } finally {
-               if (keyValues == null || partialKey) {
-                  json.writeEnd(); // all rows, finish array
+               if (jsonOut != null) {
+                  if (keyValues == null || partialKey) {
+                     jsonOut.writeEnd(); // all rows, finish array
+                  }
+                  jsonOut.close();
                }
-               json.close();
+               if (csvOut != null) {
+                  csvOut.close();
+               }
                
                rs.close();
                sql.close();
@@ -263,6 +263,96 @@ public class TableServletBase extends ServletBase {
       } 
    }
 
+   /**
+    * Outputs a single row as JSON.
+    * @param rs
+    * @param jsonOut
+    * @throws SQLException
+    */
+   protected boolean outputRow(ResultSet rs, List<String> allColumns, ResultSetMetaData meta, JsonGenerator jsonOut) throws SQLException {
+      if (jsonOut == null) return false;
+      jsonOut.writeStartObject();
+      int c = 1;
+      try {
+         for (String column: allColumns) {
+            String value = rs.getString(column);
+            if (value == null) {
+               jsonOut.writeNull(column);
+            } else {
+               try {
+                  switch(meta.getColumnType(c++)) { // get the type right
+                     case Types.BIGINT:   jsonOut.write(column, rs.getLong(column)); break;
+                     case Types.BIT:      jsonOut.write(column, rs.getInt(column) != 0); break;
+                     case Types.BOOLEAN:  jsonOut.write(column, rs.getBoolean(column)); break;
+                     case Types.DECIMAL:  jsonOut.write(column, rs.getDouble(column)); break;
+                     case Types.DOUBLE:   jsonOut.write(column, rs.getDouble(column)); break;
+                     case Types.FLOAT:    jsonOut.write(column, rs.getDouble(column)); break;
+                     case Types.NUMERIC:  jsonOut.write(column, rs.getDouble(column)); break;
+                     case Types.INTEGER:  jsonOut.write(column, rs.getInt(column)); break;
+                     case Types.SMALLINT: jsonOut.write(column, rs.getInt(column)); break;
+                     case Types.TINYINT:  jsonOut.write(column, rs.getInt(column)); break;
+                     case Types.NULL:     jsonOut.writeNull(column); break;
+                     default:             jsonOut.write(column, value); break;
+                  }
+               } catch (SQLDataException x) { // can't determine the type?
+                  jsonOut.write(column, value);
+               }                           
+            } // no null
+         } // next column
+      } finally {
+         jsonOut.writeEnd();
+      }
+      return true;
+   } // end of outputRow()
+   
+   /**
+    * Outputs a single row as JSON.
+    * @param rs
+    * @param csvOut
+    * @throws SQLException
+    */
+   protected boolean outputRow(ResultSet rs, List<String> allColumns, ResultSetMetaData meta, CSVPrinter csvOut, boolean headersWritten)
+      throws SQLException, IOException {
+      if (csvOut == null) return false;
+      if (!headersWritten) { // write a line of header TODO
+         for (String column: allColumns) {
+            csvOut.print(column);
+         }
+         csvOut.println();
+      }
+      int c = 1;
+      try {
+         for (String column: allColumns) {
+            String value = rs.getString(column);
+            if (value == null) {
+               csvOut.print("");
+            } else {
+               try {
+                  switch(meta.getColumnType(c++)) { // get the type right
+                     case Types.BIGINT:   csvOut.print(rs.getLong(column)); break;
+                     case Types.BIT:      csvOut.print(rs.getInt(column) != 0); break;
+                     case Types.BOOLEAN:  csvOut.print(rs.getBoolean(column)); break;
+                     case Types.DECIMAL:  csvOut.print(rs.getDouble(column)); break;
+                     case Types.DOUBLE:   csvOut.print(rs.getDouble(column)); break;
+                     case Types.FLOAT:    csvOut.print(rs.getDouble(column)); break;
+                     case Types.NUMERIC:  csvOut.print(rs.getDouble(column)); break;
+                     case Types.INTEGER:  csvOut.print(rs.getInt(column)); break;
+                     case Types.SMALLINT: csvOut.print(rs.getInt(column)); break;
+                     case Types.TINYINT:  csvOut.print(rs.getInt(column)); break;
+                     case Types.NULL:     csvOut.print(""); break;
+                     default:             csvOut.print(value); break;
+                  }
+               } catch (SQLDataException x) { // can't determine the type?
+                  csvOut.print(value);
+               }
+            } // no null                           
+         } // next column
+      } finally {
+         csvOut.println();
+      }
+      return true;
+   } // end of outputRow()
+   
    /**
     * POST handler - add a new row.
     */

@@ -29,6 +29,10 @@ export class TrialService {
                 catchError(this.handleError<Trial[]>('readTrials', "Could not get trial list.", []))
             );
     }
+    
+    csv(instanceId: string): void {
+        window.open(`${this.baseUrl}/${instanceId}?Accept=text/csv`);
+    }
 
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {

@@ -31,6 +31,10 @@ export class InstancesComponent implements OnInit {
         this.readInstances();
     }
 
+    csv() {
+        this.instanceService.csv();
+    }
+
     readInstances(): void {
         this.instanceService.readInstances(this.page, this.pageLength)
             .subscribe((instances) => {

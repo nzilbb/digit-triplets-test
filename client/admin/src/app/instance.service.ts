@@ -30,6 +30,10 @@ export class InstanceService {
             );
     }
 
+    csv(): void {
+        window.open(`${this.baseUrl}?Accept=text/csv`);
+    }
+
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {
             console.error(error);
