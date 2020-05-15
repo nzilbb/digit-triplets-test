@@ -70,6 +70,22 @@ public class ServletBase extends HttpServlet {
          .writeEnd()
          .close();
    } // end of returnMessage()
+
+   /**
+    * Get a configured instance of the email service.
+    * @param connection A connection to the database.
+    * @return A configured instance of the email service, or null if email is not configured.
+    */
+   protected EmailService getEmailService(Connection connection) throws SQLException {
+      String smtpHost = getAttribute("EmailHost", connection);
+      if (smtpHost == null || smtpHost.length() == 0) return null;
+      return new EmailService()
+         .setSMTPHost(smtpHost)
+         .setSMTPUser(getAttribute("EmailUser", connection))
+         .setSMTPPassword(getAttribute("EmailPassword", connection))
+         .setFromAddress(getAttribute("EmailAddress", connection))
+         .setContext(getServletContext());
+   } // end of getEmailService()
    
    /**
     * Get a value from the attribute table.

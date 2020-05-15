@@ -26,6 +26,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -479,11 +480,12 @@ public class DigitTripletsTest extends ServletBase {
       try {
          // get mode
          PreparedStatement sql = connection.prepareStatement(
-            "SELECT mode, other_instance_id FROM instance WHERE instance_id = ?");
+            "SELECT mode, other_instance_id, trial_set_id FROM instance WHERE instance_id = ?");
          sql.setString(1, instanceId);
          ResultSet rs = sql.executeQuery();
          String mode = "";
          String otherInstanceId = null;
+         int trialSetId = -1;
          try {
             if (!rs.next()) {
                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -491,7 +493,8 @@ public class DigitTripletsTest extends ServletBase {
                return;
             }
             mode = rs.getString("mode"); 
-            otherInstanceId = rs.getString("other_instance_id"); 
+            otherInstanceId = rs.getString("other_instance_id");
+            trialSetId = rs.getInt("trial_set_id");
          } finally {
             rs.close();
             sql.close();
@@ -526,8 +529,64 @@ public class DigitTripletsTest extends ServletBase {
          sql.executeUpdate();
          sql.close();
          
-         // TODO email results
+         // email results
+         StringBuilder body = new StringBuilder();
+         body.append("InstanceId: " + instanceId);
+         body.append("\nMode: " + mode);
+         body.append("\nTrialSetNumber: " + trialSetId);
+         body.append("\nTestResult: " + iTestResult);
+         body.append("\nMeanSNR: " + dMeanSNR);
+         
+         sql = connection.prepareStatement(
+            "SELECT i.* FROM form_field f"
+            +" INNER JOIN instance_field i ON f.field = i.field"
+            +" WHERE i.instance_id = ?"
+            +" ORDER BY f.display_order"); 
+         sql.setString(1, instanceId);
+         rs = sql.executeQuery();
+         while (rs.next()) {
+            body.append("\n" + rs.getString("field") + ": " + rs.getString("value"));
+         } // next field
+         rs.close();
+         sql.close();
 
+         // attach CSV file to message
+         sql = connection.prepareStatement(
+            "SELECT * FROM trial WHERE instance_id = ? ORDER BY trial_number");
+         sql.setString(1, instanceId);
+         rs = sql.executeQuery();
+         File f = File.createTempFile("trials"+mode+"_"+instanceId+"_", ".csv");
+         PrintWriter fOut = new PrintWriter(f);
+         fOut.println("\"trial_number\",\"decibels_signal\",\"correct_answer\",\"participant_answer\",\"correct\"");
+         while (rs.next()) {
+            fOut.println(
+               rs.getString("trial_number") + ","
+               + rs.getString("decibels_signal") + ","
+               + "\"" + rs.getString("correct_answer") + "\","
+               + "\"" + rs.getString("participant_answer") + "\","
+               + rs.getString("correct_answer").equals(rs.getString("participant_answer")));
+         }
+         fOut.close();
+         rs.close();
+         sql.close();
+
+         // email to all users with an email address
+         sql = connection.prepareStatement(
+            "SELECT GROUP_CONCAT(DISTINCT email SEPARATOR ';')"
+            +" FROM user WHERE email LIKE '%@%'");
+         rs = sql.executeQuery();
+         rs.next();
+         String recipients = rs.getString(1);         
+         if (recipients != null && recipients.length() > 0) {
+            try {
+               log("Email to " + recipients + ": " + body);
+               getEmailService(connection)
+                  .send(recipients, "DTT " + instanceId, body.toString(), f);
+            } catch(Exception exception) {
+               log("ERROR cannot sent email: " + exception.toString());
+            }
+         }
+         
          JsonGenerator jsonResponse = Json.createGenerator(response.getWriter());
          jsonResponse.writeStartObject();
          jsonResponse.write("textId", "result" + mode + iTestResult);
