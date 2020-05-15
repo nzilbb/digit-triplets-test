@@ -26,7 +26,7 @@
     <javac srcdir="${server-src}" destdir="${server-build}"
 	   includes="${server-srcfiles}"
 	   excludes="${server-testsrcfiles}"
-	   classpath="${config.tomcat}/lib/servlet-api.jar;${config.tomcat}/lib/catalina.jar;${server-lib}/commons-fileupload.jar;${server-lib}/javax.json.jar"
+	   classpath="${config.tomcat}/lib/servlet-api.jar;${config.tomcat}/lib/catalina.jar;${server-lib}/commons-fileupload.jar;${server-lib}/javax.json.jar;${server-lib}/commons-csv.jar;${server-lib}/javax.mail.jar;${server-lib}/javax.activation.jar"
 	   listfiles="yes"
 	   target="${config.classversion}"
 	   source="${config.classversion}"
