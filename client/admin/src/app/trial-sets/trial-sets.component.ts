@@ -34,6 +34,7 @@ export class TrialSetsComponent implements OnInit {
     updateTrialSet(trialSet: TrialSet) {
         this.trialSetService.updateTrialSet(trialSet)
             .subscribe(trialSet => {
+                trialSet.changed = false; // this may have been passed back unchanged
                 // update the model with the trialSet returned
                 const i = this.trialSets.findIndex(u => { return u.id == trialSet.id; });
                 if (i >= 0) this.trialSets[i] = trialSet;
