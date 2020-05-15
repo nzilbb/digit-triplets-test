@@ -132,7 +132,7 @@ public class TableServletBase extends ServletBase {
             }
             boolean partialKey = keyValues != null && keyValues.length < keys.size();
             
-            // return a list of users
+            // return a list of rows
             Connection connection = db.newConnection();
             StringBuilder query = new StringBuilder();
             Vector<String> allColumns = new Vector<String>(keys);
@@ -308,7 +308,7 @@ public class TableServletBase extends ServletBase {
          StringBuffer key = new StringBuffer();
          try {
             
-            // insert the user
+            // insert the row
             Connection connection = db.newConnection();
             log("POST " + query.toString()); // TODO remove
             PreparedStatement sql = connection.prepareStatement(query.toString());
@@ -375,7 +375,7 @@ public class TableServletBase extends ServletBase {
                connection.close();
             }
          } catch(SQLIntegrityConstraintViolationException exception) {
-            // user is already there
+            // row is already there
             response.setStatus(HttpServletResponse.SC_CONFLICT);
             returnMessage("Row already exists: " + key, response);
          } catch(SQLException exception) {
@@ -387,7 +387,7 @@ public class TableServletBase extends ServletBase {
    }
 
    /**
-    * PUT handler - update an existing user.
+    * PUT handler - update an existing row.
     */
    @Override
    protected void doPut(HttpServletRequest request, HttpServletResponse response)
@@ -451,9 +451,9 @@ public class TableServletBase extends ServletBase {
                   if (json.get(column).getValueType() == JsonValue.ValueType.STRING) {
                      value = json.getString(column);
                   }
-                  key.append("/");
+                  if (key.length() > 0) key.append("/");
                   key.append(value);
-                  sql.setString(c++, json.get(column).toString()); 
+                  sql.setString(c++, value); 
                } // next key
                
                int rows = sql.executeUpdate();
@@ -483,7 +483,7 @@ public class TableServletBase extends ServletBase {
    }
 
    /**
-    * DELETE handler - remove existing user.
+    * DELETE handler - remove existing row.
     */
    @Override
    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
