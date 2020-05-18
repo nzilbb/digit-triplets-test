@@ -1,5 +1,5 @@
-<div class="text" [innerHTML]="text.html"></div>
-<div *ngIf="text2"class="text" [innerHTML]="text2.html"></div>
+<div class="text" [innerHTML]="text.html"><app-wait></app-wait></div>
+<div *ngIf="text2"class="text" [innerHTML]="text2.html"><app-wait></app-wait></div>
 <div class="controls" *ngIf="canContinue"><button (click)="next()" appAutofocus>Continue ▷</button></div>
 <div class="mode" *ngIf="text.id === 'introduction'">
   <div class="mode-option">

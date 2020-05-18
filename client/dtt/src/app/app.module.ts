@@ -13,6 +13,7 @@ import { SoundCheckComponent } from './sound-check/sound-check.component';
 import { FieldComponent } from './field/field.component';
 import { TestComponent } from './test/test.component';
 import { AutofocusDirective } from './autofocus.directive';
+import { WaitComponent } from './wait/wait.component';
 
 @NgModule({
     declarations: [
@@ -21,7 +22,8 @@ import { AutofocusDirective } from './autofocus.directive';
         SoundCheckComponent,
         FieldComponent,
         TestComponent,
-        AutofocusDirective
+        AutofocusDirective,
+        WaitComponent
     ],
     imports: [
         BrowserModule,
