@@ -188,7 +188,7 @@ export class DttService {
                             }
                         });
                 });
-            return null;
+            return `${this.baseUrl}/mp3/silence.mp3`;
         }
     }
 
