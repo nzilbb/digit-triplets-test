@@ -15,6 +15,7 @@ export class TextComponent implements OnInit {
     text2: Text;
     nextMode: string;
     canContinue: boolean;
+    results: boolean;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
@@ -26,6 +27,7 @@ export class TextComponent implements OnInit {
 
     getText(): void {
         const id = this.route.snapshot.paramMap.get('id');
+        this.results = id.startsWith("result");
         this.dttService.getText(id)
             .subscribe((text) => {
                 this.text = text
