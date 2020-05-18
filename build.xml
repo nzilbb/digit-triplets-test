@@ -37,7 +37,7 @@
     </javac>
   </target>
   
-  <target name="admin-client-build" depends="init"
+  <target name="admin-client" depends="init"
           description="Build the admin client app">
     <exec executable="ng"
           dir="${admin-client-dir}"
@@ -47,7 +47,7 @@
     </exec>
   </target>
   
-  <target name="dtt-client-build" depends="init"
+  <target name="dtt-client" depends="init"
           description="Build the dtt client app">
     <exec executable="ng"
           dir="${dtt-client-dir}"
@@ -57,7 +57,7 @@
     </exec>
   </target>
   
-  <target name="war" depends="server-compile,admin-client-build,dtt-client-build"
+  <target name="war" depends="server-compile,admin-client,dtt-client"
           description="Generate the web application archive">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>    
@@ -69,14 +69,14 @@
       <fileset dir="server" includes="WEB-INF/context-template.xml" />
       <fileset dir="server" includes="WEB-INF/sql/*.sql" />
 
-      <!-- UX resources -->
-      <fileset dir="server" includes="*.html *.png css/*.css" />
-
       <!-- media -->
       <!--fileset dir="server" includes="mp3/**/*.mp3" /-->
 
-      <!-- Digit Tripleets Test app -->
-      <fileset dir="server" includes="dtt/**/*" />
+      <!-- Digit Triplets Test app -->
+      <zipfileset 
+	  dir="server/dtt" 
+	  includes="**/*"
+	  prefix="/" />
 
       <!-- Admin app -->
       <fileset dir="server" includes="admin/**/*" />
@@ -101,15 +101,15 @@
       <fileset dir="server" includes="WEB-INF/context-template.xml" />
       <fileset dir="server" includes="WEB-INF/sql/*.sql" />
       
-      <!-- UX resources -->
-      <fileset dir="server" includes="*.html *.png css/*.css" />
+      <!-- Digit Triplets Test app -->
+      <zipfileset 
+	  dir="server/dtt" 
+	  includes="**/*"
+	  prefix="/" />
       
-      <!-- Digit Tripleets Test app -->
-      <fileset dir="server" includes="dtt/**/*" />
-
       <!-- Admin app -->
       <fileset dir="server" includes="admin/**/*" />
-
+      
       <!-- servlets etc. -->
       <fileset dir="server" includes="WEB-INF/lib/*.jar" />
       <zipfileset 
