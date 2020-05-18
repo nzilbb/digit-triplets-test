@@ -1,3 +1,3 @@
-<article>
-  <router-outlet></router-outlet>
+<article [@routeAnimations]="prepareRoute(outlet)">
+  <router-outlet #outlet="outlet"></router-outlet>
 </article>

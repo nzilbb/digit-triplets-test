@@ -2,13 +2,11 @@ import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angula
 
 import { DttService }  from '../dtt.service';
 import { Text } from '../text';
-import { slider } from '../router-animations';
 
 @Component({
     selector: 'app-sound-check',
     templateUrl: './sound-check.component.html',
-    styleUrls: ['./sound-check.component.css'],
-    animations: [ slider ],
+    styleUrls: ['./sound-check.component.css']
 })
 export class SoundCheckComponent implements OnInit {
 
