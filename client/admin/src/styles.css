@@ -1,3 +1,24 @@
+/* general look and feel */
+body {
+    margin: 0px;
+    font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size:12pt;
+    height:100%;
+    width:100%;
+}
+h1 { font-size: 17pt; color: #859044; }
+h2 { font-size: 16pt; color: #859044; }
+h3 { font-size: 15pt; color: #859044; font-style:italic; }
+h4 { font-size: 14pt; color: #859044; }
+h5 { font-size: 13pt; color: #859044; }
+h6 { font-size: 12pt; color: #859044; }
+
+app-menu a { color: #859044; }
+app-menu li { border: 1px solid #859044; }
+app-texts a, app-instances a { color: #859044; }
+
+footer { color: #859044; }
+
 /* Layout */
 app-root, #main { display: flex; flex-direction: column; }
 article, nav, aside { order: 0; }

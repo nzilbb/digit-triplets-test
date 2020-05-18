@@ -8,14 +8,12 @@ ul {
     margin-top: 0px;
 }
 li {
-    padding: 5px;
-    border: 1px solid silver;
+    padding: 5px;    
     flex-grow: 1;
     text-align: center;
 }
 li a {
     text-decoration: none;
-    color: black;
     display: block;
 }
 /* Layout on wider screens - 3 columns */
