@@ -49,6 +49,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nzilbb.webapp.EmailService;
 import nzilbb.webapp.ServletBase;
 
 /**
@@ -555,7 +556,7 @@ public class DigitTripletsTest extends ServletBase {
             "SELECT * FROM trial WHERE instance_id = ? ORDER BY trial_number");
          sql.setString(1, instanceId);
          rs = sql.executeQuery();
-         File f = File.createTempFile("trials"+mode+"_"+instanceId+"_", ".csv");
+         final File f = File.createTempFile("trials"+mode+"_"+instanceId+"_", ".csv");
          PrintWriter fOut = new PrintWriter(f);
          fOut.println("\"trial_number\",\"decibels_signal\",\"correct_answer\",\"participant_answer\",\"correct\"");
          while (rs.next()) {
@@ -576,14 +577,25 @@ public class DigitTripletsTest extends ServletBase {
             +" FROM user WHERE email LIKE '%@%'");
          rs = sql.executeQuery();
          rs.next();
-         String recipients = rs.getString(1);         
+         final String recipients = rs.getString(1);
+         final String subject = "DTT " + instanceId;
+         final String message = body.toString();
          if (recipients != null && recipients.length() > 0) {
-            try {
-               log("Email to " + recipients + ": " + body);
-               getEmailService(connection)
-                  .send(recipients, "DTT " + instanceId, body.toString(), f);
-            } catch(Exception exception) {
-               log("ERROR cannot sent email: " + exception.toString());
+            final EmailService emailService = getEmailService(connection);
+            if (emailService != null) {
+               // send email in its own thread, so sending delays don't make the participant wait
+               new Thread(new Runnable() {
+                     public void run() {
+                        try {
+                           log("Email to " + recipients + ": " + body);
+                           emailService.send(recipients, subject, message, f);
+                        } catch(Exception exception) {
+                           log("ERROR cannot sent email: " + exception.toString());
+                        } finally {
+                           f.delete();
+                        }
+                     }
+                  }).start();
             }
          }
          
