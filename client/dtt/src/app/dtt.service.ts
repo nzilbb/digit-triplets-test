@@ -33,7 +33,7 @@ export class DttService {
         private router: Router
     ) {
         this.resultTexts = [];
-        this.baseUrl = this.baseUrl || location.href.replace(/\/[^/]+\/#.*$/,"/");
+        this.baseUrl = this.baseUrl || location.href.replace(/\/#.*$/,"");
     }
 
     getText(id: string): Observable<Text> {
