@@ -5,7 +5,13 @@ body {
     font-size:12pt;
     height:100%;
     width:100%;
+    
+    background-image: url(assets/watermark.png);
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
+    background-size: 50px;
 }
+
 h1 { font-size: 17pt; color: #859044; }
 h2 { font-size: 16pt; color: #859044; }
 h3 { font-size: 15pt; color: #859044; font-style:italic; }
@@ -94,6 +100,7 @@ footer {
 }
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
+    body { background-size: inherit; }
     nav { min-height: 100px; max-width: 120px; }
     aside { max-width: 120px; }
     .list { display: table; }
