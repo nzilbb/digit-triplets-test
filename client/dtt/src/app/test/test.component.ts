@@ -90,8 +90,8 @@ export class TestComponent implements OnInit {
             this.answer = "";
             this.player.nativeElement.src = this.dttService.mediaUrl(answer);
             this.trial++;
-            // if there's no URL, it's because the dttService has submitted the lasrt answer
-            // and the test is finished.
+            // after the last trial, the URL is silence, and the dtt.service handles moving
+            // to the next step
         }
     }
 }
