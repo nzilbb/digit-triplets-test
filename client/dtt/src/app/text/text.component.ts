@@ -27,6 +27,9 @@ export class TextComponent implements OnInit {
 
     getText(): void {
         const id = this.route.snapshot.paramMap.get('id');
+        if (id != "introduction") {
+            this.dttService.checkStarted();
+        }
         this.results = id.startsWith("result");
         this.dttService.getText(id)
             .subscribe((text) => {
