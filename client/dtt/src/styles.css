@@ -30,6 +30,8 @@ div.controls { /* buttons always locked to the bottom of the screen */
 }
 header {
     height: 5vh;
+    text-align: center;
+    color:#859044;
     font-size: 8pt;
 }
 table.dtt {
