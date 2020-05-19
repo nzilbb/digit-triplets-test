@@ -27,11 +27,6 @@
         <option value="select">Choose
       </select>
     </span>
-    <span class="size" title="The size of the box e.g. 25 or 80x5"><legend>Size</legend>
-      <input #size
-             type="text"
-             placeholder="Size">
-    </span>
     <span class="display-order" title="Order the fields are listed in"><legend>Order</legend>
       <input #display_order
              type="number"
@@ -46,7 +41,7 @@
       </label>
     </span>
     <span class="buttons">
-      <button (click)="createField(field.value, name.value, description.value, type.value, size.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = size.value = display_order.value = '';"
+      <button (click)="createField(field.value, name.value, description.value, type.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = display_order.value = '';"
               title="Add new field">➕</button>
     </span>
   </div>
@@ -73,11 +68,6 @@
         <option value="email">Email
         <option value="select">Choose
       </select>
-    </span>
-    <span class="size" title="The size of the box e.g. 25 or 80x5"><legend>Size</legend>
-      <input #size type="text"
-             [(ngModel)]="field.size" (input)="onChange(field)"
-             placeholder="Size" />
     </span>
     <span class="display-order" title="Order the fields are listed in"><legend>Order</legend>
       <input #display_order type="number"

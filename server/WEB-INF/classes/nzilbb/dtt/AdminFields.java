@@ -78,7 +78,6 @@ public class AdminFields extends ServletBase {
                   json.write("name", rs.getString("name"));
                   json.write("description", rs.getString("description"));
                   json.write("type", rs.getString("type"));
-                  json.write("size", rs.getString("size"));
                   json.write("required", rs.getInt("required") != 0);
                   json.write("display_order", rs.getInt("display_order"));
                   
@@ -137,7 +136,6 @@ public class AdminFields extends ServletBase {
          String name = jsonUser.getString("name");
          String description = jsonUser.getString("description");
          String type = jsonUser.getString("type");
-         String size = jsonUser.getString("size");
          int display_order = jsonUser.getInt("display_order");
          boolean required = jsonUser.getBoolean("required");
          // TODO read options
@@ -171,16 +169,15 @@ public class AdminFields extends ServletBase {
             // insert the user
             PreparedStatement sql = connection.prepareStatement(
                "INSERT INTO form_field"
-               +" (field, name, description, type, size, required, display_order,"
-               +" update_date, update_user_id) VALUES (?,?,?,?,?,?,?,Now(),?)");
+               +" (field, name, description, type, required, display_order,"
+               +" update_date, update_user_id) VALUES (?,?,?,?,?,?,Now(),?)");
             sql.setString(1, field);
             sql.setString(2, name);
             sql.setString(3, description);
             sql.setString(4, type);
-            sql.setString(5, size);
-            sql.setInt(6, required?1:0);
-            sql.setInt(7, display_order);
-            sql.setString(8, ""+request.getRemoteUser());
+            sql.setInt(5, required?1:0);
+            sql.setInt(6, display_order);
+            sql.setString(7, ""+request.getRemoteUser());
             int rows = sql.executeUpdate();
             if (rows == 0) {
                response.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -197,7 +194,6 @@ public class AdminFields extends ServletBase {
                   json.write("name", name);
                   json.write("description", description);
                   json.write("type", type);
-                  json.write("size", size);
                   json.write("required", required);
                   json.write("display_order", display_order);
                } finally {
@@ -241,7 +237,6 @@ public class AdminFields extends ServletBase {
          String description = jsonUser.getString("description");
          String type = jsonUser.getString("type");
          if (type.trim().length() == 0) type = "string";
-         String size = jsonUser.getString("size");
          int display_order = jsonUser.getInt("display_order");
          boolean required = jsonUser.getBoolean("required");
          
@@ -254,16 +249,15 @@ public class AdminFields extends ServletBase {
 
             // insert the user
             PreparedStatement sql = connection.prepareStatement(
-               "UPDATE form_field SET name = ?, description = ?, type = ?, size = ?, required = ?,"
+               "UPDATE form_field SET name = ?, description = ?, type = ?, required = ?,"
                +" display_order = ?, update_date = Now(), update_user_id = ? WHERE field = ?");
             sql.setString(1, name);
             sql.setString(2, description);
             sql.setString(3, type);
-            sql.setString(4, size);
-            sql.setInt(5, required?1:0);
-            sql.setInt(6, display_order);
-            sql.setString(7, request.getRemoteUser());
-            sql.setString(8, field);
+            sql.setInt(4, required?1:0);
+            sql.setInt(5, display_order);
+            sql.setString(6, request.getRemoteUser());
+            sql.setString(7, field);
             int rows = sql.executeUpdate();
             if (rows == 0) {
                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -303,7 +297,6 @@ public class AdminFields extends ServletBase {
                   json.write("name", name);
                   json.write("description", description);
                   json.write("type", type);
-                  json.write("size", size);
                   json.write("required", required);
                   json.write("display_order", display_order);
                   if (options != null && "select".equals(type)) {
