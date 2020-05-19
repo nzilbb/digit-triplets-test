@@ -1,7 +1,71 @@
 # digit-triplets-test
 Digit Triplets Hearing Test
 
-## Server
+## Installation
+
+Prerequisites for installation:
+1. A server with [Apache Tomcat](https://tomcat.apache.org/) installed.
+2. A server with [MySQL](https://www.mysql.com/) installed.
+3. A set of digit triplet recordings for your test, with appropriate noise levels
+
+The digit triplets recordings must be named using the covention:  
+`{triplet}_{db}{mode}`.mp3
+
+Where:
+
+- `{triplet}` is the digits represented by the recording (3 characters), and
+- `{db}` is the decibel level of the voice (3 characters).
+- `{mode}` indicates whether the recording is in the left channel - "_L" - the right
+channel - "_R" - or both channels - "".
+
+e.g.
+- `123_004_L.mp3` is a recording of the digits 1, 2, 3 with a 4 decibel voice, in the left
+channel, and
+- `126_-22.mp3` is a recording of the digits 1, 2, 6 with a -22 decibel voice, in both
+channels.
+
+Furthemore, the recording should be in three separate directories:
+
+- `DTTl` for recording in the left channel.
+- `DTTr` for recording in the right channel.
+- `DTT` for recording in both channels.
+
+### Installation steps:
+
+1. Copy digit-triplets-test.war into the *webapps* directory of the Tomcat installation.
+2. In your browser, open http://myservername/digit-triplets-test/install  
+   (or possibly http://myservername:8080/digit-triplets-test/install depending on your server setup)
+3. Fill in the MySQL details the form asks for.
+4. Click *Install*
+5. Copy the three directories of recordings (`DTTl`, `DTTr`, and `DTT`) into the `mp3`
+directory that has been created in the `digit-triplets-tes` directory on the server that
+the web application has been installed into. e.g. on a Linux system, you might run a
+command like:
+`mv DTTl DTTr DDD /var/lib/tomcat9/webapps/digit-triplets-test/mp3/`
+
+Once this is done, you will need to check/adjust the settings, by using your browser to
+log in to http://myservername:8080/digit-triplets-test/admin
+
+(The first time you log in, use the username `admin` and password `admin`)
+
+The administration interface is where you can:
+
+- add fields for meta-data you want to collect from participants
+- specify the text of the different prompts and results pages that will be presented to
+   participants,
+- specify 'trial sets' - groups of digit triplets that can be used in a given test
+   instance,
+- fine-tune test parameters (signal level increments, normal/poor hearing thresholds, etc.)
+- list the data collected from instances of the test completed by past participants, 
+- create other administration users, and
+- upgrade the web application to a new version.
+
+For participants, the test app is available at  
+http://myservername/digit-triplets-test/
+
+## Build/Develop from source code:
+
+### Server
 
 The server is a Java webapp.
 
@@ -17,9 +81,22 @@ To build the web application archive (war):
 ant
 ```
 
-The default build includes the client application build too.
+The default build includes the client application builds too, and creates:  
+`bin/digit-triplets-test.war`
 
-## Client
+For development/debugging of the administraion client, you may prefer a version of the
+webapp that doesn't include admin user auth (so you can use `ng serve` as below), and
+doesn't spend time building both clients every time. In that case, use the following ant
+target instead: 
+
+```
+ant dev-war
+```
+
+This creates:  
+`bin/digit-triplets-test-dev.war`
+
+### Client
 
 Clients are [Angular](https://angular.io/) apps.
 
@@ -30,7 +107,7 @@ Prerequisites:
    `npm install -g @angular/cli`
 
 
-### Admin
+#### Admin
 
 To run during development you can compile the client directly into the webapp location, e.g.:
 
@@ -53,6 +130,18 @@ Once these prerequisites are met, you can run:
 
 ```
 cd client/admin
+ng serve
+```
+
+...and then browse to (http://localhost:4200/) for a live version of the client which
+recompiles when you save changes in the client source code.
+
+#### Digit Triplets Test
+
+To run with automatic compilation when files are changed:
+
+```
+cd client/dtt
 ng serve
 ```
 
