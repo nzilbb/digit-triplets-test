@@ -2,7 +2,6 @@ table.dtt {
     width: 100%;
     min-width: 200px;
     margin: auto;
-    height: 100vh;
 }
 table.dtt td {
     text-align: center;
