@@ -1,4 +1,6 @@
-# Dtt
+# Digit Triplets Test
+
+This is the Digit Triplets hearing screening test performed by participants.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
 

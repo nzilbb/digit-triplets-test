@@ -1,4 +1,10 @@
-# Admin
+# Digit Triplets Test Administration app
+
+This is the app that enables administrators of the Digit Triplets app to define prompts,
+meta-data fields, and test parameters, and also access data from past test instances
+created by participants.
+
+In production environments, this app is password-protected.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.1.
 
