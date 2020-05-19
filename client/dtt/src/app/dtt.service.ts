@@ -155,7 +155,7 @@ export class DttService {
     }
 
     volumeCheckUrl(): string {
-        return `${this.baseUrl}/mp3/DTT/sound-check.mp3`;
+        return `${this.baseUrl}/mp3/dtt/sound-check.mp3`;
     }
 
     mediaUrl(answer: string): string {

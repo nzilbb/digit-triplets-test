@@ -76,7 +76,8 @@ import nzilbb.webapp.ServletBase;
 public class DigitTripletsTest extends ServletBase {
 
    Random random = new Random();
-   MessageFormat nameFormat = new MessageFormat("{0}_{1,choice,-1#{1,number,00}|0#{1,number,000}}");
+   MessageFormat nameFormat = new MessageFormat(
+      "{0}_{1,choice,-1#{1,number,00}|0#{1,number,000}}{2}.mp3");
 
    /**
     * POST handler - add a new instance, or a new field value.
@@ -441,11 +442,9 @@ public class DigitTripletsTest extends ServletBase {
                String nextTriplet = rs.getString("correct_answer");
                
                // return media
-               File dirMode = new File(dirMedia, "DTT"+mode);
-               Object[] args = { nextTriplet, nextDecibelsSignal };
+               File dirMode = new File(dirMedia, "dtt"+mode);
+               Object[] args = { nextTriplet, nextDecibelsSignal, mode };
                String name = nameFormat.format(args);
-               if (mode.length() > 0) name += "_" + mode.toUpperCase();
-               name += ".mp3";
                fPrompt = new File(dirMode, name);
             }
             rs.close();

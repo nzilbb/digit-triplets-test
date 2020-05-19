@@ -15,20 +15,20 @@ Where:
 
 - `{triplet}` is the digits represented by the recording (3 characters), and
 - `{db}` is the decibel level of the voice (3 characters).
-- `{mode}` indicates whether the recording is in the left channel - "_L" - the right
-channel - "_R" - or both channels - "".
+- `{mode}` indicates whether the recording is in the left channel - "l" - the right
+channel - "r" - or both channels - "".
 
 e.g.
-- `123_004_L.mp3` is a recording of the digits 1, 2, 3 with a 4 decibel voice, in the left
+- `123_004l.mp3` is a recording of the digits 1, 2, 3 with a 4 decibel voice, in the left
 channel, and
 - `126_-22.mp3` is a recording of the digits 1, 2, 6 with a -22 decibel voice, in both
 channels.
 
 Furthemore, the recording should be in three separate directories:
 
-- `DTTl` for recording in the left channel.
-- `DTTr` for recording in the right channel.
-- `DTT` for recording in both channels.
+- `dttl` for recording in the left channel.
+- `dttr` for recording in the right channel.
+- `dtt` for recording in both channels.
 
 ### Installation steps:
 
@@ -37,11 +37,11 @@ Furthemore, the recording should be in three separate directories:
    (or possibly http://myservername:8080/digit-triplets-test/install depending on your server setup)
 3. Fill in the MySQL details the form asks for.
 4. Click *Install*
-5. Copy the three directories of recordings (`DTTl`, `DTTr`, and `DTT`) into the `mp3`
+5. Copy the three directories of recordings (`dttl`, `dttr`, and `dtt`) into the `mp3`
 directory that has been created in the `digit-triplets-tes` directory on the server that
 the web application has been installed into. e.g. on a Linux system, you might run a
 command like:
-`mv DTTl DTTr DDD /var/lib/tomcat9/webapps/digit-triplets-test/mp3/`
+`mv dttl dttr dtt /var/lib/tomcat9/webapps/digit-triplets-test/mp3/`
 
 Once this is done, you will need to check/adjust the settings, by using your browser to
 log in to http://myservername:8080/digit-triplets-test/admin
