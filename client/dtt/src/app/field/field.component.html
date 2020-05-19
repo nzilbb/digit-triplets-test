@@ -1,54 +1,55 @@
-<h1>{{field.name}}</h1>
-<div class="description">{{field.description}}</div>
-
-<div class="field" *ngIf="field.type === 'string'">
-  <input #input type="text"
-         [(ngModel)]="value"
-         (change)="validity(input)" (keyup)="validity(input)"
-         (keyup.enter)="btn.click()"
-         [required]="field.required"
-         autofocus
-         title="{{field.description}}" >
-</div>
-<div class="field" *ngIf="field.type === 'number'">
-  <input #input type="number"
-         [(ngModel)]="value"
-         (change)="validity(input)" (keyup)="validity(input)"
-         (keyup.enter)="btn.click()"
-         [required]="field.required"
-         autofocus
-         title="{{field.description}}">
-</div>
-<div class="field" *ngIf="field.type === 'email'">
-  <input #input type="email"
-         [(ngModel)]="value"
-         (change)="validity(input)" (keyup)="validity(input)"
-         (keyup.enter)="btn.click()"
-         [required]="field.required"
-         autofocus
-         title="{{field.description}}">
-</div>
-<div class="field" *ngIf="field.type == 'text'">
-  <textarea #input
+<div class="content">
+  <h1>{{field.name}}</h1>
+  <div class="description">{{field.description}}</div>
+  
+  <div class="field" *ngIf="field.type === 'string'">
+    <input #input type="text"
+           [(ngModel)]="value"
+           (change)="validity(input)" (keyup)="validity(input)"
+           (keyup.enter)="btn.click()"
+           [required]="field.required"
+           autofocus
+           title="{{field.description}}" >
+  </div>
+  <div class="field" *ngIf="field.type === 'number'">
+    <input #input type="number"
+           [(ngModel)]="value"
+           (change)="validity(input)" (keyup)="validity(input)"
+           (keyup.enter)="btn.click()"
+           [required]="field.required"
+           autofocus
+           title="{{field.description}}">
+  </div>
+  <div class="field" *ngIf="field.type === 'email'">
+    <input #input type="email"
+           [(ngModel)]="value"
+           (change)="validity(input)" (keyup)="validity(input)"
+           (keyup.enter)="btn.click()"
+           [required]="field.required"
+           autofocus
+           title="{{field.description}}">
+  </div>
+  <div class="field" *ngIf="field.type == 'text'">
+    <textarea #input
+              [(ngModel)]="value"
+              (change)="validity(input)" (keyup)="validity(input)"
+              [required]="field.required"
+              autofocus
+              title="{{field.description}}"></textarea>
+  </div>
+  <div *ngIf="field.type === 'select'">
+    <select #input
             [(ngModel)]="value"
-            (change)="validity(input)" (keyup)="validity(input)"
+            (change)="validity(input)"
+            (keyup.enter)="btn.click()"
             [required]="field.required"
             autofocus
-            title="{{field.description}}"></textarea>
+            title="{{field.description}}">
+      <option *ngIf="!field.required">
+      <option *ngFor="let option of field.options" value="{{option.value}}">{{option.description}}</option>
+    </select>
+  </div>
 </div>
-<div *ngIf="field.type === 'select'">
-  <select #input
-          [(ngModel)]="value"
-          (change)="validity(input)"
-          (keyup.enter)="btn.click()"
-          [required]="field.required"
-          autofocus
-          title="{{field.description}}">
-    <option *ngIf="!field.required">
-    <option *ngFor="let option of field.options" value="{{option.value}}">{{option.description}}</option>
-  </select>
-</div>
-
 <div class="controls">
   <button #btn (click)="saveFieldValue()" [disabled]="!valid">Continue</button>
 </div>

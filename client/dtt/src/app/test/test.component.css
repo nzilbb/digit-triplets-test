@@ -30,11 +30,9 @@ table.dtt thead {
 }
 td.dtt-button, td.dtt-command {
     width: 33%;
-    height: 15vh;
 }
 button label {
     font-weight: bold;
-    font-size: 16pt;
     white-space: nowrap;
 }
 td.dtt-button button label {

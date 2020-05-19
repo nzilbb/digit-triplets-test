@@ -13,7 +13,7 @@ export class AppComponent {
     title = 'Digit Triplets Hearing Screening Test';
     prepareRoute(outlet: RouterOutlet) {
         try {
-            return outlet && outlet.activatedRoute.snapshot.url[0].toString();
+            return outlet && outlet.activatedRoute.snapshot.url.toString();
         } catch (x) {
             return null;
         }

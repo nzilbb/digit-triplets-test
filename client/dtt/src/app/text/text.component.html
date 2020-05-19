@@ -1,5 +1,7 @@
-<div class="text {{text.id}}" [class.results]="results" [innerHTML]="text.html"><app-wait></app-wait></div>
-<div *ngIf="text2" class="text {{text2.id}}" [class.results]="results" [innerHTML]="text2.html"><app-wait></app-wait></div>
+<div class="content">
+  <div class="text {{text.id}}" [class.results]="results" [innerHTML]="text.html"><app-wait></app-wait></div>
+  <div *ngIf="text2" class="text {{text2.id}}" [class.results]="results" [innerHTML]="text2.html"><app-wait></app-wait></div>
+</div>
 <div class="controls" *ngIf="canContinue"><button (click)="next()" appAutofocus>Continue ▷</button></div>
 <div class="mode controls" *ngIf="text.id === 'introduction'">
   <div class="mode-option">

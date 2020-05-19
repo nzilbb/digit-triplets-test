@@ -1,11 +1,13 @@
-<div class="text" [innerHTML]="text.html"><app-wait></app-wait></div>
-<audio #player
-       preload="auto"
-       (play)="playing = true"
-       (pause)="playing = false"
-       (ended)="playing = false">
-  <p>Audio not supported. Please try with a different browser.</p>
-</audio>
+<div class="content">
+  <div class="text" [innerHTML]="text.html"><app-wait></app-wait></div>
+  <audio #player
+         preload="auto"
+         (play)="playing = true"
+         (pause)="playing = false"
+         (ended)="playing = false">
+    <p>Audio not supported. Please try with a different browser.</p>
+  </audio>
+</div>
 <div class="controls">
   <button (click)="play()" [disabled]="playing" appAutofocus>
     <label>Play 🔊</label>
