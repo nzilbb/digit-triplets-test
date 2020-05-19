@@ -110,7 +110,7 @@ table.dtt label span.text {
         font-size: 14pt;
     }
     app-text, app-field, app-test, app-sound-check {
-        height: 90vh;
+        height: unset;
     }
     .content {
         flex-grow: unset;
