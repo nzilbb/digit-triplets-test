@@ -29,7 +29,7 @@ header {
     font-size: 8pt;
 }
 app-text, app-field, app-test, app-sound-check {
-    height: 95vh;
+    height: 95;
     margin: auto;
     max-width: 800px; /* around 75 characters per line, for readability */
     display: flex;
@@ -109,7 +109,7 @@ table.dtt label span.text {
         height: 10vh;
         font-size: 14pt;
     }
-    article {
+    app-text, app-field, app-test, app-sound-check {
         height: 90vh;
     }
     .content {
