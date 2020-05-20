@@ -325,6 +325,12 @@ public class DigitTripletsTest extends ServletBase {
       // no caching please
       response.addHeader("Pragma", "no-cache"); 
       response.addHeader("Cache-Control", "no-cache");
+      if("bytes=0-1".equals(request.getHeader("range"))) {
+         // Safari sends two requests, the first for range "bytes=0-1", and then the rest
+         byte[] oneByte = {0};
+         response.getOutputStream().write(oneByte);
+         return;
+      }
       
       Connection connection = db.newConnection();
       try {
