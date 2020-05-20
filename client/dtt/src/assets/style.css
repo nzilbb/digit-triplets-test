@@ -36,11 +36,6 @@ app-text, app-field, app-test, app-sound-check {
     flex-direction: column;
     align-content: stretch;
 }
-@supports (-webkit-touch-callout: none) { /* CSS specific to iOS devices */ 
-    app-text, app-field, app-test, app-sound-check {
-        height: 77vh; /* stop buttons disappearing below screen edges */
-    }
-}
 .content {
     flex-grow: 1;
     overflow: auto;
@@ -77,6 +72,11 @@ div.wait {
     text-align: center;
     vertical-align: middle;
     display: table-cell;
+}
+
+input {
+    font-size: 20pt;
+    max-width: 90vw;
 }
 
 /* TODO fix wider-than-800px animation and delete this cludge: */
@@ -119,10 +119,30 @@ table.dtt label span.text {
         flex-grow: unset;
         overflow: unset;
     }
+    input {
+        font-size: 14pt;
+    }
 }
 
+/* mobile browsers */
+@media all and (max-width: 640px) {
+    app-text, app-field, app-test, app-sound-check {
+        height: 80vh; /* stop buttons disappearing below screen edges */
+    }
+}
+/* iOS devices */
+@supports (-webkit-touch-callout: none) { /* CSS specific to iOS devices */ 
+    app-text, app-field, app-test, app-sound-check {
+        height: 77vh; /* stop buttons disappearing below screen edges */
+    }
+}
+
+/* very small devices */
 @media all and (max-width: 320px) {
     table.dtt label span.text {
         display: none;
+    }
+    button {
+        font-size: 12pt;
     }
 }
