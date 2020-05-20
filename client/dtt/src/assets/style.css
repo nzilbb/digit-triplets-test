@@ -43,7 +43,7 @@ app-text, app-field, app-test, app-sound-check {
 }
 .content {
     flex-grow: 1;
-    overflow: scroll;
+    overflow: auto;
 }
 table.dtt {
     height: 100%;
@@ -51,7 +51,6 @@ table.dtt {
 }
 div.text {
     margin: 3vw;
-    overflow: scroll;
 }
 div.results {
     max-height: fit-content; /* no button on results page */
