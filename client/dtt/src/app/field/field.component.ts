@@ -35,6 +35,7 @@ export class FieldComponent implements OnInit {
     
     ngAfterViewInit(): void {
         this.input.nativeElement.focus();
+        this.valid = !this.field.required;
     }
 
     saveFieldValue() {
