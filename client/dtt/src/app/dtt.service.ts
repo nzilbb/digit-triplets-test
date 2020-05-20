@@ -33,7 +33,9 @@ export class DttService {
         private router: Router
     ) {
         this.resultTexts = [];
-        this.baseUrl = this.baseUrl || location.href.replace(/\/#.*$/,"");
+        console.log(`location.href ${location.href}`); 
+        this.baseUrl = this.baseUrl || location.href.replace(/\/[^/]*\/[^/]*$/,"");
+        console.log(`this.baseUrl ${this.baseUrl}`);
     }
 
     getText(id: string): Observable<Text> {

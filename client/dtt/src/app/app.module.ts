@@ -3,7 +3,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { APP_BASE_HREF, Location } from '@angular/common';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -36,8 +35,6 @@ import { WaitComponent } from './wait/wait.component';
         {
             provide: APP_BASE_HREF,
             useFactory: getBaseLocation
-        },{
-            provide: LocationStrategy, useClass: HashLocationStrategy
         }],
     bootstrap: [AppComponent]
 })
