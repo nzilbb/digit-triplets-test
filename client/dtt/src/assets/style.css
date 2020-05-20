@@ -80,6 +80,10 @@ div.wait {
     display: table-cell;
 }
 
+/* TODO fix wider-than-800px animation and delete this cludge: */
+.ng-animating app-text, .ng-animating app-field, .ng-animating app-test, .ng-animating app-sound-check {
+    margin-left: 15vw;
+}
 .ng-animating .controls {
     display: none;
 }
