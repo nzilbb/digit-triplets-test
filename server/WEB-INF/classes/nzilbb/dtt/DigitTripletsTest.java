@@ -325,13 +325,7 @@ public class DigitTripletsTest extends ServletBase {
       // no caching please
       response.addHeader("Pragma", "no-cache"); 
       response.addHeader("Cache-Control", "no-cache");
-      if("bytes=0-1".equals(request.getHeader("range"))) {
-         // Safari sends two requests, the first for range "bytes=0-1", and then the rest
-         byte[] oneByte = {0};
-         response.getOutputStream().write(oneByte);
-         return;
-      }
-      
+
       Connection connection = db.newConnection();
       try {
          String answer = request.getParameter("a");
@@ -465,11 +459,21 @@ public class DigitTripletsTest extends ServletBase {
             OutputStream o = response.getOutputStream();
             byte[] buffer = new byte[1024];
             int bytesRead = i.read(buffer);
-            while(bytesRead >= 0)
-            {
-               o.write(buffer, 0, bytesRead);
-               bytesRead = i.read(buffer);
-            } // next chunk of data
+            // safari asks for the first byte sometimes
+            if ("bytes=0-1".equals(request.getHeader("range"))) {
+               response.setHeader(
+                  "Content-Range", "bytes 0-1/"+fPrompt.length());
+               o.write(buffer, 0, 2);
+            } else {
+               response.setHeader(
+                  "Content-Range", "bytes 0-"+fPrompt.length()+"/"+fPrompt.length());
+               // send all the content
+               while(bytesRead >= 0)
+               {
+                  o.write(buffer, 0, bytesRead);
+                  bytesRead = i.read(buffer);
+               } // next chunk of data
+            }
             i.close();
          }
          
