@@ -1,14 +1,6 @@
 import {
-    trigger,
-    state,
-    style,
-    animate,
-    transition,
-    animateChild,
-    query,
-    group,
+    trigger, state, style, animate, transition, animateChild, query, group
 } from '@angular/animations';
-import { RouterOutlet } from '@angular/router';
 
 export const slideInAnimation =
   trigger('routeAnimations', [
