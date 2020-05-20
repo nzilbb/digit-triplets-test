@@ -27,15 +27,12 @@ export class DttService {
         headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-
     constructor(
         private http: HttpClient,
         private router: Router
     ) {
         this.resultTexts = [];
-        console.log(`location.href ${location.href}`); 
-        this.baseUrl = this.baseUrl || location.href.replace(/\/[^/]*\/[^/]*$/,"");
-        console.log(`this.baseUrl ${this.baseUrl}`);
+        this.baseUrl = this.baseUrl || location.href.replace(/\/#.*$/,"");
     }
 
     getText(id: string): Observable<Text> {
