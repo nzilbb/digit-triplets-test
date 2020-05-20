@@ -89,14 +89,6 @@ input {
     max-width: 90vw;
 }
 
-/* TODO fix wider-than-800px animation and delete this cludge: */
-.ng-animating app-text, .ng-animating app-field, .ng-animating app-test, .ng-animating app-sound-check {
-    margin-left: 15vw;
-}
-.ng-animating .controls {
-    display: none;
-}
-
 table.dtt label span.text {
     padding: 3px;
 }
