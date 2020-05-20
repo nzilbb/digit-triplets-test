@@ -13,19 +13,19 @@ export const slideInAnimation =
           left: 0,
           width: '100%'
         })
-      ]),
+      ], { optional: true }),
       query(':enter', [
         style({ left: '100vw'})
-      ]),
-      query(':leave', animateChild()),
+      ], { optional: true }),
+      query(':leave', animateChild(), { optional: true }),
       group([
         query(':leave', [
           animate('400ms ease-out', style({ left: '-100vw'}))
-        ]),
+        ], { optional: true }),
         query(':enter', [
           animate('400ms ease-out', style({ left: '0%'}))
-        ])
+        ], { optional: true })
       ]),
-      query(':enter', animateChild()),
+      query(':enter', animateChild(), { optional: true }),
     ]),
   ]);
