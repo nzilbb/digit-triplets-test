@@ -1,4 +1,4 @@
-/* Settings */
+/* DTT Settings */
 INSERT INTO attribute (description,attribute, value, type) VALUES
 ('The highest a signal level can be (if they go beyond it, the test ends)',
  'signallevelmaximum','4', 'integer'),

@@ -7,6 +7,7 @@ import { environment } from '../environments/environment';
 import { APP_BASE_HREF, Location } from '@angular/common';
 
 import { Text } from './text';
+import { Attribute } from './attribute';
 import { Field } from './field';
 import { Option } from './option';
 import { Instance } from './instance';
@@ -40,6 +41,14 @@ export class DttService {
             .pipe(
                 tap((text) => this.log(`fetched text "${text.id}"`)),
                 catchError(this.handleError<Text>('getText', `Could not get text "${id}".`))
+            );
+    }
+
+    getAttribute(attribute: string): Observable<Attribute> {
+        return this.http.get<Attribute>(`${this.baseUrl}/attribute/${attribute}`)
+            .pipe(
+                tap((attribute) => this.log(`fetched attribute "${attribute.attribute}" = "${attribute.value}"`)),
+                catchError(this.handleError<Attribute>('getAttribute', `Could not get attribute "${attribute}".`))
             );
     }
 
