@@ -140,15 +140,20 @@ public class Install extends HttpServlet {
          writer.println("    <td><input id=\"mysql-host\" name=\"mysql-host\" type=\"text\" value=\"localhost\"/></td></tr>");
 
          // root user credentials
+         writer.println("    <td><label for=\"create-db\">Create database?</label></td>");
+         writer.println("    <td><input id=\"create-db\" name=\"create-db\" type=\"checkbox\""
+                        +" onchange=\"document.getElementById('root-user').disabled"
+                        +" = document.getElementById('root-password').disabled"
+                        +" = this.checked;\" autofocus/></td></tr>");
          writer.println("   <tr title=\"The MySQL user that can create databases and users\">");
-         writer.println("    <td><label for=\"root-user\">MySQL root user</label></td>");
+         writer.println("    <td><label for=\"root-user\">MySQL root user (blank if the database already exists)</label></td>");
          writer.println("    <td><input id=\"root-user\" name=\"root-user\" type=\"text\" value=\"root\"/></td></tr>");
-         writer.println("   <tr title=\"The password for the root user\">");
+         writer.println("   <tr title=\"The password for the root user, or blank if the database already exists\">");
          writer.println("    <td><label for=\"root-password\">MySQL root password</label></td>");
-         writer.println("    <td><input id=\"root-password\" name=\"root-password\" type=\"password\" autofocus/></td></tr>");
+         writer.println("    <td><input id=\"root-password\" name=\"root-password\" type=\"password\"/></td></tr>");
          
          // database access
-         writer.println("   <tr title=\"The name of the database to create\">");
+         writer.println("   <tr title=\"The name of the database to connect to or create\">");
          writer.println("    <td><label for=\"db-name\">Database name</label></td>");
          writer.println("    <td><input id=\"db-name\" name=\"db-name\" type=\"text\" value=\"dtt\"/></td></tr>");
          writer.println("   <tr title=\"The MySQL user name to create for this web application\">");
@@ -197,6 +202,7 @@ public class Install extends HttpServlet {
          String dbName = request.getParameter("db-name");
          String dbUser = request.getParameter("db-user");
          String dbPassword = request.getParameter("db-password");
+         boolean databaseExists = rootUser == null || rootUser.length() == 0;
 
          try {
 
@@ -205,15 +211,17 @@ public class Install extends HttpServlet {
                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                return;
             }
-            if (rootUser == null || rootUser.trim().length() == 0) {
-               writer.println("<span class=\"error\">No MySQL root user specified</span>");
-               response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-               return;
-            }
-            if (rootPassword == null || rootPassword.trim().length() == 0) {
-               writer.println("<span class=\"error\">No MySQL root password specified</span>");
-               response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-               return;
+            if (!databaseExists) {
+               if (rootUser == null || rootUser.trim().length() == 0) {
+                  writer.println("<span class=\"error\">No MySQL root user specified</span>");
+                  response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                  return;
+               }
+               if (rootPassword == null || rootPassword.trim().length() == 0) {
+                  writer.println("<span class=\"error\">No MySQL root password specified</span>");
+                  response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                  return;
+               }
             }
             if (dbName == null || dbName.trim().length() == 0) {
                writer.println("<span class=\"error\">No database name specified</span>");
@@ -235,8 +243,17 @@ public class Install extends HttpServlet {
             writer.println("dbName: "+dbName);	 
             writer.println("dbUser: "+dbUser);
 
-            db.createDatabase(
-               mysqlHost, rootUser, rootPassword, dbName,  dbUser, dbPassword, writer);
+            if (!databaseExists) {
+               log("Root user details provided, creating database...");
+               writer.println("Root user details provided, creating database...");
+
+               db.createDatabase(
+                  mysqlHost, rootUser, rootPassword, dbName,  dbUser, dbPassword, writer);
+            } else {
+               log("Root user details not provided, assuming database already exists...");
+               writer.println("Root user details not provided, assuming database already exists...");
+            }
+            db.setConnectionURL(mysqlHost, dbName, dbUser, dbPassword);
             
             log("Installing database schema...");
             writer.print("Installing database schema...");

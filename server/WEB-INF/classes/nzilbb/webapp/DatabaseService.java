@@ -108,7 +108,7 @@ public class DatabaseService {
     * @param newConnectionURL JDBC connection URL.
     */
    public DatabaseService setConnectionURL(String newConnectionURL) { connectionURL = newConnectionURL; return this; }
-
+   
    /**
     * Database user name.
     * @see #getConnectionName()
@@ -244,18 +244,31 @@ public class DatabaseService {
          connection.close();
       }
 
-      // set attributes so that SQL scripts can run
-      dbConnectString =
-         "jdbc:mysql://" + mysqlHost + "/" + dbName // now with new database
-         + "?dontTrackOpenResources=true" // this prevents 'leakage'
-         + "&characterEncoding=UTF-8" // this ensures non-roman data is correctly saved
-         + "&useSSL=false&allowPublicKeyRetrieval=true"; // this disables SSL, avoiding log errors
-      connectionURL = dbConnectString;
-      connectionName = dbName;
-      connectionPassword = dbPassword;
-
       log("createDatabase finished.");
    } // end of createDatabase()
+
+   /**
+    * Setter for {@link #connectionURL} using component parts.
+    * @param mysqlHost MySql host name
+    * @param rootUser Database user with privileges for creating databases and users.
+    * @param rootPassword Password for <var>rootUser</var>
+    * @param dbName Name of the database to create.
+    * @param dbUser Database user to create for the app.
+    * @param dbPassword Password for <var>dbUser</var>
+    */
+   public void setConnectionURL(
+      String mysqlHost,
+      String dbName,
+      String dbUser,
+      String dbPassword) {
+      
+      connectionURL = "jdbc:mysql://" + mysqlHost + "/" + dbName // now with new database
+         + "?dontTrackOpenResources=true" // this prevents 'leakage'
+         + "&characterEncoding=UTF-8" // this ensures non-roman data is correctly saved
+         + "&useSSL=false&allowPublicKeyRetrieval=true"; // this disables SSL, avoiding log errors;
+      connectionName = dbName;
+      connectionPassword = dbPassword;
+   }
 
    /**
     * Run SQL scripts to upgrade the database schema.
