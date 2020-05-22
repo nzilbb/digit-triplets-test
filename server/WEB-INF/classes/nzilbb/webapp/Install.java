@@ -293,7 +293,7 @@ public class Install extends HttpServlet {
             log("context.xml saved.");
             
             writer.println("</pre>");
-            writer.println("<p>Installation complete. Now:</p>");
+            writer.println("<p><em>Installation complete.</em> Now:</p>");
             writer.println("<ol>");
             writer.println("<li>Restart Tomcat</li>");
             writer.println("<li>Click <a href=\"admin/\" target=\"admin\">here</a></li>");
@@ -301,7 +301,7 @@ public class Install extends HttpServlet {
                            +" password: <em>"+adminPassword+"</em></li>");
             writer.print("</ol><pre>");
             
-         } catch(Exception x) {
+         } catch(Throwable x) {
             // reset state
             db.setVersion(null);
             db.setConnectionURL(null);
