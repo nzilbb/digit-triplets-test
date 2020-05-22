@@ -393,21 +393,40 @@ public class DatabaseService {
     * @throws SQLException
     */
    public boolean setUserPassword(String user, String password) throws SQLException {
-      MessageDigestCredentialHandler credentials = new MessageDigestCredentialHandler();
-      try {
-         credentials.setAlgorithm("SHA-256");
-      } catch(Exception exception) {
-         log(exception.toString());
-      }
-      credentials.setEncoding("UTF-8");
-      credentials.setIterations(1000);
-      credentials.setSaltLength(8);
-      String credential = credentials.mutate(password);
+      
+      // MessageDigestCredentialHandler only works with Tomcat >= 8 :
+      
+      // MessageDigestCredentialHandler credentials = new MessageDigestCredentialHandler();
+      // try {
+      //    credentials.setAlgorithm("SHA-256");
+      // } catch(Exception exception) {
+      //    log(exception.toString());
+      // }
+      // credentials.setEncoding("UTF-8");
+      // credentials.setIterations(1000);
+      // credentials.setSaltLength(8);
+      // String credential = credentials.mutate(password);
+      // Connection connection = newConnection();
+      // try {
+      //    PreparedStatement sql = connection.prepareStatement(
+      //       "UPDATE user SET password = ? WHERE user = ?");
+      //    sql.setString(1, credential);
+      //    sql.setString(2, user);
+      //    try {
+      //       return sql.executeUpdate() > 0;
+      //    } finally {
+      //       sql.close();
+      //    }
+      // } finally {
+      //    connection.close();
+      // }
+
+      // Use md5 instead...
       Connection connection = newConnection();
       try {
          PreparedStatement sql = connection.prepareStatement(
-            "UPDATE user SET password = ? WHERE user = ?");
-         sql.setString(1, credential);
+            "UPDATE user SET password = md5(?) WHERE user = ?");
+         sql.setString(1, password);
          sql.setString(2, user);
          try {
             return sql.executeUpdate() > 0;
