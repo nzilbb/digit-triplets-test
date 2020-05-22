@@ -50,6 +50,6 @@
     </select>
   </div>
 </div>
-<div class="controls" [disabled]="leaving">
+<div class="controls"  [class.leaving]="leaving">
   <button #btn (click)="saveFieldValue()" [disabled]="!valid || leaving">Continue</button>
 </div>

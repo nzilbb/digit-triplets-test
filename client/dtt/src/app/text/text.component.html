@@ -5,7 +5,7 @@
 <div class="controls" *ngIf="canContinue" [class.leaving]="leaving">
   <button (click)="next()" appAutofocus [class.leaving]="leaving">Continue ▷</button>
 </div>
-<div class="mode controls" *ngIf="text.id === 'introduction'" [disabled]="leaving">
+<div class="mode controls" *ngIf="text.id === 'introduction'" [class.leaving]="leaving">
   <div class="mode-option">
     <button (click)="start('l')" appAutofocus [disabled]="leaving">
       <label>I have plugged in headphones 🎧</label><!-- TODO coonfigurable labels -->
