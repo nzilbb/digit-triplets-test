@@ -162,62 +162,64 @@ public class AdminMedia extends HttpServlet {
                   
                   // save file
                   File zip = File.createTempFile(item.getName(), ".zip");
-                  item.write(zip);
-                  log("Saved: " + zip.getPath());
-
-                  // TODO somehow validate it's actually a digits media pack before unpacking it
-                  
-                  // unpack it
-                  JarFile jar = new JarFile(zip);
-                  Enumeration<JarEntry> entries = jar.entries();
-                  Pattern validateDigitFile = Pattern.compile(
-                     "dtt[lr]?/([0-9]{3}_[-0-9][0-9]{2}[lr]?|sound-check)\\.mp3");
-                  while (entries.hasMoreElements()) {
-                     JarEntry entry = entries.nextElement();
+                  try {
+                     item.write(zip);
+                     log("Saved: " + zip.getPath());
                      
-                     if (entry.isDirectory()) continue;
-                     if (!validateDigitFile.matcher(entry.getName()).matches()) {
-                        writer.println("<span class='warning'>Ignoring: "+entry.getName()+"</span>");
-                        continue;
-                     }
+                     // unpack it
+                     JarFile jar = new JarFile(zip);
+                     Enumeration<JarEntry> entries = jar.entries();
+                     Pattern validateDigitFile = Pattern.compile(
+                        "dtt[lr]?/([0-9]{3}_[-0-9][0-9]{2}[lr]?|sound-check)\\.mp3");
+                     while (entries.hasMoreElements()) {
+                        JarEntry entry = entries.nextElement();
                         
-                     // unpack file 
-                     File parent = mp3Root;
-                     String sFileName = entry.getName();
-                     writer.print("Unpacking: "+sFileName+" ...");
-                     log("Unpacking: "+sFileName+" ...");
-                     String[] pathParts = entry.getName().split("/");
-                     for (int p = 0; p < pathParts.length - 1; p++) {
+                        if (entry.isDirectory()) continue;
+                        if (!validateDigitFile.matcher(entry.getName()).matches()) {
+                           writer.println("<span class='warning'>Ignoring: "+entry.getName()+"</span>");
+                           continue;
+                        }
+                        
+                        // unpack file 
+                        File parent = mp3Root;
+                        String sFileName = entry.getName();
+                        writer.print("Unpacking: "+sFileName+" ...");
+                        log("Unpacking: "+sFileName+" ...");
+                        String[] pathParts = entry.getName().split("/");
+                        for (int p = 0; p < pathParts.length - 1; p++) {
                            // ensure that the required directories exist
-                        parent = new File(parent, pathParts[p]);
-                        if (!parent.exists()) {
-                           parent.mkdir();
-                        }		     
-                     } // next part
-                     sFileName = pathParts[pathParts.length - 1];
-                     File file = new File(parent, sFileName);
-                     
-                     // get input stream
-                     InputStream in = jar.getInputStream(entry);
-                     
-                     // get output stream
-                     FileOutputStream fout = new FileOutputStream(file);
-                     
-                     // pump data from one stream to the other
-                     byte[] buffer = new byte[1024];
-                     int bytesRead = in.read(buffer);
-                     while(bytesRead >= 0) {
-                        fout.write(buffer, 0, bytesRead);
-                        bytesRead = in.read(buffer);
-                     } // next chunk of data
-                     
-                     // close streams
-                     in.close();
-                     fout.close();
-                     writer.println("OK");
-                     
-                  } // next entry
-               } // .war file
+                           parent = new File(parent, pathParts[p]);
+                           if (!parent.exists()) {
+                              parent.mkdir();
+                           }		     
+                        } // next part
+                        sFileName = pathParts[pathParts.length - 1];
+                        File file = new File(parent, sFileName);
+                        
+                        // get input stream
+                        InputStream in = jar.getInputStream(entry);
+                        
+                        // get output stream
+                        FileOutputStream fout = new FileOutputStream(file);
+                        
+                        // pump data from one stream to the other
+                        byte[] buffer = new byte[1024];
+                        int bytesRead = in.read(buffer);
+                        while(bytesRead >= 0) {
+                           fout.write(buffer, 0, bytesRead);
+                           bytesRead = in.read(buffer);
+                        } // next chunk of data
+                        
+                        // close streams
+                        in.close();
+                        fout.close();
+                        writer.println("OK");
+                        
+                     } // next entry
+                  } finally {
+                     zip.delete();
+                  }
+               } // .zip file
             } // next item
             
             if (!fileFound) {

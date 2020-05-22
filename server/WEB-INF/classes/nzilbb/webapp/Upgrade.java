@@ -149,56 +149,60 @@ public class Upgrade extends HttpServlet {
                   
                   // save file
                   File war = File.createTempFile(item.getName(), ".war");
-                  item.write(war);
-                  log("Saved: " + war.getPath());
-
-                  // TODO somehow validate it's actually this webapp before unpacking it
-                  
-                  // unpack it
-                  JarFile jar = new JarFile(war);
-                  Enumeration<JarEntry> entries = jar.entries();
-                  while (entries.hasMoreElements()) {
-                     JarEntry entry = entries.nextElement();
-                     if (!entry.isDirectory()) {
-                        
-                        // unpack file 
-                        File parent = webappRoot;
-                        String sFileName = entry.getName();
-                        writer.print("Unpacking: "+sFileName+" ...");
-                        log("Unpacking: "+sFileName+" ...");
-                        String[] pathParts = entry.getName().split("/");
-                        for (int p = 0; p < pathParts.length - 1; p++) {
-                           // ensure that the required directories exist
-                           parent = new File(parent, pathParts[p]);
-                           if (!parent.exists()) {
-                              parent.mkdir();
-                           }		     
-                        } // next part
-                        sFileName = pathParts[pathParts.length - 1];
-                        File file = new File(parent, sFileName);
-			
-                        // get input stream
-                        InputStream in = jar.getInputStream(entry);
-                        
-                        // get output stream
-                        FileOutputStream fout = new FileOutputStream(file);
-                        
-                        // pump data from one stream to the other
-                        byte[] buffer = new byte[1024];
-                        int bytesRead = in.read(buffer);
-                        while(bytesRead >= 0) {
-                           fout.write(buffer, 0, bytesRead);
-                           bytesRead = in.read(buffer);
-                        } // next chunk of data
-                        
-                        // close streams
-                        in.close();
-                        fout.close();
-                        writer.println("OK");
-                        
-                     } // not a directory
+                  try {
+                     item.write(war);
+                     log("Saved: " + war.getPath());
                      
-                  } // next entry
+                     // TODO somehow validate it's actually this webapp before unpacking it
+                     
+                     // unpack it
+                     JarFile jar = new JarFile(war);
+                     Enumeration<JarEntry> entries = jar.entries();
+                     while (entries.hasMoreElements()) {
+                        JarEntry entry = entries.nextElement();
+                        if (!entry.isDirectory()) {
+                           
+                           // unpack file 
+                           File parent = webappRoot;
+                           String sFileName = entry.getName();
+                           writer.print("Unpacking: "+sFileName+" ...");
+                           log("Unpacking: "+sFileName+" ...");
+                           String[] pathParts = entry.getName().split("/");
+                           for (int p = 0; p < pathParts.length - 1; p++) {
+                              // ensure that the required directories exist
+                              parent = new File(parent, pathParts[p]);
+                              if (!parent.exists()) {
+                                 parent.mkdir();
+                              }		     
+                           } // next part
+                           sFileName = pathParts[pathParts.length - 1];
+                           File file = new File(parent, sFileName);
+                           
+                           // get input stream
+                           InputStream in = jar.getInputStream(entry);
+                           
+                           // get output stream
+                           FileOutputStream fout = new FileOutputStream(file);
+                           
+                           // pump data from one stream to the other
+                           byte[] buffer = new byte[1024];
+                           int bytesRead = in.read(buffer);
+                           while(bytesRead >= 0) {
+                              fout.write(buffer, 0, bytesRead);
+                              bytesRead = in.read(buffer);
+                           } // next chunk of data
+                           
+                           // close streams
+                           in.close();
+                           fout.close();
+                           writer.println("OK");
+                           
+                        } // not a directory
+                        
+                     } // next entry
+                  } finally {
+                     war.delete();
+                  }
                } // .war file
             } // next item
 
