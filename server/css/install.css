@@ -1,13 +1,17 @@
 body {
-    margin: 15vh;
+    margin-left: 15vw;
+    margin-right: 15vw;
+    font-family:'DejaVu Sans', Arial, Helvetica, sans-serif;
+    font-size:12pt;
 }
 h1 {
     margin-top: 10vh;
     text-align: center;
+    font-size: 17pt;
+    color: #859044;
 }
-table {
-    margin: auto;
-}
-.error {
-    color: red;
-}
+h2 { font-size: 16pt; color: #859044; }
+table { margin: auto; }
+.error { color: red; font-weight: bold;}
+.warning { color: darkorange; font-weight: bold;}
+em { font-weight: bold; font-style: normal;}
