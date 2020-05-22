@@ -15,7 +15,7 @@ export class TrialSetService {
     private baseUrl = environment.baseUrl+'trialsets';
     
     httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' })
     };
     
     constructor(

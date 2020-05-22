@@ -15,7 +15,7 @@ export class UserService {
     private baseUrl = environment.baseUrl+'users';
 
     httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' })
     };
 
     constructor(

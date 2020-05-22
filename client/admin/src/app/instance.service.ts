@@ -14,7 +14,7 @@ export class InstanceService {
     private baseUrl = environment.baseUrl+'instances';
     
     httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' })
     };
 
     constructor(
