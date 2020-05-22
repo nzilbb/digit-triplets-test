@@ -86,15 +86,15 @@ public class Upgrade extends HttpServlet {
          writer.println("<html>");
          writer.println(" <head>");
          writer.println("  <title>Digit Triplets Test Upgrade</title>");
-         writer.println("  <link rel=\"shortcut icon\" href=\"logo.png\" />");
-         writer.println("  <link rel=\"stylesheet\" href=\"css/install.css\" type=\"text/css\" />");
+         writer.println("  <link rel=\"shortcut icon\" href=\"../logo.png\" />");
+         writer.println("  <link rel=\"stylesheet\" href=\"../css/install.css\" type=\"text/css\" />");
          writer.println(" </head>");
          writer.println(" <body>");
          writer.println("  <h1>Digit Triplets Test Upgrade</h1>");
          writer.println("  <form method=\"POST\" enctype=\"multipart/form-data\"><table>");
 
          // WAR file
-         writer.println("   <tr title=\"The host that the MySQL server is running on\">");
+         writer.println("   <tr title=\"The new version of the web application archive (.war file)\">");
          writer.println("    <td><label for=\"war\">digit-triplets-test.war file</label></td>");
          writer.println("    <td><input id=\"war\" name=\"war\" type=\"file\""
                         +" onchange=\"if (!this.files[0].name.match('\\.war$'))"
@@ -130,10 +130,12 @@ public class Upgrade extends HttpServlet {
          writer.println("<html>");
          writer.println(" <head>");
          writer.println("  <title>Digit Triplets Test Install</title>");
-         writer.println("  <link rel=\"shortcut icon\" href=\"logo.png\" />");
-         writer.println("  <link rel=\"stylesheet\" href=\"css/install.css\" type=\"text/css\" />");
+         writer.println("  <link rel=\"shortcut icon\" href=\"../logo.png\" />");
+         writer.println("  <link rel=\"stylesheet\" href=\"../css/install.css\" type=\"text/css\" />");
          writer.println(" </head>");
-         writer.println(" <body><pre>");
+         writer.println(" <body>");
+         writer.println("  <h1>Digit Triplets Test Upgrade</h1>");
+         writer.println("  <pre>");
          boolean fileFound = false;
          ServletFileUpload upload = new ServletFileUpload(new DiskFileItemFactory());
          try {
@@ -205,7 +207,7 @@ public class Upgrade extends HttpServlet {
                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             } else {
                writer.println("</pre>");
-               writer.println("<p>Upload complete</p>");
+               writer.println("<p><em>Upload complete</em></p>");
                writer.println("<p>The web-app should automatically reload and upgrade.</p>");
                writer.println("<p>Click <a href=\".\" target=\"admin\">here</a> to continue...</p>");
                writer.println("<p>A log of the upgrade is available <a href=\"upgrade/log.txt\" target=\"log\">here</a>.</p>");
