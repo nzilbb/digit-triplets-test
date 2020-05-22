@@ -140,7 +140,8 @@ public class Install extends HttpServlet {
          writer.println("    <td><input id=\"mysql-host\" name=\"mysql-host\" type=\"text\" value=\"localhost\"/></td></tr>");
 
          // root user credentials
-         writer.println("    <td><label for=\"create-db\">Create database?</label></td>");
+         writer.println("   <tr title=\"Does the database already exist? Or should it be created now?\">");
+         writer.println("    <td><label for=\"create-db\">Database exists</label></td>");
          writer.println("    <td><input id=\"create-db\" name=\"create-db\" type=\"checkbox\""
                         +" onchange=\"document.getElementById('root-user').disabled"
                         +" = document.getElementById('root-password').disabled"
