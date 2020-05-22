@@ -36,14 +36,24 @@ app-text, app-field, app-test, app-sound-check {
     align-content: stretch;
 }
 
-@keyframes sidle {
+@keyframes entering {
     from { left: 50vw; opacity: 0; }
     to   { left: 0vw; opacity: 1; }
 }
+@keyframes leaving {
+    0% { left: 0vw; opacity: 1; }
+    50%   { left: -50vw; opacity: 0; }
+    100%   { left: -50vw; opacity: 0; } /* stay hidden for a while in case of long request */
+}
 app-text, app-field, app-test, app-sound-check {
     position: relative; 
-    animation-name: sidle;
-    animation-duration: 400ms;
+    animation-name: entering;
+    animation-duration: 500ms;
+}
+.leaving {
+    position: relative; 
+    animation-name: leaving;
+    animation-duration: 1000ms;
 }
 
 .content {

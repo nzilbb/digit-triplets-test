@@ -1,17 +1,19 @@
-<div class="content">
+<div class="content" [class.leaving]="leaving">
   <div class="text {{text.id}}" [class.results]="results" [innerHTML]="text.html"><app-wait></app-wait></div>
   <div *ngIf="text2" class="text {{text2.id}}" [class.results]="results" [innerHTML]="text2.html"><app-wait></app-wait></div>
 </div>
-<div class="controls" *ngIf="canContinue"><button (click)="next()" appAutofocus>Continue ▷</button></div>
-<div class="mode controls" *ngIf="text.id === 'introduction'">
+<div class="controls" *ngIf="canContinue" [class.leaving]="leaving">
+  <button (click)="next()" appAutofocus [class.leaving]="leaving">Continue ▷</button>
+</div>
+<div class="mode controls" *ngIf="text.id === 'introduction'" [disabled]="leaving">
   <div class="mode-option">
-    <button (click)="start('l')" appAutofocus>
+    <button (click)="start('l')" appAutofocus [disabled]="leaving">
       <label>I have plugged in headphones 🎧</label><!-- TODO coonfigurable labels -->
     </button>
     
   </div>
   <div class="mode-option">
-    <button (click)="start('')">
+    <button (click)="start('')" [disabled]="leaving">
       <label>I have switched my speakers on 🔊</label>
     </button>
   </div>

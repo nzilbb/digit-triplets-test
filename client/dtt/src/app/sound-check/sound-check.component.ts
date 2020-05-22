@@ -13,6 +13,7 @@ export class SoundCheckComponent implements OnInit {
     text = {} as Text;
     @ViewChild("player") player: ElementRef;
     playing = false;
+    leaving = false;
     
     constructor(private dttService: DttService) { }
     
@@ -35,6 +36,7 @@ export class SoundCheckComponent implements OnInit {
     }
 
     next(): void {
+        this.leaving = true;
         this.dttService.nextAfterSoundCheck();
     }
 }

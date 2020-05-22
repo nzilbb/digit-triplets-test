@@ -17,11 +17,12 @@ export class FieldComponent implements OnInit {
     field: Field;
     value: string;
     valid = false;
+    leaving = false;
     @ViewChild("input") input: ElementRef; // only works the first time TODO
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
-    
+
     ngOnInit(): void {
         this.dttService.checkStarted();
 
@@ -39,9 +40,9 @@ export class FieldComponent implements OnInit {
     }
 
     saveFieldValue() {
+        this.leaving = true;
         this.dttService.saveFieldValue(this.field.field, this.value);
         this.value = null;
-        this.valid = false;
     }
 
     validity(input) {

@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" [class.leaving]="leaving">
   <h1>{{field.name}}</h1>
   <div class="description">{{field.description}}</div>
   
@@ -50,6 +50,6 @@
     </select>
   </div>
 </div>
-<div class="controls">
-  <button #btn (click)="saveFieldValue()" [disabled]="!valid">Continue</button>
+<div class="controls" [disabled]="leaving">
+  <button #btn (click)="saveFieldValue()" [disabled]="!valid || leaving">Continue</button>
 </div>

@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" [class.leaving]="leaving">
   <div class="text" [innerHTML]="text.html"><app-wait></app-wait></div>
   <audio #player
          preload="auto"
@@ -8,11 +8,11 @@
     <p>Audio not supported. Please try with a different browser.</p>
   </audio>
 </div>
-<div class="controls">
+<div class="controls" [class.leaving]="leaving">
   <button (click)="play()" [disabled]="playing" appAutofocus>
     <label>Play 🔊</label>
   </button>
-  <button (click)="next()">
+  <button (click)="next()" [disabled]="leaving">
     <label>Next ▷</label>
   </button>
 </div>

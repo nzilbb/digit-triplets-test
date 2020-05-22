@@ -16,6 +16,7 @@ export class TextComponent implements OnInit {
     nextMode: string;
     canContinue: boolean;
     results: boolean;
+    leaving = false;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
@@ -47,10 +48,12 @@ export class TextComponent implements OnInit {
     }
 
     next(): void {
+        this.leaving = true;
         this.dttService.nextAfterText(this.text.id);
     }
 
     start(mode: string): void {
+        this.leaving = true;
         this.dttService.start(mode);
     }
 
