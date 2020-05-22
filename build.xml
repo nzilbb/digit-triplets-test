@@ -12,7 +12,7 @@
   <property name="admin-client-dir" location="./client/admin"/>
   <property name="dtt-client-dir" location="./client/dtt"/>
   
-  <target name="all" depends="server-compile,war">
+  <target name="all" depends="admin-client,dtt-client,war">
   </target>
   
   <target name="init">
@@ -57,7 +57,7 @@
     </exec>
   </target>
   
-  <target name="war" depends="server-compile,admin-client,dtt-client"
+  <target name="war" depends="server-compile"
           description="Generate the web application archive">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>    
@@ -68,9 +68,7 @@
       <!-- for installation and upgrades -->
       <fileset dir="server" includes="WEB-INF/context-template.xml" />
       <fileset dir="server" includes="WEB-INF/sql/*.sql" />
-
-      <!-- media -->
-      <!--fileset dir="server" includes="mp3/**/*.mp3" /-->
+      <fileset dir="server" includes="css/* logo.png mp3/silence.mp3" />
 
       <!-- Digit Triplets Test app -->
       <zipfileset 
@@ -100,6 +98,7 @@
       <!-- for installation and upgrades -->
       <fileset dir="server" includes="WEB-INF/context-template.xml" />
       <fileset dir="server" includes="WEB-INF/sql/*.sql" />
+      <fileset dir="server" includes="css/* logo.png mp3/silence.mp3" />
       
       <!-- Digit Triplets Test app -->
       <zipfileset 
