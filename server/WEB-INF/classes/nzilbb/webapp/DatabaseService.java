@@ -202,7 +202,7 @@ public class DatabaseService {
       String dbPassword,
       PrintWriter writer) throws SQLException {
 
-      String dbUserHosts = mysqlHost.equals("localhost")?"localhost":"*";
+      String dbUserHosts = mysqlHost.equals("localhost")?"localhost":"%";
 
       String dbConnectString =
          "jdbc:mysql://" + mysqlHost + "/mysql"
