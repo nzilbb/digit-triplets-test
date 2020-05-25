@@ -2,6 +2,7 @@
        preload="auto"
        autoplay
        (loadstart)="playing = true"
+       (canplay)="wait = false"
        (play)="playing = true"
        (pause)="playing = false"
        (ended)="playing = false; startTimeout();">
@@ -53,11 +54,13 @@
       <td class="dtt-button"><button #btn0 (click)="press('0');" accesskey="0"><label>0</label></button></td>
       <td class="dtt-command">
         <button #btnn
+                *ngIf="!wait"
                 (click)="press('n');"
                 [disabled]="playing || answer.length < 3"
                 title="Go to the next step">
           <label><span class="text">Next</span> <span class="icon">▷</span></label>
         </button>
+        <app-wait *ngIf="wait"></app-wait>
       </td>
     </tr>
   </tbody>

@@ -20,6 +20,7 @@ export class TestComponent implements OnInit {
     trial = 0;
     playing = false;
     timeout: any;
+    wait = true;
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
@@ -84,6 +85,7 @@ export class TestComponent implements OnInit {
 
     next(): void {
         if (this.answer.length >= 3) {
+            this.wait = true;
             this.cancelTimeout();
             // set the next media url, given the current
             const answer = this.answer;
