@@ -1,5 +1,6 @@
 <div class="content" [class.leaving]="leaving">
-  <div class="text {{text.id}}" [class.results]="results" [innerHTML]="text.html"><app-wait></app-wait></div>
+  <app-wait *ngIf="text == null"></app-wait>
+  <div class="text {{text.id}}" [class.results]="results" [innerHTML]="text.html"></div>
   <div *ngIf="text2" class="text {{text2.id}}" [class.results]="results" [innerHTML]="text2.html"><app-wait></app-wait></div>
 </div>
 <div class="controls" *ngIf="canContinue" [class.leaving]="leaving">

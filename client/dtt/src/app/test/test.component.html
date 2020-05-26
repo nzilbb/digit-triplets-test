@@ -5,7 +5,9 @@
        (canplay)="wait = false"
        (play)="playing = true"
        (pause)="playing = false"
-       (ended)="playing = false; startTimeout();">
+       (ended)="playing = false; startTimeout();"
+       (onloadedmetadata)="onAudioError"
+       >
   <p>Audio not supported. Please try with a different browser.</p>
 </audio>    
 <table class="dtt" onselectstart="return false;" >

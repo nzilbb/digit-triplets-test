@@ -13,6 +13,7 @@ import { FieldComponent } from './field/field.component';
 import { TestComponent } from './test/test.component';
 import { AutofocusDirective } from './autofocus.directive';
 import { WaitComponent } from './wait/wait.component';
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { WaitComponent } from './wait/wait.component';
         FieldComponent,
         TestComponent,
         AutofocusDirective,
-        WaitComponent
+        WaitComponent,
+        MessageComponent
     ],
     imports: [
         BrowserModule,

@@ -32,7 +32,9 @@ export class TestComponent implements OnInit {
     }
     
     ngAfterViewInit(): void {
-        this.player.nativeElement.src = this.dttService.mediaUrl(null);
+        this.dttService.getMedia(null).subscribe(audioData => {
+            this.player.nativeElement.src = window.URL.createObjectURL(audioData);
+        });
     }
 
     startTimeout() {
@@ -90,10 +92,17 @@ export class TestComponent implements OnInit {
             // set the next media url, given the current
             const answer = this.answer;
             this.answer = "";
-            this.player.nativeElement.src = this.dttService.mediaUrl(answer);
+            //this.player.nativeElement.src = this.dttService.mediaUrl(answer);
             this.trial++;
+            this.dttService.getMedia(answer).subscribe(audioData => {
+                this.player.nativeElement.src = window.URL.createObjectURL(audioData);
+            });
             // after the last trial, the URL is silence, and the dtt.service handles moving
             // to the next step
         }
+    }
+
+    onAudioError(event: any): void {
+        console.log("onAudioError: " + JSON.stringify(event));
     }
 }

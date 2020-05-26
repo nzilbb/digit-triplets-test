@@ -12,6 +12,7 @@ import { Field } from './field';
 import { Option } from './option';
 import { Instance } from './instance';
 import { Result } from './result';
+import { MessageService } from './message.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +31,8 @@ export class DttService {
 
     constructor(
         private http: HttpClient,
-        private router: Router
+        private router: Router,
+        private messageService: MessageService
     ) {
         this.resultTexts = [];
         this.baseUrl = this.baseUrl || location.href.replace(/\/#.*$/,"");
@@ -165,11 +167,51 @@ export class DttService {
     volumeCheckUrl(): string {
         return `${this.baseUrl}/mp3/dtt/sound-check.mp3`;
     }
+    
+    getMedia(answer: string): Observable<Blob> {
+        this.log(`getMedia ${this.instance.trialCount}/${this.instance.numTrials}`);
+        let url = `${this.baseUrl}/test/${this.instance.id}`;
+        if (++this.instance.trialCount <= this.instance.numTrials) { // keep going
+            this.log(`mediaUrl ${this.baseUrl}/test/${this.instance.id}?a=${answer}`);
+            
+            if (!answer) {
+                url = `${this.baseUrl}/test/${this.instance.id}`;
+            } else {
+                url = `${this.baseUrl}/test/${this.instance.id}?a=${answer}`;
+            }
+        } else { // thi test is finished
+            this.log(`mediaUrl - no more trials`);
+            // first submit the last answer
+            this.http.get(`${this.baseUrl}/test/${this.instance.id}?a=${answer}`, {
+                responseType : "arraybuffer" })
+                .subscribe(_=> { // then get the result
+                    this.log(`mediaUrl - submitted last answer`);
+                    this.http.get<Result>(`${this.baseUrl}/test/${this.instance.id}/result`)
+                        .subscribe(result => { // then get the result
+                            this.log(`mediaUrl - result: ${result.textId} - ${result.mode}`);
+                            this.resultTexts.push(result.textId);
+                            this.otherInstanceId = this.instance.id;
+                            this.nextMode = result.mode;
+                            this.instance = null;
+                            if (this.nextMode != null) {
+                                this.start(this.nextMode);
+                            } else {
+                                this.showResults(this.resultTexts);
+                            }
+                        });
+                });
+            url = `${this.baseUrl}/mp3/silence.mp3`
+        }
+        return this.http.get(url, { responseType: 'blob' })
+            .pipe(
+                catchError(this.handleError<Blob>('getMedia',`Could not fetch next triplet`)));
+    }
 
     mediaUrl(answer: string): string {
         this.log(`mediaUrl ${this.instance.trialCount}/${this.instance.numTrials}`);
         if (++this.instance.trialCount <= this.instance.numTrials) { // keep going
             this.log(`mediaUrl ${this.baseUrl}/test/${this.instance.id}?a=${answer}`);
+            
             if (!answer) {
                 return `${this.baseUrl}/test/${this.instance.id}`;
             } else {
@@ -212,6 +254,7 @@ export class DttService {
             if (error.error && error.error.message) message += " - " + error.error.message;
             this.error(operation, message);
             // Let the app keep running by returning an empty result.
+            this.messageService.error(message);
             return of(result as T);
         };
     }

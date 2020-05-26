@@ -1,0 +1,6 @@
+<div class="error" *ngIf="messageService.message">
+  <div class="heading">Sorry!</div>
+  <div class="message">{{messageService.message}}</div>
+  <div class="check">Please check your internet connection.</div>
+  <div class="try-again"><button (click)="tryAgain()">Try again</button></div>
+</div>
