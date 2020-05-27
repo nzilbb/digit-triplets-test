@@ -1,7 +1,7 @@
 # digit-triplets-test
 
 Digit Triplets Hearing Screening Test developed at the
-[New Zealand Institute of Language, Brain and Behaviour](https://www.nzilbb.canterbury.ac.nz)
+[New Zealand Institute of Language, Brain and Behaviour](https://www.canterbury.ac.nz/nzilbb/)
 
 (See
 [Sharon M. King, *Development and Evaluation of a New Zealand Digit Triplet Test for
