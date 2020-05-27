@@ -1,5 +1,15 @@
 # digit-triplets-test
-Digit Triplets Hearing Test
+
+Digit Triplets Hearing Screening Test developed at the
+[New Zealand Institute of Language, Brain and Behaviour](https://www.nzilbb.canterbury.ac.nz)
+
+(See
+[Sharon M. King, *Development and Evaluation of a New Zealand Digit Triplet Test for
+Auditory Screening*](https://ir.canterbury.ac.nz/bitstream/handle/10092/8084/thesis_fulltext.pdf),
+[Alice Bowden, *Normalisation, Evaluation and Verification  of the New Zealand Digit Triplet Test.*](https://ir.canterbury.ac.nz/bitstream/handle/10092/8084/thesis_fulltext.pdf),
+and 
+[Christa Murray, *Development of a Māori Language Version of the New Zealand Hearing Screening Test*](https://ir.canterbury.ac.nz/bitstream/handle/10092/7132/CMurray_MAudThesis.pdf;sequence=1)
+)
 
 ## Installation
 
@@ -30,6 +40,12 @@ Furthemore, the recording should be in three separate directories:
 - `dttr` for recording in the right channel.
 - `dtt` for recording in both channels.
 
+Finally, in the `dtt` directory, there should be a file called `sound-check.mp3` which is
+played to the participant during the sound check before starting the test.
+
+These three directories of mp3 files must be compressed into a single zip file for
+installation on the server.
+
 ### Installation steps:
 
 1. Copy digit-triplets-test.war into the *webapps* directory of the Tomcat installation.
@@ -37,25 +53,23 @@ Furthemore, the recording should be in three separate directories:
    (or possibly http://myservername:8080/digit-triplets-test/install depending on your server setup)
 3. Fill in the MySQL details the form asks for.
 4. Click *Install*
-5. Copy the three directories of recordings (`dttl`, `dttr`, and `dtt`) into the `mp3`
-directory that has been created in the `digit-triplets-tes` directory on the server that
-the web application has been installed into. e.g. on a Linux system, you might run a
-command like:
-`mv dttl dttr dtt /var/lib/tomcat9/webapps/digit-triplets-test/mp3/`
+5. Restart Tomcat to complete the installation.
+6. Log in to http://myservername:8080/digit-triplets-test/admin using the username `admin`
+   and password `admin`.
+7. Click the *Media* option on the menu to upload the zip file containing all your triplet
+   recordings. 
 
-Once this is done, you will need to check/adjust the settings, by using your browser to
-log in to http://myservername:8080/digit-triplets-test/admin
-
-(The first time you log in, use the username `admin` and password `admin`)
+Once this is done, you will need to check/adjust the settings under
+http://myservername:8080/digit-triplets-test/admin
 
 The administration interface is where you can:
 
+- fine-tune test parameters (signal level increments, normal/poor hearing thresholds, etc.)
 - add fields for meta-data you want to collect from participants
 - specify the text of the different prompts and results pages that will be presented to
    participants,
-- specify 'trial sets' - groups of digit triplets that can be used in a given test
-   instance,
-- fine-tune test parameters (signal level increments, normal/poor hearing thresholds, etc.)
+- specify 'trial sets' - groups of digit triplets that can be used together in a given
+   test instance,
 - list the data collected from instances of the test completed by past participants, 
 - create other administration users, and
 - upgrade the web application to a new version.
