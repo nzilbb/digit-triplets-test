@@ -1,0 +1,42 @@
+<module>
+ <default-name>Digit Triplets Test</default-name>
+ <version>0.97</version>
+ <author>Robert Fromont</author>
+ <description>Digit Triplets Hearing Test</description>
+ <keywords />
+ <default-page>trial</default-page><!-- only because Safari refuses to reload content from /trial no matter whether the query string changes -->
+ <default-groups>
+   <group>admin</group>
+   <group>user</group>
+   <group>anyone</group>
+ </default-groups>
+ <properties>
+   <property>
+     <name>email</name>
+     <type>string</type>
+     <label>Email</label>
+     <description>Email address for test results</description>
+     <version>0.65</version>
+   </property>
+ </properties> 
+ <blocks>
+   <block>
+     <version>0.64</version>
+     <page>admin/block_menu</page>
+     <default-position>right</default-position>
+     <default-name>Administration</default-name>
+     <default-groups>
+       <group>admin</group>
+     </default-groups>
+   </block>
+ </blocks>
+ <functions>
+   <function>
+     <name>admin</name>
+     <pattern>^admin/.*</pattern>
+     <default-groups>
+       <group>admin</group>
+     </default-groups>
+   </function>
+ </functions>
+</module>

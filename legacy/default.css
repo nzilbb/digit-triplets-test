@@ -1,0 +1,139 @@
+
+table.instances th {
+    vertical-align: top;
+    font-size: 10pt;
+}
+table.instances td {
+    vertical-align: top;
+    font-size: 10pt;
+}
+
+div.htmlContent {
+    text-align: left;
+}
+
+
+table.dtt {
+    width: 100%;
+    min-width: 200px;
+    max-width: 400px;
+    border-spacing: 0px;
+    margin: auto;
+}
+table.dtt td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+table.dtt thead {
+    height: 50px;
+    font-weight: bold;
+    font-size: 14pt;
+}
+#dtt_input {
+    height: 50px;
+}
+input#LastInput {
+    font-size: 24pt;
+    font-weight: bold;
+    letter-spacing: 20px;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    border: none;
+}
+td.dtt_button {
+    width: 33%;
+    height: 50px;
+    font-weight: bold;
+    font-size: 16pt;
+    border: 1px black solid;
+    background: silver;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+td.dtt_button:selection, td.dtt_command:selection {
+    background: transparent;
+}
+td.dtt_command {
+    font-weight: bold;
+    font-size: 16pt;
+    border: 1px gray solid;
+    background: silver;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+td.dtt_command img {
+    vertical-align: middle;
+}
+progress#progress {
+    width: 100%;
+}
+
+div.mode_option {
+    padding: 10px;
+}
+
+input#dtt_start_test {
+    font-weight: bold;
+    font-size: 16pt;
+    border: 1px gray solid;
+    background: silver;
+}
+
+
+/* for mobile */
+
+@media screen and (max-device-width: 480px) {
+
+    section#leftblocks, section#rightblocks, section#topblocks, section#bottomblocks {
+	display: none;
+    }
+    
+    table.dtt {
+	height: 100%;
+	max-width: 1000px;
+    }
+    
+    td.dtt_button {
+	height: 130px;
+	font-size: 32pt;
+	border: 1px black solid;
+    }
+
+    table.dtt thead {
+	height: 130px;
+	font-size: 32pt;
+    }
+
+    #dtt_input, #dtt_message, td.dtt_command {
+	height: 130px;
+	font-size: 32pt;
+    }
+    input#LastInput {
+	font-size: 32pt;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+    }
+    td.dtt_command img {
+	height: 50px;
+    }
+
+    input.db_link {
+	height: 40px;
+    }
+}
+
+}
