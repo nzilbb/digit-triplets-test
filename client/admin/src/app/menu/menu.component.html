@@ -1,12 +1,15 @@
 <ul>
+  <li><a href="media" target="media"
+         title="Install or upgrade digit triplets recordings by uploading a .zip file"
+         >Media</a></li>
+  <li><a [routerLink]="['/attributes']"
+         title="Set test parameters">Parameters</a></li>
   <li><a [routerLink]="['/fields']"
          title="Define meta-data the participant is asked for before they begin">Fields</a></li>
   <li><a [routerLink]="['/texts']"
          title="Define prompts and informational messages the participant is shown">Texts</a></li>
   <li><a [routerLink]="['/trialsets']"
          title="Sets of digit trialss that can be presented together in a test">Trial Sets</a></li>
-  <li><a [routerLink]="['/attributes']"
-         title="Set test parameters">Parameters</a></li>
   <li><a href="../"
          title="Link to test for participants" target="dtt">Test 🡽</a></li>
   <li><a [routerLink]="['/instances']"
@@ -16,7 +19,4 @@
   <li><a href="upgrade" target="upgrade"
          title="Upgrade the server by uploading a .war file"
          >Upgrade</a></li>
-  <li><a href="media" target="media"
-         title="Install or upgrade digit triplets recordings by uploading a .zip file"
-         >Media</a></li>
 </ul>
