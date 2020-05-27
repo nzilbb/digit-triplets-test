@@ -3,13 +3,13 @@
 Digit Triplets Hearing Screening Test developed at the
 [New Zealand Institute of Language, Brain and Behaviour](https://www.canterbury.ac.nz/nzilbb/)
 
-(See
-[Sharon M. King, *Development and Evaluation of a New Zealand Digit Triplet Test for
+See:
+- [Sharon M. King, *Development and Evaluation of a New Zealand Digit Triplet Test for
 Auditory Screening*](https://ir.canterbury.ac.nz/bitstream/handle/10092/8084/thesis_fulltext.pdf),
-[Alice Bowden, *Normalisation, Evaluation and Verification  of the New Zealand Digit Triplet Test.*](https://ir.canterbury.ac.nz/bitstream/handle/10092/8084/thesis_fulltext.pdf),
+- [Alice Bowden, *Normalisation, Evaluation and Verification  of the New Zealand Digit Triplet Test.*](https://ir.canterbury.ac.nz/bitstream/handle/10092/8084/thesis_fulltext.pdf),
 and 
-[Christa Murray, *Development of a Māori Language Version of the New Zealand Hearing Screening Test*](https://ir.canterbury.ac.nz/bitstream/handle/10092/7132/CMurray_MAudThesis.pdf;sequence=1)
-)
+- [Christa Murray, *Development of a Māori Language Version of the New Zealand Hearing Screening Test*](https://ir.canterbury.ac.nz/bitstream/handle/10092/7132/CMurray_MAudThesis.pdf;sequence=1)
+
 
 ## Installation
 
