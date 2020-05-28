@@ -90,7 +90,7 @@ public class AdminTexts extends ServletBase {
                   }
                } else { // list all rows
                   PreparedStatement sql = connection.prepareStatement(
-                     "SELECT * FROM text ORDER BY display_order");
+                     "SELECT id, label FROM text ORDER BY display_order");
                   ResultSet rs = sql.executeQuery();
                   JsonGenerator json = Json.createGenerator(response.getWriter());
                   json.writeStartArray();
@@ -99,7 +99,6 @@ public class AdminTexts extends ServletBase {
                         json.writeStartObject();
                         json.write("id", rs.getString("id"));
                         json.write("label", rs.getString("label"));
-                        json.write("html", rs.getString("html"));
                         json.writeEnd();
                      } // next user
                   } finally {
