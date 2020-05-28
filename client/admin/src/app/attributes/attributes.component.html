@@ -3,8 +3,8 @@
 <div class="list attribute-list">
   <app-wait *ngIf="!attributes"></app-wait>
   <div class="item attribute-item" *ngFor="let attribute of attributes">
-    <span class="attribute" title="{{attribute.description}}"> {{attribute.attribute}} </span>
-    <span class="value type-{{attribute.type}}" title="{{attribute.description}}"><legend>Value</legend>
+    <label class="attribute" title="{{attribute.description}}"> {{attribute.attribute}} </label>
+    <span class="value type-{{attribute.type}}" title="{{attribute.description}}"><legend>{{attribute.attribute}}</legend>
       
       <input *ngIf="attribute.type == 'integer'" type="number" step="1"
              [(ngModel)]="attribute.value" (input)="onChange(attribute)"

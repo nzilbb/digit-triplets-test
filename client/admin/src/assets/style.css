@@ -23,8 +23,14 @@ app-menu a { color: #859044; }
 app-menu li { border-bottom: 1px solid #859044; border-right: 1px solid #859044; }
 app-menu li:first-child { border-left: 1px solid #859044; }
 app-texts a, app-instances a { color: #859044; }
+app-user .user {
+    text-align: center;
+    padding: 10px;
+}
+app-user .user a { color: #859044; text-decoration: none; }
 
 footer { color: #859044; }
+footer a { color: #859044; text-decoration: none; }
 
 /* Layout */
 app-root, #main { display: flex; flex-direction: column; }
@@ -114,6 +120,8 @@ div.wait {
 .list .item .display-order input{
     width: 40px;
 }
+.list > .item > label { display: none; }
+
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
     body { background-size: inherit; }
@@ -127,6 +135,7 @@ div.wait {
     }
     .list .item span { display: table-cell; }
     .list > .item > span > legend { display: none; }
+    .list > .item > label { display: block; }
+    app-user .user { text-align: right; }
 }
-aside { display: none; }
 
