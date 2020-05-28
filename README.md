@@ -10,7 +10,6 @@ Auditory Screening*](https://ir.canterbury.ac.nz/bitstream/handle/10092/8084/the
 and 
 - [Christa Murray, *Development of a Māori Language Version of the New Zealand Hearing Screening Test*](https://ir.canterbury.ac.nz/bitstream/handle/10092/7132/CMurray_MAudThesis.pdf;sequence=1)
 
-
 ## Installation
 
 Prerequisites for installation:
