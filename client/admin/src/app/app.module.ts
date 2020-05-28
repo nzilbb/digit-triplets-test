@@ -22,6 +22,9 @@ import { TrialsComponent } from './trials/trials.component';
 import { TrialSetsComponent } from './trial-sets/trial-sets.component';
 import { AttributesComponent } from './attributes/attributes.component';
 import { WaitComponent } from './wait/wait.component';
+import { UserComponent } from './user/user.component';
+import { AboutComponent } from './about/about.component';
+import { PasswordComponent } from './password/password.component';
 
 @NgModule({
     declarations: [
@@ -37,7 +40,10 @@ import { WaitComponent } from './wait/wait.component';
         TrialsComponent,
         TrialSetsComponent,
         AttributesComponent,
-        WaitComponent
+        WaitComponent,
+        UserComponent,
+        AboutComponent,
+        PasswordComponent
     ],
     imports: [
         BrowserModule,
@@ -55,6 +61,8 @@ import { WaitComponent } from './wait/wait.component';
             { path: 'instances', component: InstancesComponent },
             { path: 'trials/:instanceId', component: TrialsComponent },
             { path: 'trialsets', component: TrialSetsComponent },
+            { path: 'password', component: PasswordComponent },
+            { path: 'about', component: AboutComponent },
         ])
     ],
     providers: [

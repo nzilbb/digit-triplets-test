@@ -5,6 +5,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 
 import { User } from './user';
+import { Message } from './message';
 import { MessageService } from './message.service';
 
 @Injectable({
@@ -22,6 +23,26 @@ export class UserService {
         private http: HttpClient,
         private messageService: MessageService
     ) { }
+
+    whoAmI(): Observable<User> {
+        if (environment.production) {
+            return this.http.get<User>(environment.baseUrl + "user")
+                .pipe(
+                    tap(user => this.log(`logged-in user: ${user.user}`)),
+                    catchError(this.handleError<User>('whoAmI', "Could not get logged-in user."))
+                );
+        } else { // development environment server doesn't have user auth, so fake it
+            return of({ user: "admin" } as User);
+        }
+    }
+
+    setPassword(password: string): Observable<Message> {
+        return this.http.put<Message>(environment.baseUrl + "user", { password: password }, this.httpOptions)
+            .pipe(
+                tap(_ => this.info('setPassword', `Password set`)),
+                catchError(this.handleError<Message>('setPassword',""))
+            );
+    }
 
     readUsers(): Observable<User[]> {
         return this.http.get<User[]>(this.baseUrl)
@@ -62,7 +83,9 @@ export class UserService {
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {
             console.error(error);
-            if (error.error && error.error.message) message += " - " + error.error.message;
+            if (error.error && error.error.message) {
+                message += (message?" - ":"") + error.error.message;
+            }
             this.error(operation, message);
             // Let the app keep running by returning an empty result.
             return of(result as T);
