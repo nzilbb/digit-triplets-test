@@ -108,7 +108,7 @@ public class TableServletBase extends ServletBase {
       this.table = table;
       this.keys = keys;
       this.columns = columns;
-      this.columns = listColumns;
+      this.listColumns = columns;
       this.whereClause = whereClause;
       this.orderClause = orderClause;
       this.create = create;
