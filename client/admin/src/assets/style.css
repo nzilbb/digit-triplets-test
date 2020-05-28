@@ -59,6 +59,18 @@ footer {
 .error { color: red; }
 .message { color: black; }
 
+app-wait {
+    display: block;
+    width: 100%;
+    text-align: center;
+}
+div.wait {
+    width: 100vw;
+    text-align: center;
+    vertical-align: middle;
+    display: table-cell;
+}
+
 /* lists of things */
 
 .list {

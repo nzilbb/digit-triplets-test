@@ -8,6 +8,7 @@
     <span class="participant-answer" title="Participant's answer"> Participant </span>
     <span class="correct" title="Did the participant enter the correct answer?"> Correct? </span>
   </div>
+  <app-wait *ngIf="!trials"></app-wait>
   <div class="item trial-item" *ngFor="let trial of trials">
     <span class="trial-number" title="Trial Number"> {{trial.trial_number}} </span>
     <span class="decibels-signal number" title="Desibels signal"> {{trial.decibels_signal}} </span>

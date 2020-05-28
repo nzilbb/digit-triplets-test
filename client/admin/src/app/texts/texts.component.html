@@ -2,6 +2,7 @@
 <p>These are instructions and test results reports shown to the participant.</p>
 
 <div class="list text-list">
+  <app-wait *ngIf="!texts"></app-wait>
   <div class="item text-item" *ngFor="let text of texts">
     <span class="text">
       <a routerLink="/texts/{{text.id}}" title="Edit this text">{{text.label}}</a>

@@ -1,6 +1,7 @@
 <h2>Parameters</h2>
 
 <div class="list attribute-list">
+  <app-wait *ngIf="!attributes"></app-wait>
   <div class="item attribute-item" *ngFor="let attribute of attributes">
     <span class="attribute" title="{{attribute.description}}"> {{attribute.attribute}} </span>
     <span class="value type-{{attribute.type}}" title="{{attribute.description}}"><legend>Value</legend>

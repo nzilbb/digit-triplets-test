@@ -46,6 +46,7 @@
     </span>
   </div>
   
+  <app-wait *ngIf="!fields"></app-wait>
   <div class="item field-item" *ngFor="let field of fields">
     <span class="field" title="Field ID"> {{field.field}} </span>
     <span class="name" title="Field label"><legend>Label</legend>

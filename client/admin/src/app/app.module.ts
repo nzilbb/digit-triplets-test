@@ -21,6 +21,7 @@ import { InstancesComponent } from './instances/instances.component';
 import { TrialsComponent } from './trials/trials.component';
 import { TrialSetsComponent } from './trial-sets/trial-sets.component';
 import { AttributesComponent } from './attributes/attributes.component';
+import { WaitComponent } from './wait/wait.component';
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import { AttributesComponent } from './attributes/attributes.component';
         InstancesComponent,
         TrialsComponent,
         TrialSetsComponent,
-        AttributesComponent
+        AttributesComponent,
+        WaitComponent
     ],
     imports: [
         BrowserModule,

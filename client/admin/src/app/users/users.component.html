@@ -30,7 +30,7 @@
               title="Add a new user">➕</button>
     </span>
   </div>
-  
+  <app-wait *ngIf="!users"></app-wait>
   <div class="item user-item" *ngFor="let user of users">
     <span class="user" title="User ID"> {{user.user}} </span>
     <span class="email" title="Email address"><legend>Email</legend>

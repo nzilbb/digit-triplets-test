@@ -10,6 +10,7 @@
     <span class="mean-snr number" title="Mean signal to noise ratio"> Mean SNR </span>
     <span class="mode center" title="Which ear?"> Mode </span>
   </div>
+  <app-wait *ngIf="!instances"></app-wait>
   <div class="item instance-item" *ngFor="let instance of instances">
     <span class="instance-id" title="{{instance.instance_id}}"> {{instance.instance_id}} </span>
     <span class="start-time" title="Test started at"> {{instance.start_time | date:'short'}} </span>
