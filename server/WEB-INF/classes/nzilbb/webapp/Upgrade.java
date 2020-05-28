@@ -160,6 +160,10 @@ public class Upgrade extends HttpServlet {
                      Enumeration<JarEntry> entries = jar.entries();
                      while (entries.hasMoreElements()) {
                         JarEntry entry = entries.nextElement();
+
+                        // don't replace WEB-INF/web.xml, which might have been customized
+                        if ("WEB-INF/web.xml".equals(entry.getName())) continue;
+                        
                         if (!entry.isDirectory()) {
                            
                            // unpack file 
