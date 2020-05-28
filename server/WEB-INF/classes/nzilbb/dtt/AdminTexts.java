@@ -56,8 +56,6 @@ public class AdminTexts extends ServletBase {
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-      try {Thread.sleep(4000);} catch(Exception exception) {}
-
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       } else {
