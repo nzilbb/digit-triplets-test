@@ -65,6 +65,9 @@ public class TableServletBase extends ServletBase {
    /** An ordered list of non-key fields */
    protected List<String> columns;
 
+   /** An ordered list of non-key fields for full-listing requests */
+   protected List<String> listColumns;
+
    /** WHERE condition */
    protected String whereClause;
 
@@ -90,7 +93,7 @@ public class TableServletBase extends ServletBase {
     * Constructor from attributes.
     * @param table The name of the data table.
     * @param keys An ordered list of key field names.
-    * @param columns An ordered list of non-key fields.
+    * @param columns An ordered list of non-key fields, for single-item and full-list requests.
     * @param whereClause WHERE condition.
     * @param orderClause ORDER clause.
     * @param create Whether Create operations are allowed via POST.
@@ -105,6 +108,35 @@ public class TableServletBase extends ServletBase {
       this.table = table;
       this.keys = keys;
       this.columns = columns;
+      this.columns = listColumns;
+      this.whereClause = whereClause;
+      this.orderClause = orderClause;
+      this.create = create;
+      this.read = read;
+      this.update = update;
+      this.delete = delete;
+   }
+   
+   /** 
+    * Constructor from attributes.
+    * @param table The name of the data table.
+    * @param keys An ordered list of key field names.
+    * @param columns An ordered list of non-key fields.
+    * @param whereClause WHERE condition.
+    * @param orderClause ORDER clause.
+    * @param create Whether Create operations are allowed via POST.
+    * @param read Whether Read operations are allowed via GET.
+    * @param update Whether Update operations are allowed via PUT.
+    * @param delete Whether Delete operations are allowed via DELETE.
+    */
+   protected TableServletBase(
+      String table, List<String> keys, List<String> columns, List<String> listColumns,
+      String whereClause, String orderClause,
+      boolean create, boolean read, boolean update, boolean delete) {      
+      this.table = table;
+      this.keys = keys;
+      this.columns = columns;
+      this.listColumns = listColumns;
       this.whereClause = whereClause;
       this.orderClause = orderClause;
       this.create = create;
@@ -155,7 +187,11 @@ public class TableServletBase extends ServletBase {
             Connection connection = db.newConnection();
             StringBuilder query = new StringBuilder();
             Vector<String> allColumns = new Vector<String>(keys);
-            allColumns.addAll(columns);
+            if (keyValues != null) {
+               allColumns.addAll(columns);
+            } else { // full list
+               allColumns.addAll(listColumns);
+            }
             for (String column : allColumns) {
                if (query.length() == 0) {
                   query.append("SELECT ");
