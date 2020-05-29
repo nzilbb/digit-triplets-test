@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.rmi.server.UID;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -37,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
@@ -165,7 +165,7 @@ public class DigitTripletsTest extends ServletBase {
          Collections.shuffle(trials);
          
          // create an instance
-         String instanceId = UUID.randomUUID().toString();
+         String instanceId = new UID().toString();
          sql = connection.prepareStatement(
             "INSERT INTO instance (instance_id,user_agent,ip,start_time,mode,trial_set_id)"
             +" VALUES (?,?,?,Now(),?,?)");
