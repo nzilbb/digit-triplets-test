@@ -1,22 +1,22 @@
 <ul>
-  <li><a href="media" target="media"
+  <li id="menu-media"><a href="media" target="media"
          title="Install or upgrade digit triplets recordings by uploading a .zip file"
          >Media</a></li>
-  <li><a [routerLink]="['/attributes']"
+  <li id="menu-attributes"><a [routerLink]="['/attributes']"
          title="Set test parameters">Parameters</a></li>
-  <li><a [routerLink]="['/fields']"
+  <li id="menu-fields"><a [routerLink]="['/fields']"
          title="Define meta-data the participant is asked for before they begin">Fields</a></li>
-  <li><a [routerLink]="['/texts']"
+  <li id="menu-texts"><a [routerLink]="['/texts']"
          title="Define prompts and informational messages the participant is shown">Texts</a></li>
-  <li><a [routerLink]="['/trialsets']"
+  <li id="menu-trialsets"><a [routerLink]="['/trialsets']"
          title="Sets of digit trialss that can be presented together in a test">Trial Sets</a></li>
-  <li><a href="../"
-         title="Link to test for participants" target="dtt">Test 🡽</a></li>
-  <li><a [routerLink]="['/instances']"
+  <li id="menu-test"><a href="../"
+         title="Link to test for participants" target="dtt">Test</a></li>
+  <li id="menu-instances"><a [routerLink]="['/instances']"
          title="Instances of a test run by a participant">Instances</a></li>
-  <li><a [routerLink]="['/users']"
+  <li id="menu-users"><a [routerLink]="['/users']"
          title="Maintain administration users that are allowed to log in here">Users</a></li>
-  <li><a href="upgrade" target="upgrade"
+  <li id="menu-upgrade"><a href="upgrade" target="upgrade"
          title="Upgrade the server by uploading a .war file"
          >Upgrade</a></li>
 </ul>

@@ -20,14 +20,37 @@ h5 { font-size: 13pt; color: #859044; }
 h6 { font-size: 12pt; color: #859044; }
 
 app-menu a { color: #859044; }
-app-menu li { border-bottom: 1px solid #859044; border-right: 1px solid #859044; }
+app-menu li {
+    border-bottom: 1px solid #859044;
+    border-right: 1px solid #859044;
+    white-space: nowrap;
+}
 app-menu li:first-child { border-left: 1px solid #859044; }
 app-texts a, app-instances a { color: #859044; }
 app-user .user {
     text-align: center;
     padding: 10px;
+    white-space: nowrap;
 }
 app-user .user a { color: #859044; text-decoration: none; }
+
+/* icons */
+app-user .user:after { content: '👤'; }
+app-menu a:before { padding-right: 5px; }
+#menu-media a:before { content: '🔊'; }
+#menu-attributes a:before { content: '⚙'; }
+#menu-fields a:before { content: '✓'; }
+#menu-texts a:before { content: '🗎'; }
+#menu-trialsets a:before { content: '⚙'; }
+#menu-test a:before { content: '👤'; }
+#menu-instances a:before { content: '🗠'; }
+#menu-users a:before { content: '👥'; }
+#menu-upgrade a:before { content: '📦'; }
+/* new window links*/
+#menu-media a:after { content: '🡽'; }
+#menu-test a:after { content: '🡽'; }
+#menu-upgrade a:after { content: '🡽'; }
+
 
 footer { color: #859044; }
 footer a { color: #859044; text-decoration: none; }
