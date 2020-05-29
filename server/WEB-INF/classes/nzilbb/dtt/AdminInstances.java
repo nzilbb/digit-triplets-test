@@ -95,23 +95,18 @@ public class AdminInstances extends TableServletBase {
             try {
                Connection connection = db.newConnection();
 
-               Vector<String> allColumns = new Vector<String>(keys);
-
                // load the list of fields
                PreparedStatement sql = connection.prepareStatement(
                   "SELECT field FROM form_field ORDER BY display_order");
                ResultSet rs = sql.executeQuery();
                Vector<String> fields = new Vector<String>();
-               while (rs.next()) {
-                  // add to colunm list
-                  fields.add(rs.getString("field"));
-                  // also add to select list
-                  allColumns.add("value_" + rs.getString("field"));
-               }
+               while (rs.next()) fields.add(rs.getString("field"));
                rs.close();
                sql.close();
 
                // fill in the list of columns
+               Vector<String> allColumns = new Vector<String>(keys);
+               allColumns.addAll(fields);
                allColumns.addAll(columns);
 
                // build a query to include all field values
@@ -120,7 +115,7 @@ public class AdminInstances extends TableServletBase {
                for (String field : fields) {
                   query.append(", `field_");
                   query.append(field);
-                  query.append("`.value AS `value_");
+                  query.append("`.value AS `");
                   query.append(field);
                   query.append("`");
                } // next field
