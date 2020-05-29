@@ -25,6 +25,7 @@ import { WaitComponent } from './wait/wait.component';
 import { UserComponent } from './user/user.component';
 import { AboutComponent } from './about/about.component';
 import { PasswordComponent } from './password/password.component';
+import { InstanceFieldComponent } from './instance-field/instance-field.component';
 
 @NgModule({
     declarations: [
@@ -43,7 +44,8 @@ import { PasswordComponent } from './password/password.component';
         WaitComponent,
         UserComponent,
         AboutComponent,
-        PasswordComponent
+        PasswordComponent,
+        InstanceFieldComponent
     ],
     imports: [
         BrowserModule,

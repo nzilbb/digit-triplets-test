@@ -3,6 +3,7 @@
 <div class="list instance-list">
   <div class="item header">
     <span class="instance-id" title="Instance ID"> ID </span>
+    <span class="field" *ngFor="let field of fields"> {{field.name}} </span>
     <span class="start-time" title="Test started at"> Start </span>
     <span class="end-time" title="Test ended at"> End </span>
     <span class="trial-set-id number" title="Which set of trials was randomly selected?"> Trial Set </span>
@@ -13,6 +14,9 @@
   <app-wait *ngIf="!instances"></app-wait>
   <div class="item instance-item" *ngFor="let instance of instances">
     <span class="instance-id" title="{{instance.instance_id}}"> {{instance.instance_id}} </span>
+    <span class="field" *ngFor="let field of fields">
+      <app-instance-field instance_id="{{instance.instance_id}}" field="{{field.field}}"></app-instance-field>
+    </span>
     <span class="start-time" title="Test started at"> {{instance.start_time | date:'short'}} </span>
     <span class="end-time" title="Test ended at"> {{instance.end_time | date:'shortTime'}} </span>
     <span class="trial-set-id number" title="Which set of trials was randomly selected?"> {{instance.trial_set_id}} </span>
