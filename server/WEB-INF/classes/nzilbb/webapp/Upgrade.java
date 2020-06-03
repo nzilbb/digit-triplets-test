@@ -133,53 +133,67 @@ public class Upgrade extends ServletBase {
                      
                      // unpack it
                      JarFile jar = new JarFile(war);
-                     Enumeration<JarEntry> entries = jar.entries();
-                     while (entries.hasMoreElements()) {
-                        JarEntry entry = entries.nextElement();
-
-                        // don't replace WEB-INF/web.xml, which might have been customized
-                        if ("WEB-INF/web.xml".equals(entry.getName())) continue;
+                     String buildVersion = jar.getComment();
+                     if (buildVersion == null
+                         || !buildVersion.startsWith("digit-triplets-test version ")) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        writer.println(
+                           "<span class=\"error\">No build version information found."
+                           +" Please upload a .war file built from the source code.</span>");
+                        log("ERROR: No build version information found."
+                            +" Please upload a .war file built from the source code.");
+                     } else { // build version found
+                        writer.println("Build: " + buildVersion);
+                        log("Build " + buildVersion);
                         
-                        if (!entry.isDirectory()) {
+                        Enumeration<JarEntry> entries = jar.entries();
+                        while (entries.hasMoreElements()) {
+                           JarEntry entry = entries.nextElement();
                            
-                           // unpack file 
-                           File parent = webappRoot;
-                           String sFileName = entry.getName();
-                           writer.print("Unpacking: "+sFileName+" ...");
-                           log("Unpacking: "+sFileName+" ...");
-                           String[] pathParts = entry.getName().split("/");
-                           for (int p = 0; p < pathParts.length - 1; p++) {
-                              // ensure that the required directories exist
-                              parent = new File(parent, pathParts[p]);
-                              if (!parent.exists()) {
-                                 parent.mkdir();
-                              }		     
-                           } // next part
-                           sFileName = pathParts[pathParts.length - 1];
-                           File file = new File(parent, sFileName);
+                           // don't replace WEB-INF/web.xml, which might have been customized
+                           if ("WEB-INF/web.xml".equals(entry.getName())) continue;
                            
-                           // get input stream
-                           InputStream in = jar.getInputStream(entry);
-                           
-                           // get output stream
-                           FileOutputStream fout = new FileOutputStream(file);
-                           
-                           // pump data from one stream to the other
-                           byte[] buffer = new byte[1024];
-                           int bytesRead = in.read(buffer);
-                           while(bytesRead >= 0) {
-                              fout.write(buffer, 0, bytesRead);
-                              bytesRead = in.read(buffer);
-                           } // next chunk of data
-                           
-                           // close streams
-                           in.close();
-                           fout.close();
-                           writer.println("OK");
-                           
-                        } // not a directory
+                           if (!entry.isDirectory()) {
+                              
+                              // unpack file 
+                              File parent = webappRoot;
+                              String sFileName = entry.getName();
+                              writer.print("Unpacking: "+sFileName+" ...");
+                              log("Unpacking: "+sFileName+" ...");
+                              String[] pathParts = entry.getName().split("/");
+                              for (int p = 0; p < pathParts.length - 1; p++) {
+                                 // ensure that the required directories exist
+                                 parent = new File(parent, pathParts[p]);
+                                 if (!parent.exists()) {
+                                    parent.mkdir();
+                                 }		     
+                              } // next part
+                              sFileName = pathParts[pathParts.length - 1];
+                              File file = new File(parent, sFileName);
+                              
+                              // get input stream
+                              InputStream in = jar.getInputStream(entry);
+                              
+                              // get output stream
+                              FileOutputStream fout = new FileOutputStream(file);
+                              
+                              // pump data from one stream to the other
+                              byte[] buffer = new byte[1024];
+                              int bytesRead = in.read(buffer);
+                              while(bytesRead >= 0) {
+                                 fout.write(buffer, 0, bytesRead);
+                                 bytesRead = in.read(buffer);
+                              } // next chunk of data
+                              
+                              // close streams
+                              in.close();
+                              fout.close();
+                              writer.println("OK");
+                              
+                           } // not a directory
                         
-                     } // next entry
+                        } // next entry
+                     } // build version found
                   } finally {
                      war.delete();
                   }
