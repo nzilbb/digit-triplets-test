@@ -6,27 +6,25 @@ import { environment } from '../environments/environment';
 
 import { Field } from './field';
 import { MessageService } from './message.service';
+import { Service } from './service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FieldService {
-    private baseUrl = environment.baseUrl+'fields';
-    
-    httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' })
-    };
+export class FieldService extends Service {
     
     constructor(
         private http: HttpClient,
-        private messageService: MessageService
-    ) { }
+        messageService: MessageService) {
+        super(messageService, environment.baseUrl+'fields');
+    }
     
     readFields(): Observable<Field[]> {
         return this.http.get<Field[]>(this.baseUrl)
             .pipe(
                 tap(_ => this.log('fetched fields')),
-                catchError(this.handleError<Field[]>('readFields', "Could not get field list.", []))
+                catchError(this.handleError<Field[]>(
+                    'access fields', "Could not get field list.", []))
             );
     }
 
@@ -34,8 +32,10 @@ export class FieldService {
         // TODO validation
         return this.http.post<Field>(this.baseUrl, field, this.httpOptions)
             .pipe(
-                tap((newField: Field) => this.info('createField', `Added field: "${newField.field}"`)),
-                catchError(this.handleError<Field>('createField',`Could not add "${field.field}"` ))
+                tap((newField: Field) => this.info(
+                    'createField', `Added field: "${newField.field}"`)),
+                catchError(this.handleError<Field>(
+                    'create fields',`Could not add "${field.field}"` ))
             );
     }
 
@@ -43,8 +43,10 @@ export class FieldService {
         // TODO validation
         return this.http.put<Field>(this.baseUrl, field, this.httpOptions)
             .pipe(
-                tap((updatedField: Field) => this.info('updateField', `Updated field: "${updatedField.field}"`)),
-                catchError(this.handleError<Field>('updateField',`Could not update "${field.field}"` ))
+                tap((updatedField: Field) => this.info(
+                    'updateField', `Updated field: "${updatedField.field}"`)),
+                catchError(this.handleError<Field>(
+                    'update fields',`Could not update "${field.field}"` ))
             );
     }
     
@@ -53,32 +55,9 @@ export class FieldService {
         return this.http.delete<Field>(`${this.baseUrl}/${field.field}`)
             .pipe(
                 tap(_ => this.info('deleteField', `Removed field: ${field.field}`)),
-                catchError(this.handleError<Field>('deleteField',`Could not remove "${field.field}"`,
-                                                   field)) // return field, meaning it wasn't deleted
+                catchError(this.handleError<Field>(
+                    'delete fields',`Could not remove "${field.field}"`,
+                    field)) // return field, meaning it wasn't deleted
             );
-    }
-    
-    handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
-        return (error: any): Observable<T> => {
-            console.error(error);
-            if (error.error && error.error.message) message += " - " + error.error.message;
-            this.error(operation, message);
-            // Let the app keep running by returning an empty result.
-            return of(result as T);
-        };
-    }
-    
-    private info(operation: string, message: string) {
-        this.messageService.info(message);
-        this.log(`${operation} - ${message}`);
-    }
-    
-    private error(operation: string, message: string) {
-        this.messageService.error(message);
-        this.log(`ERROR: ${operation} - ${message}`);
-    }
-    
-    private log(message: string) {
-        console.log(message);
-    }
+    }    
 }

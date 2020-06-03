@@ -31,9 +31,7 @@ export class InstancesComponent implements OnInit {
         this.instanceService.readInstances(this.page, this.pageLength)
             .subscribe((instances) => {
                 this.noMorePages = instances.length < this.pageLength;
-                if (instances.length > 0) {
-                    this.instances = instances;
-                }
+                this.instances = instances;
             });
     }
     readFields(): void {

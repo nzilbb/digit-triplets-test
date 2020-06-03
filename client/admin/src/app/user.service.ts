@@ -7,29 +7,26 @@ import { environment } from '../environments/environment';
 import { User } from './user';
 import { Message } from './message';
 import { MessageService } from './message.service';
+import { Service } from './service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class UserService extends Service {
     
-    private baseUrl = environment.baseUrl+'users';
-
-    httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' })
-    };
-
     constructor(
         private http: HttpClient,
-        private messageService: MessageService
-    ) { }
+        messageService: MessageService) {
+        super(messageService, environment.baseUrl+'users');
+    }
 
     whoAmI(): Observable<User> {
         if (environment.production) {
             return this.http.get<User>(environment.baseUrl + "user")
                 .pipe(
                     tap(user => this.log(`logged-in user: ${user.user}`)),
-                    catchError(this.handleError<User>('whoAmI', "Could not get logged-in user."))
+                    catchError(this.handleError<User>(
+                        'access user information', "Could not get logged-in user."))
                 );
         } else { // development environment server doesn't have user auth, so fake it
             return of({ user: "admin" } as User);
@@ -40,7 +37,7 @@ export class UserService {
         return this.http.put<Message>(environment.baseUrl + "user", { password: password }, this.httpOptions)
             .pipe(
                 tap(_ => this.info('setPassword', `Password set`)),
-                catchError(this.handleError<Message>('setPassword',""))
+                catchError(this.handleError<Message>('set your password',""))
             );
     }
 
@@ -48,7 +45,7 @@ export class UserService {
         return this.http.get<User[]>(this.baseUrl)
             .pipe(
                 tap(_ => this.log('fetched users')),
-                catchError(this.handleError<User[]>('readUsers', "Could not get user list.", []))
+                catchError(this.handleError<User[]>('list users', "Could not get user list.", []))
             );
     }
 
@@ -57,7 +54,7 @@ export class UserService {
         return this.http.post<User>(this.baseUrl, user, this.httpOptions)
             .pipe(
                 tap((newUser: User) => this.info('createUser', `Added user: "${newUser.user}"`)),
-                catchError(this.handleError<User>('createUser',`Could not add "${user.user}"` ))
+                catchError(this.handleError<User>('create users',`Could not add "${user.user}"` ))
             );
     }
 
@@ -65,8 +62,10 @@ export class UserService {
         // TODO validation
         return this.http.put<User>(this.baseUrl, user, this.httpOptions)
             .pipe(
-                tap((updatedUser: User) => this.info('updateUser', `Updated user: "${updatedUser.user}"`)),
-                catchError(this.handleError<User>('updateUser',`Could not update "${user.user}"` ))
+                tap((updatedUser: User) => this.info(
+                    'updateUser', `Updated user: "${updatedUser.user}"`)),
+                catchError(this.handleError<User>(
+                    'update users',`Could not update "${user.user}"` ))
             );
     }
 
@@ -75,34 +74,10 @@ export class UserService {
         return this.http.delete<User>(`${this.baseUrl}/${user.user}`)
             .pipe(
                 tap(_ => this.info('deleteUser', `Removed user: ${user.user}`)),
-                catchError(this.handleError<User>('deleteUser',`Could not remove "${user.user}"`,
-                                                  user)) // return user, meaning it wasn't deleted
+                catchError(this.handleError<User>(
+                    'delete users',`Could not remove "${user.user}"`,
+                    user)) // return user, meaning it wasn't deleted
             );
     }
 
-    handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
-        return (error: any): Observable<T> => {
-            console.error(error);
-            if (error.error && error.error.message) {
-                message += (message?" - ":"") + error.error.message;
-            }
-            this.error(operation, message);
-            // Let the app keep running by returning an empty result.
-            return of(result as T);
-        };
-    }
-
-    private info(operation: string, message: string) {
-        this.messageService.info(message);
-        this.log(`${operation} - ${message}`);
-    }
-    
-    private error(operation: string, message: string) {
-        this.messageService.error(message);
-        this.log(`ERROR: ${operation} - ${message}`);
-    }
-    
-    private log(message: string) {
-        console.log(message);
-    }
 }

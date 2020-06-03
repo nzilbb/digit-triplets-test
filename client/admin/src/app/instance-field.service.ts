@@ -6,21 +6,18 @@ import { environment } from '../environments/environment';
 
 import { InstanceField } from './instancefield';
 import { MessageService } from './message.service';
+import { Service } from './service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class InstanceFieldService {
-    private baseUrl = environment.baseUrl+'instancefields';
-    
-    httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json;charset=UTF-8' })
-    };
+export class InstanceFieldService extends Service {
     
     constructor(
         private http: HttpClient,
-        private messageService: MessageService
-    ) { }
+        messageService: MessageService) {
+        super(messageService, environment.baseUrl+'instancefields');
+    }
     
     getFieldValue(instance_id: string, field:string): Observable<InstanceField> {
         return this.http.get<InstanceField>(`${this.baseUrl}/${instance_id}/${field}`)
@@ -29,10 +26,12 @@ export class InstanceFieldService {
                 catchError(this.handleError<InstanceField>('getFieldValue', `Could not get value of ${instance_id}/${field}`, { instance_id: instance_id, field: field, value: "" } as InstanceField))
             );
     }
-
+    
     handleError<T>(operation = 'operation', message = "ERROR", result?:T) {
         return (error: any): Observable<T> => {
-            if (error.status != 404) {
+            if (error.status == 403) {
+                this.error(operation, "Sorry, you don't have permission to get field values");
+            } else if (error.status != 404) {
                 console.error(error);
                 if (error.error && error.error.message) message += " - " + error.error.message;
                 this.error(operation, message);
@@ -41,16 +40,5 @@ export class InstanceFieldService {
             return of(result as T);
         };
     }
-    
-    private info(operation: string, message: string) {
-        this.log(`${operation} - ${message}`);
-    }
-    
-    private error(operation: string, message: string) {
-        this.log(`ERROR: ${operation} - ${message}`);
-    }
-    
-    private log(message: string) {
-        console.log(message);
-    }
 }
+

@@ -11,7 +11,7 @@
     <span class="mean-snr number" title="Mean signal to noise ratio"> Mean SNR </span>
     <span class="mode center" title="Which ear?"> Mode </span>
   </div>
-  <app-wait *ngIf="!instances"></app-wait>
+  <app-wait *ngIf="instances == null"></app-wait>
   <div class="item instance-item" *ngFor="let instance of instances">
     <span class="instance-id" title="{{instance.instance_id}}"> {{instance.instance_id}} </span>
     <span class="field" *ngFor="let field of fields">
@@ -30,5 +30,5 @@
   <button (click)="pageUp()" [disabled]="page == 0" title="Previous Page">▲</button>
   <label class="page">Page {{page + 1}}</label>
   <button (click)="pageDown()" [disabled]="noMorePages" title="Next Page">▼</button>
-  <button (click)="csv()" title="Download all intances as CSV">CSV</button>
+  <button (click)="csv()" [disabled]="instances == null || instances.length == 0" title="Download all intances as CSV">CSV</button>
 </div>
