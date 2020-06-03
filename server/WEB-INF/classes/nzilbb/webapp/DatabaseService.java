@@ -393,6 +393,10 @@ public class DatabaseService {
     * @throws SQLException
     */
    public boolean setUserPassword(String user, String password) throws SQLException {
+
+      // if the password is blank, do nothing
+      // (passwords can be blank for users that are authenticated by an external system like LDAP)
+      if (password == null || password.length() == 0) return true;
       
       // MessageDigestCredentialHandler only works with Tomcat >= 8 :
       
