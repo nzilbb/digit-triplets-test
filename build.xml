@@ -63,7 +63,7 @@
     <mkdir dir="${dist}"/>    
     <war destfile="${dist}/${ant.project.name}.war" 
          webxml="./server/WEB-INF/web.xml"
-         comment="version ${DSTAMP}.${TSTAMP}"
+         comment="${ant.project.name} version ${DSTAMP}.${TSTAMP}"
          >
       <!-- for installation and upgrades -->
       <fileset dir="server" includes="WEB-INF/context-template.xml" />
@@ -93,7 +93,7 @@
           description="Generate a development version of the web application archive">
     <war destfile="${dist}/${ant.project.name}-dev.war" 
          webxml="./server/WEB-INF/web-dev.xml"
-         comment="version ${DSTAMP}.${TSTAMP}-dev"
+         comment="${ant.project.name} version ${DSTAMP}.${TSTAMP}-dev"
          >
       <!-- for installation and upgrades -->
       <fileset dir="server" includes="WEB-INF/context-template.xml" />
