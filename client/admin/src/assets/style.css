@@ -85,7 +85,7 @@ footer {
     font-size: 10pt;
 }
 
-.error { color: red; }
+div.messages div.error { color: red; font-weight: bold; }
 .message { color: black; }
 
 app-wait {
