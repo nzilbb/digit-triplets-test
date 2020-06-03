@@ -23,6 +23,7 @@ package nzilbb.dtt;
 
 import java.util.Vector;
 import javax.servlet.annotation.WebServlet;
+import nzilbb.webapp.RequiredRole;
 import nzilbb.webapp.TableServletBase;
 
 /**
@@ -32,6 +33,7 @@ import nzilbb.webapp.TableServletBase;
 @WebServlet(
    urlPatterns = "/admin/trials/*",
    loadOnStartup = 20)
+@RequiredRole("admin")
 public class AdminTrials extends TableServletBase {   
 
    public AdminTrials() {

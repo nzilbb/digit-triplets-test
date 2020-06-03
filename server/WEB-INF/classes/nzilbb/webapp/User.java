@@ -73,7 +73,6 @@ public class User extends ServletBase {
                   ResultSet rs = sql.executeQuery();
                   try {
                      if (rs.next()) {
-                        System.out.println("reset " + rs.getInt("reset_password"));
                         json.write("user", rs.getString("user"));
                         json.write("reset_password", rs.getInt("reset_password") != 0);
                      } else {

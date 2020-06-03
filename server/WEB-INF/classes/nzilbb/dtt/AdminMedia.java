@@ -47,37 +47,16 @@ import java.util.regex.Pattern;
 @WebServlet(
    urlPatterns = "/admin/media",
    loadOnStartup = 30)
-public class AdminMedia extends HttpServlet {
+@RequiredRole("admin")
+public class AdminMedia extends ServletBase {
    
-   // Attributes:
-
-   protected DatabaseService db;
-
-   // Methods:
-   
-   /**
-    * Default constructor.
-    */
-   public AdminMedia() {
-   } // end of constructor
-
-   /** 
-    * Initialise the servlet by loading the database connection settings.
-    */
-   public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
-   }
-
    /**
     * GET handler
     */
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      } else {
+      if (hasAccess(request, response)) {
          // send upgrade form
          response.setContentType("text/html");
          response.setCharacterEncoding("UTF-8");
@@ -134,9 +113,7 @@ public class AdminMedia extends HttpServlet {
       File mp3Root = new File(getServletContext().getRealPath("/mp3"));
       
       // are we a new installation?
-      if (db == null || db.getVersion() == null) { // not installed yey
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      } else {
+      if (hasAccess(request, response)) {
          log("AdminMedia from war...");
          PrintWriter writer = response.getWriter();
          writer.println("<!DOCTYPE html>");

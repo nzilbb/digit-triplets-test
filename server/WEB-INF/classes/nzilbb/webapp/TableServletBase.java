@@ -153,9 +153,8 @@ public class TableServletBase extends ServletBase {
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      if (!hasAccess(request, response)) {
+         return;
       } else if (!read) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       } else {
@@ -396,8 +395,8 @@ public class TableServletBase extends ServletBase {
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      if (!hasAccess(request, response)) {
+         return;
       } else if (!create) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       } else {
@@ -519,8 +518,8 @@ public class TableServletBase extends ServletBase {
    protected void doPut(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
       
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      if (!hasAccess(request, response)) {
+         return;
       } else if (!update) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       } else {
@@ -615,8 +614,8 @@ public class TableServletBase extends ServletBase {
    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
       
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      if (hasAccess(request, response)) {
+         return;
       } else if (!delete) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       } else {

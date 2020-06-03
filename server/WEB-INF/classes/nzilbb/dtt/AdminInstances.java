@@ -33,6 +33,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nzilbb.webapp.RequiredRole;
 import nzilbb.webapp.TableServletBase;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -44,6 +45,7 @@ import org.apache.commons.csv.CSVPrinter;
 @WebServlet(
    urlPatterns = "/admin/instances/*",
    loadOnStartup = 20)
+@RequiredRole("admin")
 public class AdminInstances extends TableServletBase {   
 
    public AdminInstances() {
@@ -79,8 +81,8 @@ public class AdminInstances extends TableServletBase {
 
       // This catches CSV export, which needs to include field values as well
 
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      if (!hasAccess(request, response)) {
+         return;
       } else if (!read) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
       } else {

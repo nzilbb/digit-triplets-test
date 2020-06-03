@@ -38,6 +38,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import nzilbb.webapp.RequiredRole;
 import nzilbb.webapp.ServletBase;
 
 /**
@@ -47,6 +48,7 @@ import nzilbb.webapp.ServletBase;
 @WebServlet(
    urlPatterns = "/admin/texts/*",
    loadOnStartup = 30)
+@RequiredRole("admin")
 public class AdminTexts extends ServletBase {
    
    /**
@@ -55,10 +57,7 @@ public class AdminTexts extends ServletBase {
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      } else {
+      if (hasAccess(request, response)) {
          response.setContentType("application/json");
          response.setCharacterEncoding("UTF-8");
          try {
@@ -126,10 +125,7 @@ public class AdminTexts extends ServletBase {
    @Override
    protected void doPut(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-      
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      } else {
+      if (hasAccess(request, response)) {
          response.setContentType("application/json");
          response.setCharacterEncoding("UTF-8");
          // read the incoming object

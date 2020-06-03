@@ -46,37 +46,16 @@ import java.util.Enumeration;
 @WebServlet(
    urlPatterns = "/admin/upgrade",
    loadOnStartup = 10)
-public class Upgrade extends HttpServlet {
+@RequiredRole("admin")
+public class Upgrade extends ServletBase {
    
-   // Attributes:
-
-   protected DatabaseService db;
-
-   // Methods:
-   
-   /**
-    * Default constructor.
-    */
-   public Upgrade() {
-   } // end of constructor
-
-   /** 
-    * Initialise the servlet by loading the database connection settings.
-    */
-   public void init() {
-      db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
-   }
-
    /**
     * GET handler
     */
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-
-      if (db == null || db.getVersion() == null) { // not installed yet
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      } else {
+      if (hasAccess(request, response)) {
          // send upgrade form
          response.setContentType("text/html");
          response.setCharacterEncoding("UTF-8");
@@ -120,10 +99,7 @@ public class Upgrade extends HttpServlet {
 
       File webappRoot = new File(getServletContext().getRealPath("/"));
       
-      // are we a new installation?
-      if (db == null || db.getVersion() == null) { // not installed yey
-         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-      } else {
+      if (hasAccess(request, response)) {
          log("Upgrade from war...");
          PrintWriter writer = response.getWriter();
          writer.println("<!DOCTYPE html>");

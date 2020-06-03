@@ -27,6 +27,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.HashSet;
+import java.util.Set;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -45,9 +47,10 @@ import javax.servlet.http.HttpServletResponse;
 public class ServletBase extends HttpServlet {
    
    // Attributes:
-   
+
+   /** Access to the relational database */
    protected DatabaseService db;
-   
+
    // Methods:
    
    /** 
@@ -56,7 +59,94 @@ public class ServletBase extends HttpServlet {
    public void init() {
       db = (DatabaseService)getServletContext().getAttribute("nzilbb.webapp.DatabaseService");
    }
+
    
+   /**
+    * Determines whether the request can continue. This depends on two factors:
+    * <ul>
+    *  <li> Whether the webapp has actually been installed yet, and</li>
+    *  <li> If the servlet is annotated with {@link RequiredRole}, whether the user is in
+    * that role. </li> 
+    * </ul>
+    * If this methof returns false, a side-effect is that response.setStatus() has been
+    * called with an appropriate status code.
+    * @param request The request for identifying the user.
+    * @param response The response for possibly setting the status.
+    * @return true if the request is allowed, false otherwise.
+    * @throws SQLException If a database error occurs.
+    */
+   protected boolean hasAccess(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+      System.out.println("hasAccess " + getServletContext().getInitParameter("dev-war"));
+      if (db == null || db.getVersion() == null) { // not installed yet
+         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+         return false;
+      } else if (getServletContext().getInitParameter("dev-war") != null) {
+         // dev builds don't require use roles
+         return true;
+      } else {
+	 RequiredRole requiredRole = getClass().getAnnotation(RequiredRole.class);
+         if (requiredRole != null) {
+            try {
+               if (!userRoles(request).contains(requiredRole.value())) {
+                  response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                  return false;
+               } else {
+                  return true;
+               }
+            } catch(SQLException exception) {
+               log("hasAccess: ERROR: " + exception);
+               response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+               return false;
+            }
+         } else { // no role required
+            return true;
+         }
+      }
+   }
+   
+   /**
+    * Determines the roles the user has. 
+    * <p> This provides more flexibility than HttpServletRequest.isUserInRole() because it
+    * allows authentication with an external source (e.g. LDAP), while keeping
+    * authorization internal to this webapp's database (i.e. the LDAP database needn't
+    * have "admin" in the "isMember" attribute for the user, because it's in our internal
+    * role table instead).
+    * @param request The request for identifying the user.
+    * @return A set of role names that apply to the current user.
+    * @throws SQLException If a database error occurs.
+    */
+   @SuppressWarnings("unchecked")
+   protected Set<String> userRoles(HttpServletRequest request) throws SQLException {
+      
+      // empty set if the webapp isn't installed yet or the user is unknown 
+      if (db == null || request.getRemoteUser() == null) return new HashSet<String>();
+      
+      Set<String> roles = (Set<String>)request.getSession().getAttribute("roles");
+      if (roles == null) {
+         // create the object
+         roles = new HashSet<String>();
+         request.getSession().setAttribute("roles", roles);
+         
+         // load roles from the database
+         Connection connection = db.newConnection();
+         PreparedStatement sqlUserRoles = connection.prepareStatement(
+            "SELECT role FROM role WHERE user = ?");
+         sqlUserRoles.setString(1, request.getRemoteUser());
+         ResultSet rsUserRoles = sqlUserRoles.executeQuery();
+         try {
+            while (rsUserRoles.next()) {
+               roles.add(rsUserRoles.getString("role"));
+            } // next role
+         } finally {
+            rsUserRoles.close();
+            sqlUserRoles.close();
+            connection.close();
+         }
+      }
+      return roles;
+   } // end of userRoles()
+
    /**
     * Writes a JSON-formatted via the given response.
     * @param message The message to return.

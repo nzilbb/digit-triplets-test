@@ -21,34 +21,20 @@
 //
 package nzilbb.webapp;
 
-import java.util.Vector;
-import javax.servlet.annotation.WebServlet;
+import java.lang.annotation.*;
 
 /**
- * Servlet that allows management of users.
+ * Annotation for a {@link ServletBase} subclass which defines the user role required to
+ * make requests to the servlet.
  * @author Robert Fromont robert@fromont.net.nz
  */
-@WebServlet(
-   urlPatterns = "/admin/attributes/*",
-   loadOnStartup = 20)
-@RequiredRole("admin")
-public class AdminAttributes extends TableServletBase {   
-
-   public AdminAttributes() {
-      super("attribute", // table
-            new Vector<String>() {{ add("attribute"); }}, // keys
-            new Vector<String>() {{ // columns
-               add("description");
-               add("type");
-               add("value");
-            }},
-            "attribute <> 'version'", // where
-            "attribute", // order
-            false, // create
-            true, // read
-            true, // update
-            false); // delete
-   }
-
-   private static final long serialVersionUID = 1;
-} // end of class AdminUsers
+@Documented
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface RequiredRole {
+   /**
+    * User role required for making requests to the annotated servlet.
+    * @return User role required for making requests to the annotated servlet.
+    */
+   String value();
+} // end of class Switch
