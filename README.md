@@ -17,7 +17,7 @@ Prerequisites for installation:
 2. A server with [MySQL](https://www.mysql.com/) installed.
 3. A set of digit triplet recordings for your test, with appropriate noise levels
 
-The digit triplets recordings must be named using the covention:  
+The digit triplets recordings must be named using the convention:  
 `{triplet}_{db}{mode}`.mp3
 
 Where:
