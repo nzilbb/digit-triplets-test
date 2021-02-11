@@ -174,11 +174,14 @@ internationalization resource files:
 ng extract-i18n --output-path src/locale
 ```
 
-If you want to add a new language, you must:
+If you want to translate the digit triplets test to another language, you must:
 
 1. Provide the resource file for the language, in a file named
    *client/dtt/src/locale/messages.ISO-CODE.xlf* where *ISO-CODE* is the ISO-639 code for
    the language you want to add.
-2. Register the new language in *client/dtt/angular.json*:
-   1. Add an entry to the "locales" setting indicating the location of the translated resources.
-   2. Add an entry to the "localize" setting to compile the version for testing.
+2. Register the new language in *client/dtt/angular.json* by adding an entry to the
+   "locales" setting indicating the location of the translated resources. 
+3. Set the "locale" property in *build.xml* to be the ISO-639 code for the new language.
+
+After installing the .war file on the server, you must then set the texts, prompts,
+etc. for the new language.

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project name="digit-triplets-test" default="all" basedir=".">
   <description>Digit Triplets Hearing Test web-app</description>
+  <!-- "locale" determines which language will be installed for the dtt web-app: -->
+  <property name="locale" value="en"/>
   <!-- set global properties for this build -->
   <xmlproperty file="config.xml" />
   <property name="server-src" location="./server/WEB-INF/classes/"/>
@@ -54,6 +56,7 @@
           failonerror="true">
       <arg value="build"/>
       <arg value="--prod"/>
+      <arg value="--localize"/>
     </exec>
   </target>
   
@@ -72,7 +75,7 @@
 
       <!-- Digit Triplets Test app -->
       <zipfileset 
-	  dir="server/dtt" 
+	  dir="server/dtt/${locale}" 
 	  includes="**/*"
 	  prefix="" />
 
@@ -102,7 +105,7 @@
       
       <!-- Digit Triplets Test app -->
       <zipfileset 
-	  dir="server/dtt" 
+	  dir="server/dtt/${locale}" 
 	  includes="**/*"
 	  prefix="" />
       
