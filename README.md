@@ -161,3 +161,24 @@ ng serve
 ...and then browse to (http://localhost:4200/) for a live version of the client which
 recompiles when you save changes in the client source code.
 
+##### Localizing to other languages
+
+Most of the text that appears in the app is configured using the Admin app. There are a
+small number of exceptions, mainly button text and hints. These are defined by
+localization resource files in *client/dtt/src/locale*
+
+If you add new *i18n* marked tags, using the following to ensure they appear in the
+internationalization resource files:
+
+```
+ng extract-i18n --output-path src/locale
+```
+
+If you want to add a new language, you must:
+
+1. Provide the resource file for the language, in a file named
+   *client/dtt/src/locale/messages.ISO-CODE.xlf* where *ISO-CODE* is the ISO-639 code for
+   the language you want to add.
+2. Register the new language in *client/dtt/angular.json*:
+   1. Add an entry to the "locales" setting indicating the location of the translated resources.
+   2. Add an entry to the "localize" setting to compile the version for testing.

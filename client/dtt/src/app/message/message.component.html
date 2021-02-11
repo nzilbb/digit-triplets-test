@@ -1,6 +1,6 @@
 <div class="error" *ngIf="messageService.message">
-  <div class="heading">Sorry!</div>
+  <div class="heading" i18n="error-heading">Sorry!</div>
   <div class="message">{{messageService.message}}</div>
-  <div class="check">Please check your internet connection.</div>
-  <div class="try-again"><button (click)="tryAgain()">Try again</button></div>
+  <div class="check" i18n="error-suggestion">Please check your internet connection.</div>
+  <div class="try-again"><button (click)="tryAgain()" i18n="error-button">Try again</button></div>
 </div>

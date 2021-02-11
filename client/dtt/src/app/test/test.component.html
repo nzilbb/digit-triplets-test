@@ -8,7 +8,7 @@
        (ended)="playing = false; startTimeout();"
        (onloadedmetadata)="onAudioError"
        >
-  <p>Audio not supported. Please try with a different browser.</p>
+  <p i18n>Audio not supported. Please try with a different browser.</p>
 </audio>    
 <table class="dtt" onselectstart="return false;" >
   <thead>
@@ -22,7 +22,7 @@
         <progress #progress
                   value="{{trial}}"
                   max="{{numTrials}}"
-                  title="How far through the test you are'">
+                  i18n-title title="How far through the test you are">
           <span id="soFar">{{trial}}</span>/<span id="numTrials">{{numTrials}}</span>
         </progress>
       </td>
@@ -49,8 +49,8 @@
         <button #btnc
                 (click)="press('c')"
                 [disabled]="answer.length == 0"
-                title="Clear all digits entered">
-          <label><span class="icon">❌</span> <span class="text">Clear</span></label>
+                i18n-title title="Clear all digits entered">
+          <label><span class="icon">❌</span> <span class="text" i18n="digit-triplets-test">Clear</span></label>
         </button>
       </td>
       <td class="dtt-button"><button #btn0 (click)="press('0');" accesskey="0"><label>0</label></button></td>
@@ -59,8 +59,8 @@
                 *ngIf="!wait"
                 (click)="press('n');"
                 [disabled]="playing || answer.length < 3"
-                title="Go to the next step">
-          <label><span class="text">Next</span> <span class="icon">▷</span></label>
+                i18n-title title="Go to the next step">
+          <label><span class="text" i18n="digit-triplets-test">Next</span> <span class="icon">▷</span></label>
         </button>
         <app-wait *ngIf="wait"></app-wait>
       </td>

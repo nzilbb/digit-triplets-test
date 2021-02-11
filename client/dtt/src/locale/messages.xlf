@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="ac10a3d9b59575640797c1a8e6aea642cf5d5e77" datatype="html">
+        <source>Continue</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/text/text.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/field/field.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <note priority="1" from="description">text-page</note>
+      </trans-unit>
+      <trans-unit id="761a6effb01e84ce6de49478c49a682a3aceb11e" datatype="html">
+        <source>I have plugged in headphones</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/text/text.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="eac7171bcfc447afcc83b3f5ffd03795a607390b" datatype="html">
+        <source>I have switched my speakers on</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/text/text.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3fb845818665673f8c9ee7e47082b56ae88877bc" datatype="html">
+        <source>Audio not supported. Please try with a different browser.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/sound-check/sound-check.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9b00b4b718d67ef6351bba15acd4ad0f2bc47927" datatype="html">
+        <source>Play</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/sound-check/sound-check.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <note priority="1" from="description">sound-check-button</note>
+      </trans-unit>
+      <trans-unit id="f732c304c7433e5a83ffcd862c3dce709a0f4982" datatype="html">
+        <source>Next</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/sound-check/sound-check.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">63</context>
+        </context-group>
+        <note priority="1" from="description">sound-check-button</note>
+      </trans-unit>
+      <trans-unit id="2f381cd2bb186495a30add51a3400441940c1da2" datatype="html">
+        <source>How far through the test you are</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="99ee4faa69cd2ea8e3678c1f557c0ff1f05aae46" datatype="html">
+        <source>Clear</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+        <note priority="1" from="description">digit-triplets-test</note>
+      </trans-unit>
+      <trans-unit id="7ade0f9e14aa7a009a36e5bbaa2bf78706ed4b39" datatype="html">
+        <source>Clear all digits entered</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="0a42f126e6a37ab71e48e65ab46de2a095149d46" datatype="html">
+        <source>Go to the next step</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5d87314cda42c0b803a31b9f4893c6b6a08bcae1" datatype="html">
+        <source>Please wait...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/wait/wait.component.html</context>
+          <context context-type="linenumber">1</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ecb3d234e053c0045083aa9e962f4b01cb8d794e" datatype="html">
+        <source>Sorry!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/message/message.component.html</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <note priority="1" from="description">error-heading</note>
+      </trans-unit>
+      <trans-unit id="a1757fffd0af215be9d3674aa01210cd052f2e7d" datatype="html">
+        <source>Please check your internet connection.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/message/message.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <note priority="1" from="description">error-suggestion</note>
+      </trans-unit>
+      <trans-unit id="bc22a9b838eed800a62c38fcb16425d8e255c7d1" datatype="html">
+        <source>Try again</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/message/message.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <note priority="1" from="description">error-button</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

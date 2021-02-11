@@ -5,14 +5,14 @@
          (play)="playing = true"
          (pause)="playing = false"
          (ended)="playing = false">
-    <p>Audio not supported. Please try with a different browser.</p>
+    <p i18n>Audio not supported. Please try with a different browser.</p>
   </audio>
 </div>
 <div class="controls" [class.leaving]="leaving">
   <button (click)="play()" [disabled]="playing" appAutofocus>
-    <label>Play 🔊</label>
+    <label><span i18n="sound-check-button">Play</span> 🔊</label>
   </button>
   <button (click)="next()" [disabled]="leaving">
-    <label>Next ▷</label>
+    <label><span i18n="sound-check-button">Next</span> ▷</label>
   </button>
 </div>
