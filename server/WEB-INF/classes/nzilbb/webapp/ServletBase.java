@@ -68,7 +68,7 @@ public class ServletBase extends HttpServlet {
     *  <li> If the servlet is annotated with {@link RequiredRole}, whether the user is in
     * that role. </li> 
     * </ul>
-    * If this methof returns false, a side-effect is that response.setStatus() has been
+    * If this method returns false, a side-effect is that response.setStatus() has been
     * called with an appropriate status code.
     * @param request The request for identifying the user.
     * @param response The response for possibly setting the status.
@@ -77,7 +77,6 @@ public class ServletBase extends HttpServlet {
     */
    protected boolean hasAccess(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
-      System.out.println("hasAccess " + getServletContext().getInitParameter("dev-war"));
       if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
          return false;

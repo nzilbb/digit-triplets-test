@@ -1,5 +1,6 @@
 .messages {
     height: 20px;
+    width: 80vw;
 }
 
 @keyframes sidle {
