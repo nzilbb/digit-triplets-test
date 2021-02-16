@@ -1,16 +1,21 @@
-table.dtt {
+.dtt {
     width: 100%;
     min-width: 200px;
     margin: auto;
+    display: grid;
+    grid-gap: 3px;
+    /* 6 columns - each digit occupies 2 columns, and each command button occupies 3 */
+    /* i.e. digits: three per row, commands two per row */
+    grid-template-columns: repeat(6, auto); 
 }
-table.dtt td {
+.dtt > div {
     text-align: center;
-    vertical-align: middle;
 }
 
-table.dtt thead {
+.dtt .dtt-input, .dtt .dtt-progress {
     font-weight: bold;
     font-size: 14pt;
+    grid-column: span 6;
 }
 .dtt-input {
     height: 20vh;
@@ -27,18 +32,25 @@ table.dtt thead {
     border: none;
     caret-color: transparent;
 }
-td.dtt-button, td.dtt-command {
-    width: 33%;
+.dtt-button {
+    grid-column: span 2;
+}
+.dtt-command {
+    grid-column: span 3;
+}
+#dtt-zero { /* zero is alone in the middle of its row*/
+    grid-column-start: 3;
+    grid-column-end: 5;
 }
 button label {
     font-weight: bold;
     white-space: nowrap;
 }
-td.dtt-button button label {
+.dtt-button button label {
     font-size: 18pt;
 }
 
-td.dtt-button button, td.dtt-command button {
+.dtt-button button, .dtt-command button {
     width: 100%;
     height: 100%;
 }

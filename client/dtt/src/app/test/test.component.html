@@ -10,61 +10,49 @@
        >
   <p i18n>Audio not supported. Please try with a different browser.</p>
 </audio>    
-<table class="dtt" onselectstart="return false;" >
-  <thead>
-    <tr>
-      <td class="dtt-input" colspan="3">
-        <label #input> {{answer}} </label>
-      </td>
-    </tr>
-    <tr>
-      <td colspan="3">
-        <progress #progress
-                  value="{{trial}}"
-                  max="{{numTrials}}"
-                  i18n-title title="How far through the test you are">
-          <span id="soFar">{{trial}}</span>/<span id="numTrials">{{numTrials}}</span>
-        </progress>
-      </td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td class="dtt-button"><button #btn1 (click)="press('1')" accesskey="1"><label>1</label></button></td>
-      <td class="dtt-button"><button #btn2 (click)="press('2')" accesskey="2"><label>2</label></button></td>
-      <td class="dtt-button"><button #btn3 (click)="press('3')" accesskey="3"><label>3</label></button></td>
-    </tr>
-    <tr>
-      <td class="dtt-button"><button #btn4 (click)="press('4')" accesskey="4"><label>4</label></button></td>
-      <td class="dtt-button"><button #btn5 (click)="press('5')" accesskey="5"><label>5</label></button></td>
-      <td class="dtt-button"><button #btn6 (click)="press('6')" accesskey="6"><label>6</label></button></td>
-    </tr>
-    <tr>
-      <td class="dtt-button"><button #btn7 (click)="press('7')" accesskey="7"><label>7</label></button></td>
-      <td class="dtt-button"><button #btn8 (click)="press('8')" accesskey="8"><label>8</label></button></td>
-      <td class="dtt-button"><button #btn9 (click)="press('9')" accesskey="9"><label>9</label></button></td>
-    </tr>
-    <tr>
-      <td class="dtt-command">
-        <button #btnc
-                (click)="press('c')"
-                [disabled]="answer.length == 0"
-                i18n-title title="Clear all digits entered">
-          <label><span class="icon">❌</span> <span class="text" i18n="digit-triplets-test">Clear</span></label>
-        </button>
-      </td>
-      <td class="dtt-button"><button #btn0 (click)="press('0');" accesskey="0"><label>0</label></button></td>
-      <td class="dtt-command">
-        <button #btnn
-                *ngIf="!wait"
-                (click)="press('n');"
-                [disabled]="playing || answer.length < 3"
-                i18n-title title="Go to the next step">
-          <label><span class="text" i18n="digit-triplets-test">Next</span> <span class="icon">▷</span></label>
-        </button>
-        <app-wait *ngIf="wait"></app-wait>
-      </td>
-    </tr>
-  </tbody>
-  <tfoot></tfoot>
-</table>
+<div class="dtt" onselectstart="return false;" >
+  <div class="dtt-input">
+    <label #input> {{answer}} </label>
+  </div>
+  <div class="dtt-progress">
+    <progress #progress
+              value="{{trial}}"
+              max="{{numTrials}}"
+              i18n-title title="How far through the test you are">
+      <span id="soFar">{{trial}}</span>/<span id="numTrials">{{numTrials}}</span>
+    </progress>
+  </div>
+  
+  <div class="dtt-button"><button #btn1 (click)="press('1')" accesskey="1"><label>1</label></button></div>
+  <div class="dtt-button"><button #btn2 (click)="press('2')" accesskey="2"><label>2</label></button></div>
+  <div class="dtt-button"><button #btn3 (click)="press('3')" accesskey="3"><label>3</label></button></div>
+
+  <div class="dtt-button"><button #btn4 (click)="press('4')" accesskey="4"><label>4</label></button></div>
+  <div class="dtt-button"><button #btn5 (click)="press('5')" accesskey="5"><label>5</label></button></div>
+  <div class="dtt-button"><button #btn6 (click)="press('6')" accesskey="6"><label>6</label></button></div>
+
+  <div class="dtt-button"><button #btn7 (click)="press('7')" accesskey="7"><label>7</label></button></div>
+  <div class="dtt-button"><button #btn8 (click)="press('8')" accesskey="8"><label>8</label></button></div>
+  <div class="dtt-button"><button #btn9 (click)="press('9')" accesskey="9"><label>9</label></button></div>
+
+  <div class="dtt-button" id="dtt-zero"><button #btn0 (click)="press('0');" accesskey="0"><label>0</label></button></div>
+  <div class="dtt-command" id="dtt-clear">
+    <button #btnc
+            (click)="press('c')"
+            [disabled]="answer.length == 0"
+            i18n-title title="Clear all digits entered">
+      <label><span class="icon">❌</span>&nbsp;<span class="text" i18n="digit-triplets-test">Clear</span></label>
+    </button>
+  </div>
+
+  <div class="dtt-command" id="dtt-next">
+    <button #btnn
+            *ngIf="!wait"
+            (click)="press('n');"
+            [disabled]="playing || answer.length < 3"
+            i18n-title title="Go to the next step">
+      <label><span class="text" i18n="digit-triplets-test">Next</span>&nbsp;<span class="icon">▷</span></label>
+    </button>
+    <app-wait *ngIf="wait"></app-wait>
+  </div>
+</div>
