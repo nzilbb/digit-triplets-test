@@ -64,6 +64,10 @@
           description="Generate the web application archive">
     <!-- Create the distribution directory -->
     <mkdir dir="${dist}"/>    
+    <replace
+        file="server/dtt/${locale}/index.html"
+        token="&lt;base href=&quot;/mi/&quot;&gt;"
+        value=""/>
     <war destfile="${dist}/${ant.project.name}.war" 
          webxml="./server/WEB-INF/web.xml"
          comment="${ant.project.name} version ${DSTAMP}.${TSTAMP}"
@@ -94,6 +98,10 @@
 
   <target name="dev-war" depends="server-compile"
           description="Generate a development version of the web application archive">
+    <replace
+        file="server/dtt/${locale}/index.html"
+        token="&lt;base href=&quot;/mi/&quot;&gt;"
+        value=""/>
     <war destfile="${dist}/${ant.project.name}-dev.war" 
          webxml="./server/WEB-INF/web-dev.xml"
          comment="${ant.project.name} version ${DSTAMP}.${TSTAMP}-dev"
