@@ -541,7 +541,8 @@ public class DigitTripletsTest extends ServletBase {
          
          // email results
          StringBuilder body = new StringBuilder();
-         body.append("InstanceId: " + instanceId);
+         body.append(getAttribute("title", connection));
+         body.append("\nInstanceId: " + instanceId);
          body.append("\nMode: " + mode);
          body.append("\nTrialSetNumber: " + trialSetId);
          body.append("\nTestResult: " + iTestResult);
