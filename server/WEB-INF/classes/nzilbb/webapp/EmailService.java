@@ -262,13 +262,13 @@ public class EmailService {
       // Setting the Subject and Content Type
       msg.setSubject(subject);
       if (fAttachment == null) {
-         msg.setContent(message, "text/" + (html?"html":"plain"));
+         msg.setContent(message, "text/" + (html?"html":"plain") + "; charset=UTF-8");
       } else { // there's an attachment
          // Create the message part 
          BodyPart messageBodyPart = new MimeBodyPart();
 	 
          // Fill the message
-         messageBodyPart.setContent(message, "text/" + (html?"html":"plain"));
+         messageBodyPart.setContent(message, "text/" + (html?"html":"plain") + "; charset=UTF-8");
          
          // Create a multipart message
          Multipart multipart = new MimeMultipart();
