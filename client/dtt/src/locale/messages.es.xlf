@@ -163,7 +163,7 @@
         </context-group>
         <note priority="1" from="description">digit-button</note>
       </trans-unit>
-       <trans-unit id="99ee4faa69cd2ea8e3678c1f557c0ff1f05aae46" datatype="html">
+      <trans-unit id="99ee4faa69cd2ea8e3678c1f557c0ff1f05aae46" datatype="html">
         <source>Clear</source>
         <target state="translated">Limpiar</target>
         <context-group purpose="location">
