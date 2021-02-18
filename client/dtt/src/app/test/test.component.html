@@ -23,21 +23,21 @@
     </progress>
   </div>
   
-  <div class="dtt-button"><button #btn1 (click)="press('1')" accesskey="1"><label i18n="digit-button">1</label></button></div>
-  <div class="dtt-button"><button #btn2 (click)="press('2')" accesskey="2"><label i18n="digit-button">2</label></button></div>
-  <div class="dtt-button"><button #btn3 (click)="press('3')" accesskey="3"><label i18n="digit-button">3</label></button></div>
+  <div class="dtt-button"><button  id="btn1" #btn1 (click)="press('1')" accesskey="1"><label i18n="digit-button">1</label></button></div>
+  <div class="dtt-button"><button id="btn2" #btn2 (click)="press('2')" accesskey="2"><label i18n="digit-button">2</label></button></div>
+  <div class="dtt-button"><button id="btn3" #btn3 (click)="press('3')" accesskey="3"><label i18n="digit-button">3</label></button></div>
 
-  <div class="dtt-button"><button #btn4 (click)="press('4')" accesskey="4"><label i18n="digit-button">4</label></button></div>
-  <div class="dtt-button"><button #btn5 (click)="press('5')" accesskey="5"><label i18n="digit-button">5</label></button></div>
-  <div class="dtt-button"><button #btn6 (click)="press('6')" accesskey="6"><label i18n="digit-button">6</label></button></div>
+  <div class="dtt-button"><button id="btn4" #btn4 (click)="press('4')" accesskey="4"><label i18n="digit-button">4</label></button></div>
+  <div class="dtt-button"><button id="btn5" #btn5 (click)="press('5')" accesskey="5"><label i18n="digit-button">5</label></button></div>
+  <div class="dtt-button"><button id="btn6" #btn6 (click)="press('6')" accesskey="6"><label i18n="digit-button">6</label></button></div>
 
-  <div class="dtt-button"><button #btn7 (click)="press('7')" accesskey="7"><label i18n="digit-button">7</label></button></div>
-  <div class="dtt-button"><button #btn8 (click)="press('8')" accesskey="8"><label i18n="digit-button">8</label></button></div>
-  <div class="dtt-button"><button #btn9 (click)="press('9')" accesskey="9"><label i18n="digit-button">9</label></button></div>
+  <div class="dtt-button"><button id="btn7" #btn7 (click)="press('7')" accesskey="7"><label i18n="digit-button">7</label></button></div>
+  <div class="dtt-button"><button id="btn8" #btn8 (click)="press('8')" accesskey="8"><label i18n="digit-button">8</label></button></div>
+  <div class="dtt-button"><button id="btn9" #btn9 (click)="press('9')" accesskey="9"><label i18n="digit-button">9</label></button></div>
 
-  <div class="dtt-button" id="dtt-zero"><button #btn0 (click)="press('0');" accesskey="0"><label i18n="digit-button">0</label></button></div>
+  <div class="dtt-button" id="dtt-zero"><button id="btn0" #btn0 (click)="press('0');" accesskey="0"><label i18n="digit-button">0</label></button></div>
   <div class="dtt-command" id="dtt-clear">
-    <button #btnc
+    <button id="btnc" #btnc
             (click)="press('c')"
             [disabled]="answer.length == 0"
             i18n-title title="Clear all digits entered">
@@ -46,7 +46,7 @@
   </div>
 
   <div class="dtt-command" id="dtt-next">
-    <button #btnn
+    <button id="btnn" #btnn
             *ngIf="!wait"
             (click)="press('n');"
             [disabled]="playing || answer.length < 3"
