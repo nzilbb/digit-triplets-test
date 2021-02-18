@@ -73,7 +73,97 @@
           <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="99ee4faa69cd2ea8e3678c1f557c0ff1f05aae46" datatype="html">
+      <trans-unit id="4f3e86e5e9e2eabd635e10a6db769bc0403eb85d" datatype="html">
+        <source>1</source>
+        <target state="translated">1</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="446c5c1e01eb5746070f8fd6e6647013366baa03" datatype="html">
+        <source>2</source>
+        <target state="translated">2</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="a98b6fdf6513b598738f4d70bd87a696690504fa" datatype="html">
+        <source>3</source>
+        <target state="translated">3</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="704c876dd7b54a2c5a98342ae7c9382863db076c" datatype="html">
+        <source>4</source>
+        <target state="translated">4</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">30</context>
+         </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="d0f9d6cda91777d72937871edbabc29a738852c7" datatype="html">
+        <source>5</source>
+        <target state="translated">5</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="4c3758aa0fbfb4b667e55ae3bfb10b2c39e8f4eb" datatype="html">
+        <source>6</source>
+        <target state="translated">6</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="17576fd6c3fdee52af042f5a135986161060aa98" datatype="html">
+        <source>7</source>
+        <target state="translated">7</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="6a339a06c8e882a8a9d53a967054bd4ad6937d8b" datatype="html">
+        <source>8</source>
+        <target state="translated">8</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="6b91c38ac8113726396707f3e947cc3a471530a7" datatype="html">
+        <source>9</source>
+        <target state="translated">9</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+      <trans-unit id="df442b82d7c8a30fb18c5b77f2c88b5de7ca20ee" datatype="html">
+        <source>0</source>
+        <target state="translated">0</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/test/test.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+        <note priority="1" from="description">digit-button</note>
+      </trans-unit>
+       <trans-unit id="99ee4faa69cd2ea8e3678c1f557c0ff1f05aae46" datatype="html">
         <source>Clear</source>
         <target state="translated">Limpiar</target>
         <context-group purpose="location">
