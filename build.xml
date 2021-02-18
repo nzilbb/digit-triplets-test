@@ -66,7 +66,7 @@
     <mkdir dir="${dist}"/>    
     <replace
         file="server/dtt/${locale}/index.html"
-        token="&lt;base href=&quot;/mi/&quot;&gt;"
+        token="&lt;base href=&quot;/${locale}/&quot;&gt;"
         value=""/>
     <war destfile="${dist}/${ant.project.name}.war" 
          webxml="./server/WEB-INF/web.xml"
@@ -100,7 +100,7 @@
           description="Generate a development version of the web application archive">
     <replace
         file="server/dtt/${locale}/index.html"
-        token="&lt;base href=&quot;/mi/&quot;&gt;"
+        token="&lt;base href=&quot;/${locale}/&quot;&gt;"
         value=""/>
     <war destfile="${dist}/${ant.project.name}-dev.war" 
          webxml="./server/WEB-INF/web-dev.xml"
