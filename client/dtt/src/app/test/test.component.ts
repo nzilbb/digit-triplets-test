@@ -16,6 +16,7 @@ export class TestComponent implements OnInit {
     @ViewChild("btnn") nextButton: ElementRef;
     message = "";
     answer = "";
+    helpText = "";
     numTrials = 100;
     trial = 0;
     playing = false;
@@ -29,6 +30,7 @@ export class TestComponent implements OnInit {
         this.dttService.checkStarted();
         this.getMode();
         this.getNumTrials();
+        this.getHelpText();
     }
     
     ngAfterViewInit(): void {
@@ -56,6 +58,12 @@ export class TestComponent implements OnInit {
     getNumTrials(): void {
         this.numTrials = this.dttService.getNumTrials();
     }
+    getHelpText(): void {
+        this.dttService.getText("dtt-help")
+            .subscribe((text) => {
+                this.helpText = text.html;
+            });
+    }
 
     @HostListener('document:keydown', ['$event'])
     keyDown(event: KeyboardEvent) {
@@ -71,7 +79,7 @@ export class TestComponent implements OnInit {
     // if they close or reload or navigate away, ask if they're sure
     @HostListener('window:beforeunload', ['$event'])
     unloadNotification($event: any) {
-        $event.returnValue = "The test is not finished yet";
+        $event.returnValue = "The test is not finished yet"; // TODO i18n
     }
     
     press(key: string): void {

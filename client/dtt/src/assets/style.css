@@ -85,9 +85,13 @@ app-text, app-field, app-test, app-sound-check {
     flex-grow: 1;
     overflow: auto;
 }
-table.dtt {
+.dtt {
     height: 100%;
     width: 95vw;
+}
+.dtt-help {
+    margin-left: 5vw;
+    margin-right: 5vw;
 }
 div.text {
     margin: 3vw;
