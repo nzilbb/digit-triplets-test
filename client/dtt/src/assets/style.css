@@ -128,8 +128,12 @@ input {
     max-width: 90vw;
 }
 
-table.dtt label span.text {
-    padding: 3px;
+.dtt-command label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-around;
 }
 
 /* Layout on wider screens */
