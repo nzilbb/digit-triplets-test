@@ -3,18 +3,18 @@
   <div *ngIf="text2" class="text {{text2.id}}" [class.results]="results" [innerHTML]="text2.html"><app-wait></app-wait></div>
 </div>
 <div class="controls" *ngIf="canContinue" [class.leaving]="leaving">
-  <button (click)="next()" appAutofocus [class.leaving]="leaving"><span i18n="text-page">Continue</span> ▷</button>
+  <button (click)="next()" appAutofocus [class.leaving]="leaving"><label><span class="text" i18n="text-page">Continue</span> <span class="icon">▷</span></label></button>
 </div>
 <div class="mode controls" *ngIf="text.id === 'introduction'" [class.leaving]="leaving">
   <div class="mode-option">
     <button (click)="start('l')" appAutofocus [disabled]="leaving">
-      <label><span i18n>I have plugged in headphones</span> 🎧</label>
+      <label><span class="text" i18n>I have plugged in headphones</span> <span class="icon">🎧</span></label>
     </button>
     
   </div>
   <div class="mode-option">
     <button (click)="start('')" [disabled]="leaving">
-      <label><span i18n>I have switched my speakers on</span> 🔊</label>
+      <label><span class="text" i18n>I have switched my speakers on</span> <span class="icon">🔊</span></label>
     </button>
   </div>
 </div>

@@ -10,9 +10,9 @@
 </div>
 <div class="controls" [class.leaving]="leaving">
   <button (click)="play()" [disabled]="playing" appAutofocus>
-    <label><span i18n="sound-check-button">Play</span> 🔊</label>
+    <label><span class="text" i18n="sound-check-button">Play</span> <span class="icon">🔊</span></label>
   </button>
   <button (click)="next()" [disabled]="leaving">
-    <label><span i18n="sound-check-button">Next</span> ▷</label>
+    <label><span class="text" i18n="sound-check-button">Next</span> <span class="icon">▷</span></label>
   </button>
 </div>

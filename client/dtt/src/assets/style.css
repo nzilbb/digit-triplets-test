@@ -136,6 +136,16 @@ input {
     justify-content: space-around;
 }
 
+.controls button label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+.controls button label .icon {
+    padding: 5px;
+}
 /* Layout on wider screens */
 @media all and (min-width: 640px) {
     div.controls { /* buttons flow after previous content */
