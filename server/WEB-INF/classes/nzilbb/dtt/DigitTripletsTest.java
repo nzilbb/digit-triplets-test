@@ -566,7 +566,11 @@ public class DigitTripletsTest extends ServletBase {
             "SELECT * FROM trial WHERE instance_id = ? ORDER BY trial_number");
          sql.setString(1, instanceId);
          rs = sql.executeQuery();
-         final File f = File.createTempFile("trials"+mode+"_"+instanceId+"_", ".csv");
+         final File f = File.createTempFile(
+           "trials"+mode+"_"
+           // remove any characters that might not be safe for a file name
+           +instanceId.replaceAll("\\w","_")
+           +"_", ".csv");
          PrintWriter fOut = new PrintWriter(f);
          fOut.println("\"trial_number\",\"decibels_signal\",\"correct_answer\",\"participant_answer\",\"correct\"");
          while (rs.next()) {
