@@ -12,7 +12,8 @@
       "i18n" : {
           "sourceLocale": "en",
           "locales": {
-              "es": "src/locale/messages.es.xlf"
+              "es": "src/locale/messages.es.xlf",
+              "ms": "src/locale/messages.ms.xlf"
           }
       },
       "architect": {
