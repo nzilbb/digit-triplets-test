@@ -569,7 +569,7 @@ public class DigitTripletsTest extends ServletBase {
          final File f = File.createTempFile(
            "trials"+mode+"_"
            // remove any characters that might not be safe for a file name
-           +instanceId.replaceAll("\\w","_")
+           +instanceId.replaceAll("\\W","_")
            +"_", ".csv");
          PrintWriter fOut = new PrintWriter(f);
          fOut.println("\"trial_number\",\"decibels_signal\",\"correct_answer\",\"participant_answer\",\"correct\"");
