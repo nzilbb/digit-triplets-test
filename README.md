@@ -101,7 +101,7 @@ ant
 The default build includes the client application builds too, and creates:  
 `bin/digit-triplets-test.war`
 
-For development/debugging of the administraion client, you may prefer a version of the
+For development/debugging of the administration client, you may prefer a version of the
 webapp that doesn't include admin user auth (so you can use `ng serve` as below), and
 doesn't spend time building both clients every time. In that case, use the following ant
 target instead: 
