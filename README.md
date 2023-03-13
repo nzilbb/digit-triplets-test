@@ -54,13 +54,21 @@ installation on the server.
 1. Copy digit-triplets-test.war into the *webapps* directory of the Tomcat installation.
 2. In your browser, open http://myservername/digit-triplets-test/install  
    (or possibly http://myservername:8080/digit-triplets-test/install depending on your server setup)
-3. Fill in the MySQL details the form asks for.
+3. Fill in the MySQL details the form asks for.[^1]
 4. Click *Install*
 5. Restart Tomcat to complete the installation.
 6. Log in to http://myservername:8080/digit-triplets-test/admin using the username `admin`
    and password `admin`.
 7. Click the *Media* option on the menu to upload the zip file containing all your triplet
-   recordings. 
+   recordings.
+
+[^1]: If you don't have the `root` MySQL, you can still complete the installation by asking the
+database administrator to create a database with the following SQL:
+`CREATE DATABASE IF NOT EXISTS dtt CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci`
+...and then creating a user like this:
+`CREATE USER 'dtt'@'%' IDENTIFIED BY 'a password you will then enter in the installation form'`
+...and provice the user access to the database like this:
+`GRANT ALL PRIVILEGES ON dtt.* TO 'dtt'@'%'`
 
 Once this is done, you will need to check/adjust the settings under
 http://myservername:8080/digit-triplets-test/admin
