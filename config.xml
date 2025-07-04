@@ -1,5 +1,5 @@
 <config>
-  <tomcat>/usr/share/tomcat9</tomcat>
+  <tomcat>/opt/tomcat</tomcat>
   <tomcatgroup>tomcat</tomcatgroup>
   <junitjar>/usr/share/java/junit4.jar</junitjar>
   <classversion>8</classversion>
