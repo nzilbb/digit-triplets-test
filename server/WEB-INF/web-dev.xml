@@ -26,6 +26,17 @@
   </security-constraint>
 
   <context-param>
+    <param-name>Content-Security-Policy</param-name>
+    <param-value>default-src 'self'; media-src 'self' blob: data:; style-src 'unsafe-inline' 'self'; form-action 'none';</param-value>
+  </context-param>
+  <!-- ensure that the session cookie has the 'secure' attribute, so it's send over TLS only -->
+  <session-config>
+    <cookie-config>
+      <secure>true</secure>
+    </cookie-config>
+  </session-config>
+
+  <context-param>
     <param-name>dev-war</param-name>
     <param-value>true</param-value>
   </context-param>
