@@ -1,5 +1,5 @@
 //
-// Copyright 2023 New Zealand Institute of Language, Brain and Behaviour, 
+// Copyright 2023-2025 New Zealand Institute of Language, Brain and Behaviour, 
 // University of Canterbury
 // Written by Robert Fromont - robert.fromont@canterbury.ac.nz
 //
@@ -43,11 +43,19 @@ public class App extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-    String contentSecurityPolicy = getServletContext().getInitParameter("Content-Security-Policy");
+    String contentSecurityPolicy = getServletContext().getInitParameter(
+      "Content-Security-Policy");
     if (contentSecurityPolicy != null) {
       // add Content-Security-Policy header to meet common security requirements
       response.addHeader("Content-Security-Policy", contentSecurityPolicy);
     }
+    String strictTransportSecurity = getServletContext().getInitParameter(
+      "Strict-Transport-Security");
+    if (strictTransportSecurity == null) strictTransportSecurity = "max-age=63072000";
+    if (strictTransportSecurity.length() > 0) {
+      response.setHeader("Strict-Transport-Security", strictTransportSecurity);
+    }
+
     response.setHeader("Cache-Control", "no-store");
     response.setHeader("X-Content-Type-Options", "nosniff");
     response.setHeader("X-Frame-Options", "DENY");

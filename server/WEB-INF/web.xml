@@ -18,6 +18,11 @@
     <param-name>Content-Security-Policy</param-name>
     <param-value>default-src 'self'; media-src 'self' blob: data:; style-src 'unsafe-inline' 'self'; form-action 'none';</param-value>
   </context-param>
+  <!-- use empty value for Strict-Transport-Security to allow http connections  -->
+  <context-param>
+    <param-name>Strict-Transport-Security</param-name>
+    <param-value>max-age=63072000</param-value>
+  </context-param>
   <!-- ensure that the session cookie has the 'secure' attribute, so it's send over TLS only -->
   <session-config>
     <cookie-config>
