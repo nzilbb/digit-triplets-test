@@ -127,5 +127,8 @@
         }
       }
     }},
-  "defaultProject": "dtt"
+  "defaultProject": "dtt",
+  "cli": {
+    "analytics": false
+  }
 }
