@@ -614,7 +614,7 @@ public class TableServletBase extends ServletBase {
    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
       
-      if (hasAccess(request, response)) {
+      if (!hasAccess(request, response)) {
          return;
       } else if (!delete) {
          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
