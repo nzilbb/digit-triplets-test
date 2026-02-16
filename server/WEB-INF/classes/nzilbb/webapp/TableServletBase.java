@@ -653,7 +653,6 @@ public class TableServletBase extends ServletBase {
             query.append(where);
             
             Connection connection = db.newConnection();
-            log("DELETE " + request.getPathInfo() + " : " + query.toString()); // TODO remove
             PreparedStatement sql = connection.prepareStatement(query.toString());
             try {
                int c = 1;
