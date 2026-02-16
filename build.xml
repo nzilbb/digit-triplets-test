@@ -45,7 +45,8 @@
           dir="${admin-client-dir}"
           failonerror="true">
       <arg value="build"/>
-      <arg value="--prod"/>
+      <arg value="--configuration"/>
+      <arg value="production"/>
     </exec>
   </target>
   
@@ -55,7 +56,8 @@
           dir="${dtt-client-dir}"
           failonerror="true">
       <arg value="build"/>
-      <arg value="--prod"/>
+      <arg value="--configuration"/>
+      <arg value="production"/>
       <arg value="--localize"/>
     </exec>
   </target>
