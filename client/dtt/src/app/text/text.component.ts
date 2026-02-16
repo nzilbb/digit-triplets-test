@@ -13,6 +13,8 @@ export class TextComponent implements OnInit {
 
     text = {} as Text;
     text2: Text;
+    modes: string[];
+    headphoneStartMode = "l"; // the mode to start headphones with - blank for headphones only
     nextMode: string;
     canContinue: boolean;
     results: boolean;
@@ -22,8 +24,20 @@ export class TextComponent implements OnInit {
                 private dttService: DttService) { }
     
     ngOnInit(): void {
+        this.getModes();
         this.getNextMode();
         this.getText();
+    }
+
+    getModes(): void {
+        this.dttService.getModes()
+            .subscribe(modes => {
+                this.modes = modes;
+                if (modes.length <= 1) { // there's only one mode
+                    // the first headphone mode is that mode, i.e. headphones only
+                    this.headphoneStartMode = modes[0];
+                }
+            }); 
     }
 
     getText(): void {

@@ -43,6 +43,10 @@ Furthemore, the recording should be in three separate directories:
 the left channel and there is silence in the right channel. Similarly, right channel recordings
 should have the voice prompt in the right channel and silence in the left channel.
 
+For single-pass tests (e.g. antiphasic tests) only the `dtt` subdirectory should be 
+supplied (`dttl` and `dttr` are omitted), with appropiate recordings for headphones-based
+tests.
+
 Finally, in the `dtt` directory, there should be a file called `sound-check.mp3` which is
 played to the participant during the sound check before starting the test.
 

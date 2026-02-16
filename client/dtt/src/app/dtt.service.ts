@@ -54,6 +54,10 @@ export class DttService {
             );
     }
 
+    getModes(): Observable<string[]> {
+        return this.http.get<string[]>(`${this.baseUrl}/test`);
+    }
+
     getNextMode(): string {
         return this.nextMode;
     }

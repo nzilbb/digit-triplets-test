@@ -57,6 +57,8 @@ import nzilbb.webapp.ServletBase;
  * <p>
  * The cycle of requests for a test run is:
  * <ol>
+ *  <li> GET from <tt>/test</tt> return a list of modes
+ *        (there will be only one for an antiphasic test). </li>
  *  <li> POST to <tt>/test</tt> to generate get a new test <q>id</q> and
  *        <q>numTrials</q>. </li>  
  *  <li> POST to <tt>/test/<i>{id}</i></tt> to set a field value as entered by the
@@ -293,9 +295,10 @@ public class DigitTripletsTest extends ServletBase {
    protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
       
-      if (db == null || db.getVersion() == null // not installed yet
-          || request.getPathInfo() == null) { // no instanceId
+      if (db == null || db.getVersion() == null) { // not installed yet
          response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+      } else if (request.getPathInfo() == null) { // no instanceId
+        getModes(request, response);
       } else {
          try {
 
@@ -313,6 +316,25 @@ public class DigitTripletsTest extends ServletBase {
             log("ERROR: " + exception.getMessage());
          }
       }
+   }
+
+   /** Return a list of valid modes. */
+   protected void getModes(HttpServletRequest request, HttpServletResponse response) 
+      throws ServletException, IOException {
+      log("getModes");
+      response.setContentType("application/json");
+      response.setCharacterEncoding("UTF-8");
+      File dirMedia = new File(request.getServletContext().getRealPath("/mp3"));
+      File[] modeDirs = dirMedia.listFiles(
+        file->file.getName().startsWith("dtt") && file.isDirectory());
+      Arrays.sort(modeDirs);
+      JsonGenerator jsonResponse = Json.createGenerator(response.getWriter());
+      jsonResponse.writeStartArray();
+      for (File modeDir : modeDirs) {
+        jsonResponse.write(modeDir.getName().substring(3));
+      }
+      jsonResponse.writeEnd();
+      jsonResponse.close();
    }
 
    /** Record last trial answer and get next trial audio */
