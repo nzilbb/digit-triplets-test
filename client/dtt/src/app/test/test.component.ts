@@ -21,6 +21,7 @@ export class TestComponent implements OnInit {
     trial = 0;
     playing = false;
     timeout: any;
+    timeoutSeconds = 10;
     wait = true;
     
     constructor(private route: ActivatedRoute,
@@ -28,6 +29,7 @@ export class TestComponent implements OnInit {
     
     ngOnInit(): void { 
         this.dttService.checkStarted();
+        this.getTimeout();
         this.getMode();
         this.getNumTrials();
         this.getHelpText();
@@ -40,21 +42,26 @@ export class TestComponent implements OnInit {
     }
 
     startTimeout() {
-        this.cancelTimeout();
-        this.timeout = window.setTimeout(
-            () => {
-                while (this.answer.length < 3) this.answer += " ";
-                this.next();
-            }, 10000);
+        if (this.timeoutSeconds) {
+            this.cancelTimeout();
+            this.timeout = window.setTimeout(
+                () => {
+                    while (this.answer.length < 3) this.answer += " ";
+                    this.next();
+                }, this.timeoutSeconds * 1000);
+        }
     }
     cancelTimeout() {
         if (this.timeout) window.clearTimeout(this.timeout);
     }
-    
+
+    getTimeout(): void {
+        this.dttService.getAttribute("timeoutseconds").
+            subscribe(attribute => this.timeoutSeconds = parseInt(attribute.value));
+    }
     getMode(): void {
         this.mode = this.route.snapshot.paramMap.get('mode');
     }
-
     getNumTrials(): void {
         this.numTrials = this.dttService.getNumTrials();
     }
