@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
@@ -75,6 +76,7 @@ public class AdminMedia extends ServletBase {
          writer.println("  <p>They must be all in a .zip file, with the following folder structure</p>");
          writer.println("  <ul>");
          writer.println("   <li><i>dtt</i> - mp3 recordings of stereo digits named <var>{triplet}</var>_<var>{db}</var>.mp3</li>");
+         writer.println("   <li><i>dtta</i> - antiphasic mp3 recordings of stereo digits named <var>{triplet}</var>_<var>{db}</var>.mp3</li>");
          writer.println("   <li><i>dttl</i> - mp3 recordings of left-channel digits named <var>{triplet}</var>_<var>{db}</var>l.mp3</li>");
          writer.println("   <li><i>dttr</i> - mp3 recordings of right-channel digits named <var>{triplet}</var>_<var>{db}</var>r.mp3</li>");
          writer.println("  </ul>");
@@ -83,6 +85,9 @@ public class AdminMedia extends ServletBase {
          writer.println("   <li><var>{triplet}</var> is the digits represented by the recording (3 characters), and</li>");
          writer.println("   <li><var>{db}</var> is the decibel level of the voice (3 characters).</li>");
          writer.println("  </ul>");
+         writer.println("  <p>If <i>dtta</i> files are specified, these are used for headphones-on tests, and <i>dttl</i>/<i>dttr</i> files are ignored.</p>");
+         writer.println("  <p>If no <i>dtta</i>, <i>dttl</i>, or <i>dttr</i> files are specified, no option for headphones-on tests is presented.</p>");
+         writer.println("  <p>If no <i>dtt</i> files are specified, no option for speakers-on tests is presented.</p>");
          writer.println("  <form method=\"POST\" enctype=\"multipart/form-data\"><table>");
 
          // WAR file
@@ -110,8 +115,9 @@ public class AdminMedia extends ServletBase {
    protected void doPost(HttpServletRequest request, HttpServletResponse response)
       throws ServletException, IOException {
 
-      File mp3Root = new File(getServletContext().getRealPath("/mp3"));
-      
+      File mp3Root = new File(getServletContext().getRealPath("/mp3")); 
+      File soundCheckMp3 = new File(mp3Root, "sound-check.mp3");
+     
       // are we a new installation?
       if (hasAccess(request, response)) {
          log("AdminMedia from war...");
@@ -147,7 +153,7 @@ public class AdminMedia extends ServletBase {
                      JarFile jar = new JarFile(zip);
                      Enumeration<JarEntry> entries = jar.entries();
                      Pattern validateDigitFile = Pattern.compile(
-                        "dtt[lr]?/([0-9]{3}_[-0-9][0-9]{2}[lr]?|sound-check)\\.mp3");
+                        "dtt[lra]?/([0-9]{3}_[-0-9][0-9]{2}[lra]?|sound-check)\\.mp3");
                      while (entries.hasMoreElements()) {
                         JarEntry entry = entries.nextElement();
                         
@@ -172,7 +178,7 @@ public class AdminMedia extends ServletBase {
                         } // next part
                         sFileName = pathParts[pathParts.length - 1];
                         File file = new File(parent, sFileName);
-                        
+
                         // get input stream
                         InputStream in = jar.getInputStream(entry);
                         
@@ -191,6 +197,11 @@ public class AdminMedia extends ServletBase {
                         in.close();
                         fout.close();
                         writer.println("OK");
+
+                        if (!soundCheckMp3.exists()) {
+                          writer.println("Using " + sFileName + " for sound-check.");
+                          Files.copy(file.toPath(), soundCheckMp3.toPath());
+                        }
                         
                      } // next entry
                   } finally {

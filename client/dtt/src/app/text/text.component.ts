@@ -14,7 +14,8 @@ export class TextComponent implements OnInit {
     text = {} as Text;
     text2: Text;
     modes: string[];
-    headphoneStartMode = "l"; // the mode to start headphones with - blank for headphones only
+    headphoneStartMode = "l"; // the mode to start headphones with
+    speakersStartMode: string; // the mode to start speakers with (null means no speakers mode)
     nextMode: string;
     canContinue: boolean;
     results: boolean;
@@ -33,9 +34,22 @@ export class TextComponent implements OnInit {
         this.dttService.getModes()
             .subscribe(modes => {
                 this.modes = modes;
-                if (modes.length <= 1) { // there's only one mode
-                    // the first headphone mode is that mode, i.e. headphones only
-                    this.headphoneStartMode = modes[0];
+                if (modes.includes("a")) { // there's an antiphasic mode
+                    console.log("Antiphasic test with headphones.");
+                    this.headphoneStartMode = "a";
+                } else if (modes.includes("l")) { // there are left/right modes
+                    console.log("Per-ear tests with headphones.");
+                    this.headphoneStartMode = "l";
+                } else {
+                    console.log("No test with speakers.");
+                    this.headphoneStartMode = null; // no headphones mode
+                }
+                if (modes.includes("")) { // there's a speakers mode
+                    console.log("Monoaural test with speakers.");
+                    this.speakersStartMode = "";
+                } else {
+                    console.log("No test with speakers.");
+                    this.speakersStartMode = null; // no speakers mode
                 }
             }); 
     }

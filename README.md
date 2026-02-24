@@ -25,7 +25,7 @@ Where:
 - `{triplet}` is the digits represented by the recording (3 characters), and
 - `{db}` is the decibel level of the voice (3 characters).
 - `{mode}` indicates whether the recording is in the left channel - "l" - the right
-channel - "r" - or both channels - "".
+channel - "r" - both channels - "" - or antiphasic - "a".
 
 e.g.
 - `123_004l.mp3` is a recording of the digits 1, 2, 3 with a 4 decibel voice, in the left
@@ -33,24 +33,26 @@ channel, and
 - `126_-22.mp3` is a recording of the digits 1, 2, 6 with a -22 decibel voice, in both
 channels.
 
-Furthemore, the recording should be in three separate directories:
+Furthemore, the recording should be in separate directories:
 
-- `dttl` for recording in the left channel.
-- `dttr` for recording in the right channel.
-- `dtt` for recording in both channels.
+- For headphones-based tests:
+  - `dttl` for recordings in the left channel and
+  - `dttr` for recordings in the right channel,
+  - or alternatively, `dtta` for antiphasic recordings in both channels.
+    (if present, any `dttl`/`dttr` recordings are ignored).
+- For loudspeaker-based tests:
+  - `dtt` for recordings in both channels.
 
 *NB* mp3s for the left channel must be stereo recordings for which the voice prompt is in
 the left channel and there is silence in the right channel. Similarly, right channel recordings
 should have the voice prompt in the right channel and silence in the left channel.
 
-For single-pass tests (e.g. antiphasic tests) only the `dtt` subdirectory should be 
-supplied (`dttl` and `dttr` are omitted), with appropiate recordings for headphones-based
-tests.
+Finally, in the `dtt` or `dtta` directory, there should be a file called `sound-check.mp3`
+which is played to the participant during the sound check before starting the test.
+If no `sound-check.mp3` file is supplied, the first mp3 file found during media upload
+is used for the sound/volume check.
 
-Finally, in the `dtt` directory, there should be a file called `sound-check.mp3` which is
-played to the participant during the sound check before starting the test.
-
-These three directories of mp3 files must be compressed into a single zip file for
+These directories of mp3 files must be compressed into a single zip file for
 installation on the server.
 
 ### Installation steps:
