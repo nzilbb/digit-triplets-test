@@ -51,6 +51,28 @@ import java.util.regex.Pattern;
 @RequiredRole("admin")
 public class AdminMedia extends ServletBase {
    
+   /** 
+    * Initialise the servlet by loading the database connection settings.
+    */
+   public void init() {
+     super.init();
+     // ensure sound-check.mp3 is moved to the new location if it's not already there
+     File mp3Root = new File(getServletContext().getRealPath("/mp3")); 
+     File soundCheckMp3 = new File(mp3Root, "sound-check.mp3");
+     File dtt = new File(mp3Root, "dtt"); 
+     File oldSoundCheckMp3 = new File(dtt, "sound-check.mp3");
+     if (!soundCheckMp3.exists() && oldSoundCheckMp3.exists()) {
+       log("Copying sound-check.mp3 into new location.");
+       try {
+         Files.copy(oldSoundCheckMp3.toPath(), soundCheckMp3.toPath());
+       } catch(IOException exception) {
+         log("Could not copy " + oldSoundCheckMp3.getPath()
+             + " to " + soundCheckMp3.getPath()
+             + ": " + exception);
+       }
+     }
+   }
+  
    /**
     * GET handler
     */
