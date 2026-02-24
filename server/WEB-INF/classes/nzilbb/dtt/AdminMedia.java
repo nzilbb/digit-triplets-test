@@ -35,6 +35,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
@@ -143,6 +144,8 @@ public class AdminMedia extends ServletBase {
       // are we a new installation?
       if (hasAccess(request, response)) {
          log("AdminMedia from war...");
+         response.setContentType("text/html");
+         response.setCharacterEncoding("UTF-8");
          PrintWriter writer = response.getWriter();
          writer.println("<!DOCTYPE html>");
          writer.println("<html>");
@@ -220,9 +223,10 @@ public class AdminMedia extends ServletBase {
                         fout.close();
                         writer.println("OK");
 
-                        if (!soundCheckMp3.exists()) {
+                        if (!soundCheckMp3.exists() || sFileName.equals("sound-check.mp3")) {
                           writer.println("Using " + sFileName + " for sound-check.");
-                          Files.copy(file.toPath(), soundCheckMp3.toPath());
+                          Files.copy(file.toPath(), soundCheckMp3.toPath(),
+                                     StandardCopyOption.REPLACE_EXISTING);
                         }
                         
                      } // next entry
