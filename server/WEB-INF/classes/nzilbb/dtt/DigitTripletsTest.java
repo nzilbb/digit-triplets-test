@@ -430,6 +430,10 @@ public class DigitTripletsTest extends ServletBase {
                
                // decide which prompt to play next
                int signalLevelIncrement = getIntAttribute("signallevelincrement", connection);
+               int trialsToDoubleIncrement = getIntAttribute("trialstodoubleincrement", connection);
+               if (nextTrialNumber <= trialsToDoubleIncrement) {
+                 signalLevelIncrement *= 2;
+               }
                if (answer.equals(correctAnswer)) {
                   nextDecibelsSignal = decibelsSignal + signalLevelIncrement;
                } else {
