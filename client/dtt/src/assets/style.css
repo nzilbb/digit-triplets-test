@@ -92,6 +92,7 @@ app-text, app-field, app-test, app-sound-check {
 .dtt-help {
     margin-left: 5vw;
     margin-right: 5vw;
+    overflow: scroll;
 }
 div.text {
     margin: 3vw;
