@@ -20,9 +20,9 @@ export class FieldsComponent implements OnInit {
         this.readFields();
     }
 
-    createField(field: string, name: string, description: string, type: string, required: boolean, order: string) {
+    createField(field: string, name: string, description: string, postscript: string, type: string, required: boolean, order: string) {
         let display_order = Number(order);
-        this.fieldService.createField({ field, name, description, type, required, display_order } as Field)
+        this.fieldService.createField({ field, name, description, postscript, type, required, display_order } as Field)
             .subscribe(field => {
                 // add to the model/view
                 if (field) this.fields.push(field); });

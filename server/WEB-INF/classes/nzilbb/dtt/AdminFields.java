@@ -76,6 +76,7 @@ public class AdminFields extends ServletBase {
                   json.write("field", rs.getString("field"));
                   json.write("name", rs.getString("name"));
                   json.write("description", rs.getString("description"));
+                  json.write("postscript", rs.getString("postscript"));
                   json.write("type", rs.getString("type"));
                   json.write("required", rs.getInt("required") != 0);
                   json.write("display_order", rs.getInt("display_order"));
@@ -131,6 +132,7 @@ public class AdminFields extends ServletBase {
          String field = jsonUser.getString("field");
          String name = jsonUser.getString("name");
          String description = jsonUser.getString("description");
+         String postscript = jsonUser.getString("postscript");
          String type = jsonUser.getString("type");
          int display_order = jsonUser.getInt("display_order");
          boolean required = jsonUser.getBoolean("required");
@@ -165,15 +167,16 @@ public class AdminFields extends ServletBase {
             // insert the user
             PreparedStatement sql = connection.prepareStatement(
                "INSERT INTO form_field"
-               +" (field, name, description, type, required, display_order,"
-               +" update_date, update_user_id) VALUES (?,?,?,?,?,?,Now(),?)");
+               +" (field, name, description, postscript, type, required, display_order,"
+               +" update_date, update_user_id) VALUES (?,?,?,?,?,?,?,Now(),?)");
             sql.setString(1, field);
             sql.setString(2, name);
             sql.setString(3, description);
-            sql.setString(4, type);
-            sql.setInt(5, required?1:0);
-            sql.setInt(6, display_order);
-            sql.setString(7, ""+request.getRemoteUser());
+            sql.setString(4, postscript);
+            sql.setString(5, type);
+            sql.setInt(6, required?1:0);
+            sql.setInt(7, display_order);
+            sql.setString(8, ""+request.getRemoteUser());
             int rows = sql.executeUpdate();
             if (rows == 0) {
                response.setStatus(HttpServletResponse.SC_CONFLICT);
@@ -189,6 +192,7 @@ public class AdminFields extends ServletBase {
                   json.write("field", field);
                   json.write("name", name);
                   json.write("description", description);
+                  json.write("postscript", postscript);
                   json.write("type", type);
                   json.write("required", required);
                   json.write("display_order", display_order);
@@ -228,6 +232,7 @@ public class AdminFields extends ServletBase {
          String field = jsonUser.getString("field");
          String name = jsonUser.getString("name");
          String description = jsonUser.getString("description");
+         String postscript = jsonUser.getString("postscript");
          String type = jsonUser.getString("type");
          if (type.trim().length() == 0) type = "string";
          int display_order = jsonUser.getInt("display_order");
@@ -242,15 +247,17 @@ public class AdminFields extends ServletBase {
 
             // insert the user
             PreparedStatement sql = connection.prepareStatement(
-               "UPDATE form_field SET name = ?, description = ?, type = ?, required = ?,"
+               "UPDATE form_field SET name = ?, description = ?, postscript = ?,"
+               +" type = ?, required = ?,"
                +" display_order = ?, update_date = Now(), update_user_id = ? WHERE field = ?");
             sql.setString(1, name);
             sql.setString(2, description);
-            sql.setString(3, type);
-            sql.setInt(4, required?1:0);
-            sql.setInt(5, display_order);
-            sql.setString(6, request.getRemoteUser());
-            sql.setString(7, field);
+            sql.setString(3, postscript);
+            sql.setString(4, type);
+            sql.setInt(5, required?1:0);
+            sql.setInt(6, display_order);
+            sql.setString(7, request.getRemoteUser());
+            sql.setString(8, field);
             int rows = sql.executeUpdate();
             if (rows == 0) {
                response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -289,6 +296,7 @@ public class AdminFields extends ServletBase {
                   json.write("field", field);
                   json.write("name", name);
                   json.write("description", description);
+                  json.write("postscript", postscript);
                   json.write("type", type);
                   json.write("required", required);
                   json.write("display_order", display_order);

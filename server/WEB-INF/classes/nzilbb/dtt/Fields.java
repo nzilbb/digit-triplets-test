@@ -77,6 +77,7 @@ public class Fields extends ServletBase {
                   json.write("field", rs.getString("field"));
                   json.write("name", rs.getString("name"));
                   json.write("description", rs.getString("description"));
+                  json.write("postscript", rs.getString("postscript"));
                   json.write("type", rs.getString("type"));
                   json.write("size", rs.getString("size"));
                   json.write("required", rs.getInt("required") != 0);

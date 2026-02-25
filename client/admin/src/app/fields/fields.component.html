@@ -17,6 +17,11 @@
              type="text"
              placeholder="Description" />
     </span>
+    <span class="postscript" title="Postscript - extra text to display to the participant."><legend>Postscript</legend>
+      <textarea #postscript
+             type="text"
+             placeholder="Postscript"></textarea>
+    </span>
     <span class="type" title="Type of data"><legend>Type</legend>
       <select #type>
         <option>Type
@@ -41,7 +46,7 @@
       </label>
     </span>
     <span class="buttons">
-      <button (click)="createField(field.value, name.value, description.value, type.value, required.checked, display_order.value); field.value = name.value = description.value = type.value = display_order.value = '';"
+      <button (click)="createField(field.value, name.value, description.value, postscript.value, type.value, required.checked, display_order.value); field.value = name.value = description.value = postscript.value = type.value = display_order.value = '';"
               title="Add new field">➕</button>
     </span>
   </div>
@@ -49,16 +54,21 @@
   <app-wait *ngIf="!fields"></app-wait>
   <div class="item field-item" *ngFor="let field of fields">
     <span class="field" title="Field ID"> {{field.field}} </span>
-    <span class="name" title="Field label"><legend>Label</legend>
+    <span class="name" title="Field label - the participant can see this."><legend>Label</legend>
       <input #name type="text"
              [(ngModel)]="field.name" (input)="onChange(field)"
              required 
-             placeholder="Label - the participant can see this." />
+             placeholder="Label" />
     </span>
-    <span class="description" title="Description"><legend>Description</legend>
+    <span class="description" title="Description - the participant can see this."><legend>Description</legend>
       <input #description type="text"
              [(ngModel)]="field.description" (input)="onChange(field)"
-             placeholder="Description - the participant can see this." />
+             placeholder="Description" />
+    </span>
+    <span class="postscript" title="Postscript - extra text to display to the participant."><legend>Postscript</legend>
+      <textarea #postscript type="text"
+             [(ngModel)]="field.postscript" (input)="onChange(field)"
+             placeholder="Postscript" ></textarea>
     </span>
     <span class="type" title="Type of data"><legend>Type</legend>
       <select #type

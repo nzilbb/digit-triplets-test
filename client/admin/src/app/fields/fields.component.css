@@ -2,3 +2,11 @@
 .options {
     display: block;
 }
+/* Layout on wider screens */
+@media all and (min-width: 640px) {
+    .item span { vertical-align: middle; }
+    .name { width: 15%; min-width: 50px; }
+    .description { width: 20%; min-width: 50px; }
+    .postscript { width: 30%; }
+    .postscript textarea { height: 15px; width: 100%; }
+}
