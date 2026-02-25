@@ -99,7 +99,7 @@ public class AdminMedia extends ServletBase {
          writer.println("  <p>They must be all in a .zip file, with the following folder structure</p>");
          writer.println("  <ul>");
          writer.println("   <li><i>dtt</i> - mp3 recordings of stereo digits named <var>{triplet}</var>_<var>{db}</var>.mp3</li>");
-         writer.println("   <li><i>dtta</i> - antiphasic mp3 recordings of stereo digits named <var>{triplet}</var>_<var>{db}</var>.mp3</li>");
+         writer.println("   <li><i>dtta</i> - antiphasic mp3 recordings of stereo digits named <var>{triplet}</var>_<var>{db}</var>a.mp3</li>");
          writer.println("   <li><i>dttl</i> - mp3 recordings of left-channel digits named <var>{triplet}</var>_<var>{db}</var>l.mp3</li>");
          writer.println("   <li><i>dttr</i> - mp3 recordings of right-channel digits named <var>{triplet}</var>_<var>{db}</var>r.mp3</li>");
          writer.println("  </ul>");
