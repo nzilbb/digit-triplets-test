@@ -108,8 +108,8 @@ div.results {
 app-field > div, app-field h1 {
     text-align: center;
 }
-app-field > div.postscript {
-    white-space: pre;
+app-field div.postscript {
+    white-space: pre-line;
 }
 button {
     height: 10vh;
