@@ -18,12 +18,14 @@ export class FieldComponent implements OnInit {
     value: string;
     valid = false;
     leaving = false;
+    reentering = false;
     @ViewChild("input") input: ElementRef; // only works the first time TODO
     
     constructor(private route: ActivatedRoute,
                 private dttService: DttService) { }
 
     ngOnInit(): void {
+        console.log("ngOnInit");
         this.dttService.checkStarted();
 
         // need to subscribe to URL path changes, because the component will be re-used
@@ -31,17 +33,29 @@ export class FieldComponent implements OnInit {
         this.route.paramMap.pipe(
             switchMap((params: ParamMap) =>
                 this.dttService.getField(params.get('field')))
-        ).subscribe(field => this.field = field);
+        ).subscribe(field => {
+            console.log("field " + JSON.stringify(field));
+            this.field = field;
+            setTimeout(()=>{
+                if (this.leaving) {
+                    this.reentering = true;
+                }
+                this.leaving = false;
+            }, 750);
+        });
     }
     
     ngAfterViewInit(): void {
+        console.log("ngAfterViewInit");
         this.input.nativeElement.focus();
         this.valid = !this.field.required;
     }
 
     saveFieldValue() {
         this.leaving = true;
+        console.log("saveFieldValue...");
         this.dttService.saveFieldValue(this.field.field, this.value);
+        console.log("saveFieldValue done.");
         this.value = null;
     }
 

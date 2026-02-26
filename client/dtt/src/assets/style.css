@@ -80,6 +80,11 @@ app-text, app-field, app-test, app-sound-check {
     animation-name: leaving;
     animation-duration: 3000ms;
 }
+.entering {
+    position: relative; 
+    animation-name: entering;
+    animation-duration: 750ms;
+}
 
 .content {
     flex-grow: 1;

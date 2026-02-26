@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { RouteReuseStrategy } from '@angular/router';
 
-import { AppRoutingModule, NeverReuseStrategy } from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TextComponent } from './text/text.component';
 import { SoundCheckComponent } from './sound-check/sound-check.component';
@@ -35,8 +35,6 @@ import { MessageComponent } from './message/message.component';
     providers: [
         {
             provide: LocationStrategy, useClass: HashLocationStrategy
-        },{
-            provide: RouteReuseStrategy, useClass: NeverReuseStrategy
         }],
     bootstrap: [AppComponent]
 })

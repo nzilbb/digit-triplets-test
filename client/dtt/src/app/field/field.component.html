@@ -1,4 +1,4 @@
-<div class="content" [class.leaving]="leaving">
+<div class="content" [class.leaving]="leaving" [class.entering]="reentering">
   <h1>{{field.name}}</h1>
   <div class="description">{{field.description}}</div>
   
@@ -49,8 +49,10 @@
       <option *ngFor="let option of field.options" value="{{option.value}}">{{option.description}}</option>
     </select>
   </div>
+  
+  <div class="postscript">{{field.postscript}}</div>
 </div>
-<div class="postscript">{{field.postscript}}</div>
-<div class="controls"  [class.leaving]="leaving">
+
+<div class="controls" [class.leaving]="leaving" [class.entering]="reentering">
   <button #btn (click)="saveFieldValue()" [disabled]="!valid || leaving" i18n>Continue</button>
 </div>
