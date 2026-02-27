@@ -190,6 +190,11 @@ public class DigitTripletsTest extends ServletBase {
             sql.setString(3, digits);	 
             sql.executeUpdate();
          } // next trial
+         // add one last 'ghost' trial record to record what the next SNR would be
+         // after the last trial
+         sql.setInt(2, iTrial++);
+         sql.setString(3, "");	 
+         sql.executeUpdate();
          sql.close();
          
          // copy details from the other instance? (i.e. mode=r when before mode=l)
@@ -460,7 +465,8 @@ public class DigitTripletsTest extends ServletBase {
             
             // get next triplet
             sql = connection.prepareStatement(
-               "SELECT correct_answer FROM trial WHERE instance_id = ? AND trial_number = ?");
+               "SELECT correct_answer FROM trial"
+               +" WHERE instance_id = ? AND trial_number = ? AND correct_answer != ''");
             sql.setString(1, instanceId);
             sql.setInt(2, nextTrialNumber);
             rs = sql.executeQuery();
