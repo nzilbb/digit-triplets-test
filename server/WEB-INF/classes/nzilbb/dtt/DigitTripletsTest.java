@@ -33,6 +33,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
+import java.sql.Timestamp;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collections;
@@ -570,7 +571,7 @@ public class DigitTripletsTest extends ServletBase {
          sql.setString(3, instanceId);
          sql.executeUpdate();
          sql.close();
-         
+
          // email results
          StringBuilder body = new StringBuilder();
          body.append(getAttribute("title", connection));
@@ -579,6 +580,21 @@ public class DigitTripletsTest extends ServletBase {
          body.append("\nTrialSetNumber: " + trialSetId);
          body.append("\nTestResult: " + iTestResult);
          body.append("\nMeanSNR: " + dMeanSNR);
+         // Get start/end time
+         sql = connection.prepareStatement(
+            "SELECT start_time, end_time FROM instance WHERE instance_id = ?");
+         sql.setString(1, instanceId);
+         rs = sql.executeQuery();
+         if (rs.next()) {
+           Timestamp startTime = rs.getTimestamp("start_time");
+           Timestamp endTime = rs.getTimestamp("end_time");
+           body.append("\nStart: " + startTime);
+           body.append("\nEnd: " + endTime);
+           long duration = (endTime.getTime() - startTime.getTime()) / 1000;
+           body.append("\nDuration: " + duration + "s");
+         }
+         rs.close();
+         sql.close();
          
          sql = connection.prepareStatement(
             "SELECT i.* FROM form_field f"
